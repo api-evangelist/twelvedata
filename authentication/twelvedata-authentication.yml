@@ -1,0 +1,22 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/twelvedata-openapi.yml
+summary:
+  types:
+  - apiKey
+schemes:
+- name: apikey_query
+  type: apiKey
+  in: query
+  keyName: apikey
+  sources:
+  - openapi/twelvedata-openapi.yml
+  notes: API key supplied as the apikey query parameter, e.g. ?apikey=YOUR_API_KEY. Also used to authenticate the WebSocket connection URL.
+- name: apikey_header
+  type: apiKey
+  in: header
+  keyName: Authorization
+  format: 'apikey <KEY>'
+  sources:
+  - openapi/twelvedata-openapi.yml
+  notes: 'API key supplied via the Authorization header as: Authorization: apikey YOUR_API_KEY.'

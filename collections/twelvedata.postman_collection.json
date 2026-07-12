@@ -1,0 +1,1028 @@
+{
+  "info": {
+    "_postman_id": "26ec9b16-828a-4634-b580-766600bccb22",
+    "name": "Twelve Data REST API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "REST API for Twelve Data financial market data covering stocks, forex, cryptocurrencies, ETFs, indices, commodities, and funds. Provides historical and real-time time series (OHLCV), quotes and prices, 100+ technical indicators, reference / catalog data, and company fundamentals. All requests are authenticated with an apikey supplied either as a query parameter (?apikey=) or via the `Authorization: apikey <KEY>` header. Every endpoint consumes a data-weight number of API credits; the per-minute credit quota resets each minute.",
+      "type": "text/plain"
+    }
+  },
+  "item": [
+    {
+      "id": "c454b035-2fdd-4788-85f2-368e5c978740",
+      "name": "Time Series",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "4efb9800-659a-4167-86be-d214c4d1b0b2",
+          "name": "Time series (OHLCV)",
+          "request": {
+            "name": "Time series (OHLCV)",
+            "description": {
+              "content": "Returns meta and time series (open, high, low, close, volume) for the requested instrument at the requested interval. Core endpoint for historical and intraday market data.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/time_series",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "time_series"
+              ],
+              "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "426d27bc-3250-4db2-8fae-3ca3396832f9",
+          "name": "Cross time series",
+          "request": {
+            "name": "Cross time series",
+            "description": {
+              "content": "Computes a cross-rate time series between two instruments (for example, exotic currency pairs) that are not directly quoted.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/time_series/cross",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "time_series",
+                "cross"
+              ],
+              "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "id": "7cb91930-2694-402a-add9-5a8c8312ba85",
+      "name": "Core Data",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d3a3dbfb-9a3e-422d-b856-0216bbf7cdf2",
+          "name": "End of day price",
+          "request": {
+            "name": "End of day price",
+            "description": {
+              "content": "Returns the latest end-of-day closing price and metadata for an instrument.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/eod",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "eod"
+              ],
+              "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "38756e9c-3fc0-4520-90bc-2c3d3f42a13a",
+          "name": "Quote",
+          "request": {
+            "name": "Quote",
+            "description": {
+              "content": "Returns a real-time quote for the instrument including price, open, high, low, close, volume, 52-week range, and change metrics.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/quote",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "quote"
+              ],
+              "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "f8f3ad47-f887-4be7-9aea-656479f41ce0",
+          "name": "Real-time price",
+          "request": {
+            "name": "Real-time price",
+            "description": {
+              "content": "Returns the latest available real-time trading price for an instrument.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/price",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "price"
+              ],
+              "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "65ad1d5e-e573-4298-8b99-2b81ca68477b",
+          "name": "Market movers",
+          "request": {
+            "name": "Market movers",
+            "description": {
+              "content": "Returns the top gainers and losers by percentage change for a market.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/market_movers/{market}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "market_movers",
+                "{market}"
+              ],
+              "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "45afbef8-be83-4a25-93ff-443ca88aa3ee",
+          "name": "Market state",
+          "request": {
+            "name": "Market state",
+            "description": {
+              "content": "Returns the real-time open/closed state of exchanges.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/market_state",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "market_state"
+              ],
+              "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "id": "517f0958-2479-488d-a3a6-db46d279b0b2",
+      "name": "Technical Indicators",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "98ff7831-60e1-41d3-9916-82e7320dae13",
+          "name": "Relative Strength Index (RSI)",
+          "request": {
+            "name": "Relative Strength Index (RSI)",
+            "description": {
+              "content": "Returns the RSI momentum indicator time series. Representative of the 100+ technical indicator endpoints (macd, bbands, ema, sma, adx, stoch, atr, and more) that share the same parameter conventions.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/rsi",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rsi"
+              ],
+              "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "8f194008-5eb7-4fa1-8b9e-8d7af68c188d",
+          "name": "Moving Average Convergence Divergence (MACD)",
+          "request": {
+            "name": "Moving Average Convergence Divergence (MACD)",
+            "description": {
+              "content": "Returns the MACD indicator time series for an instrument.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/macd",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "macd"
+              ],
+              "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "47755238-27cc-4f73-9513-02e640deef9c",
+          "name": "Bollinger Bands",
+          "request": {
+            "name": "Bollinger Bands",
+            "description": {
+              "content": "Returns the Bollinger Bands overlay time series for an instrument.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/bbands",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "bbands"
+              ],
+              "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "d654f4d2-f628-4dd8-be86-2ee8187fcafd",
+          "name": "List technical indicators",
+          "request": {
+            "name": "List technical indicators",
+            "description": {
+              "content": "Returns the catalog of all available technical indicators and their parameters.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/technical_indicators",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "technical_indicators"
+              ],
+              "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "id": "1cdb0931-e3e3-4098-b3a9-820ea31fe1f0",
+      "name": "Reference Data",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "63e968ee-ad4f-4c09-b9d2-eb6adfaa6133",
+          "name": "List stocks",
+          "request": {
+            "name": "List stocks",
+            "description": {
+              "content": "Returns the daily-updated catalog of available stock symbols across exchanges.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/stocks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "stocks"
+              ],
+              "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "48a1f6b5-c765-4328-8fb4-85f14c8cb1fd",
+          "name": "List forex pairs",
+          "request": {
+            "name": "List forex pairs",
+            "description": {
+              "content": "Returns the catalog of available foreign-exchange currency pairs.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/forex_pairs",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "forex_pairs"
+              ],
+              "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "16859d69-b273-40a7-bc31-642331ca1432",
+          "name": "List cryptocurrencies",
+          "request": {
+            "name": "List cryptocurrencies",
+            "description": {
+              "content": "Returns the catalog of available cryptocurrency pairs across exchanges.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/cryptocurrencies",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cryptocurrencies"
+              ],
+              "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "23456604-d5b5-443f-899d-a0a5b304b053",
+          "name": "List ETFs",
+          "request": {
+            "name": "List ETFs",
+            "description": {
+              "content": "Returns the catalog of available exchange-traded fund symbols.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/etfs",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "etfs"
+              ],
+              "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "9132e4ad-2263-4558-a7fd-a6785c5bbfad",
+          "name": "List indices",
+          "request": {
+            "name": "List indices",
+            "description": {
+              "content": "Returns the catalog of available market indices.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/indices",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "indices"
+              ],
+              "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "95a9ba68-7769-4cb6-ac08-73756de83333",
+          "name": "List exchanges",
+          "request": {
+            "name": "List exchanges",
+            "description": {
+              "content": "Returns the catalog of available equity exchanges.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/exchanges",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "exchanges"
+              ],
+              "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "06cf2868-57a3-4855-adf8-920c09cc0904",
+          "name": "Symbol search",
+          "request": {
+            "name": "Symbol search",
+            "description": {
+              "content": "Finds instruments by name, symbol, ISIN, or FIGI.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/symbol_search",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "symbol_search"
+              ],
+              "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "28896b92-2364-482a-a8b7-26ed60004dc5",
+          "name": "Earliest timestamp",
+          "request": {
+            "name": "Earliest timestamp",
+            "description": {
+              "content": "Returns the earliest date for which data is available for an instrument and interval.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/earliest_timestamp",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "earliest_timestamp"
+              ],
+              "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "id": "7d5455b4-8183-47c6-b64e-266dc6c46188",
+      "name": "Fundamentals",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "733d3869-b0ad-4320-adcf-3cf445413beb",
+          "name": "Company profile",
+          "request": {
+            "name": "Company profile",
+            "description": {
+              "content": "Returns the company profile (sector, industry, description, employees, and more).",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "profile"
+              ],
+              "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "601331ac-ccd3-47cd-944b-ca304b2bfb9c",
+          "name": "Dividends",
+          "request": {
+            "name": "Dividends",
+            "description": {
+              "content": "Returns the dividend history for a company.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/dividends",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "dividends"
+              ],
+              "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "fe2b2e50-319b-4344-b087-51ddfb1d6a31",
+          "name": "Earnings",
+          "request": {
+            "name": "Earnings",
+            "description": {
+              "content": "Returns historical and upcoming earnings for a company.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/earnings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "earnings"
+              ],
+              "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "ee1a1773-fa62-4274-ad81-b1277467fda9",
+          "name": "Income statement",
+          "request": {
+            "name": "Income statement",
+            "description": {
+              "content": "Returns the income statement for a company.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/income_statement",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "income_statement"
+              ],
+              "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "d791d67c-b2f9-4ee0-8259-723db8e98548",
+          "name": "Balance sheet",
+          "request": {
+            "name": "Balance sheet",
+            "description": {
+              "content": "Returns the balance sheet for a company.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/balance_sheet",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "balance_sheet"
+              ],
+              "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "36a50518-6a89-4ada-9590-d572c9f33208",
+          "name": "Cash flow",
+          "request": {
+            "name": "Cash flow",
+            "description": {
+              "content": "Returns the cash flow statement for a company.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/cash_flow",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cash_flow"
+              ],
+              "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "cff215fa-89e3-4acc-b478-9a8c1e26f55e",
+          "name": "Statistics",
+          "request": {
+            "name": "Statistics",
+            "description": {
+              "content": "Returns key valuation, profitability, and financial statistics for a company.",
+              "type": "text/plain"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/statistics",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "statistics"
+              ],
+              "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "apikey"
+      },
+      {
+        "key": "value",
+        "value": "{{apikey}}"
+      },
+      {
+        "key": "in",
+        "value": "query"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.twelvedata.com"
+    },
+    {
+      "key": "apikey",
+      "value": ""
+    }
+  ]
+}

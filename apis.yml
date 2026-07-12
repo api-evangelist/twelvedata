@@ -1,0 +1,177 @@
+aid: twelvedata
+url: https://raw.githubusercontent.com/api-evangelist/twelvedata/refs/heads/main/apis.yml
+name: Twelve Data
+kind: company
+description: Twelve Data is a financial market data provider offering real-time and
+  historical data for stocks, forex, cryptocurrencies, ETFs, indices, commodities,
+  and funds through a single REST API and a real-time WebSocket. Coverage spans
+  time series (OHLCV), quotes and prices, 100-plus technical indicators, reference
+  and catalog data, and company fundamentals. Every request is authenticated with
+  an apikey and metered as API credits; a free Basic plan grants 800 API credits
+  per day. Real-time price streaming is delivered over a WebSocket at
+  wss://ws.twelvedata.com/v1/quotes/price.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Market Data
+- Financial Data
+- Stocks
+- Forex
+- Crypto
+- Real-Time Data
+- Technical Indicators
+- Fundamentals
+created: '2026-07-11'
+modified: '2026-07-11'
+specificationVersion: '0.19'
+apis:
+- aid: twelvedata:twelvedata-time-series-api
+  name: Twelve Data Time Series API
+  tags:
+  - Time Series
+  - Market Data
+  - Financial Data
+  - Stocks
+  - Forex
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://twelvedata.com/docs#time-series
+  baseURL: https://api.twelvedata.com
+  properties:
+  - url: https://twelvedata.com/docs#time-series
+    type: Documentation
+  - url: openapi/twelvedata-openapi.yml
+    type: OpenAPI
+  - url: collections/twelvedata.postman_collection.json
+    type: PostmanCollection
+  - url: collections/twelvedata.opencollection.json
+    type: OpenCollection
+  description: Historical and intraday OHLCV time series for stocks, forex, crypto,
+    ETFs, indices, and commodities across intervals from 1min to 1month, including
+    end-of-day prices and cross-rate time series for exotic pairs.
+- aid: twelvedata:twelvedata-quotes-price-api
+  name: Twelve Data Quotes and Price API
+  tags:
+  - Quotes
+  - Real-Time Data
+  - Stocks
+  - Market Data
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://twelvedata.com/docs#core-data
+  baseURL: https://api.twelvedata.com
+  properties:
+  - url: https://twelvedata.com/docs#core-data
+    type: Documentation
+  - url: openapi/twelvedata-openapi.yml
+    type: OpenAPI
+  - url: collections/twelvedata.postman_collection.json
+    type: PostmanCollection
+  - url: collections/twelvedata.opencollection.json
+    type: OpenCollection
+  description: Real-time quotes and latest prices, market movers (top gainers and
+    losers), and exchange market state for any supported instrument via the /quote,
+    /price, /market_movers, and /market_state endpoints.
+- aid: twelvedata:twelvedata-technical-indicators-api
+  name: Twelve Data Technical Indicators API
+  tags:
+  - Technical Indicators
+  - Market Data
+  - Analysis
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://twelvedata.com/docs#technical-indicators
+  baseURL: https://api.twelvedata.com
+  properties:
+  - url: https://twelvedata.com/docs#technical-indicators
+    type: Documentation
+  - url: openapi/twelvedata-openapi.yml
+    type: OpenAPI
+  - url: collections/twelvedata.postman_collection.json
+    type: PostmanCollection
+  - url: collections/twelvedata.opencollection.json
+    type: OpenCollection
+  description: More than 100 technical analysis indicators computed server-side over
+    time series data, including RSI, MACD, Bollinger Bands, moving averages, ADX,
+    stochastics, and ATR, each sharing the same symbol and interval conventions.
+- aid: twelvedata:twelvedata-reference-data-api
+  name: Twelve Data Reference Data API
+  tags:
+  - Reference Data
+  - Stocks
+  - Forex
+  - Crypto
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://twelvedata.com/docs#reference-data
+  baseURL: https://api.twelvedata.com
+  properties:
+  - url: https://twelvedata.com/docs#reference-data
+    type: Documentation
+  - url: openapi/twelvedata-openapi.yml
+    type: OpenAPI
+  - url: collections/twelvedata.postman_collection.json
+    type: PostmanCollection
+  - url: collections/twelvedata.opencollection.json
+    type: OpenCollection
+  description: Catalogs of tradable instruments and market metadata - stocks, forex
+    pairs, cryptocurrencies, ETFs, indices, commodities, exchanges, and symbol
+    search by name, ISIN, or FIGI - used to discover symbols before requesting data.
+- aid: twelvedata:twelvedata-fundamentals-api
+  name: Twelve Data Fundamentals API
+  tags:
+  - Fundamentals
+  - Financial Data
+  - Stocks
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://twelvedata.com/docs#fundamentals
+  baseURL: https://api.twelvedata.com
+  properties:
+  - url: https://twelvedata.com/docs#fundamentals
+    type: Documentation
+  - url: openapi/twelvedata-openapi.yml
+    type: OpenAPI
+  - url: collections/twelvedata.postman_collection.json
+    type: PostmanCollection
+  - url: collections/twelvedata.opencollection.json
+    type: OpenCollection
+  description: Company fundamentals including profiles, dividends, earnings, income
+    statements, balance sheets, cash flow statements, and key valuation statistics
+    for equities.
+- aid: twelvedata:twelvedata-websocket-streaming-api
+  name: Twelve Data WebSocket Streaming API
+  tags:
+  - Real-Time Data
+  - WebSocket
+  - Streaming
+  - Market Data
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://twelvedata.com/docs/websocket/ws-real-time-price
+  baseURL: wss://ws.twelvedata.com/v1/quotes/price
+  properties:
+  - url: https://twelvedata.com/docs/websocket/ws-real-time-price
+    type: Documentation
+  - url: asyncapi/twelvedata-asyncapi.yml
+    type: AsyncAPI
+  description: Real-time price streaming over a persistent, bidirectional WebSocket
+    at wss://ws.twelvedata.com/v1/quotes/price. Clients authenticate with an apikey
+    query parameter, send JSON subscribe / unsubscribe / reset control messages, and
+    receive pushed price events (roughly 170ms average latency), subscribe-status
+    acknowledgements, and heartbeats.
+common:
+- type: Authentication
+  url: authentication/twelvedata-authentication.yml
+- type: LinkedIn
+  url: https://www.linkedin.com/company/twelve-data
+- type: Website
+  url: https://twelvedata.com
+- type: Documentation
+  url: https://twelvedata.com/docs
+- type: Plans
+  url: plans/twelvedata-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/twelvedata-rate-limits.yml
+- type: FinOps
+  url: finops/twelvedata-finops.yml
+- url: https://support.twelvedata.com
+  type: Support
+- url: https://twelvedata.com/blog
+  type: Blog
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

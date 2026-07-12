@@ -1,0 +1,608 @@
+openapi: 3.0.3
+info:
+  title: Twelve Data REST API
+  description: >-
+    REST API for Twelve Data financial market data covering stocks, forex,
+    cryptocurrencies, ETFs, indices, commodities, and funds. Provides historical
+    and real-time time series (OHLCV), quotes and prices, 100+ technical
+    indicators, reference / catalog data, and company fundamentals. All requests
+    are authenticated with an apikey supplied either as a query parameter
+    (?apikey=) or via the `Authorization: apikey <KEY>` header. Every endpoint
+    consumes a data-weight number of API credits; the per-minute credit quota
+    resets each minute.
+  termsOfService: https://twelvedata.com/terms
+  contact:
+    name: Twelve Data Support
+    url: https://support.twelvedata.com
+  version: '1.0'
+servers:
+  - url: https://api.twelvedata.com
+    description: Twelve Data REST base URL
+security:
+  - apikeyQuery: []
+  - apikeyHeader: []
+tags:
+  - name: Time Series
+    description: Historical and real-time OHLCV time series.
+  - name: Core Data
+    description: Real-time quotes, latest prices, and end-of-day data.
+  - name: Technical Indicators
+    description: 100+ technical analysis indicators computed over time series.
+  - name: Reference Data
+    description: Catalogs of instruments, exchanges, and supporting metadata.
+  - name: Fundamentals
+    description: Company profiles, statements, dividends, earnings, and analysis.
+paths:
+  /time_series:
+    get:
+      operationId: getTimeSeries
+      tags:
+        - Time Series
+      summary: Time series (OHLCV)
+      description: >-
+        Returns meta and time series (open, high, low, close, volume) for the
+        requested instrument at the requested interval. Core endpoint for
+        historical and intraday market data.
+      parameters:
+        - $ref: '#/components/parameters/symbol'
+        - $ref: '#/components/parameters/interval'
+        - name: outputsize
+          in: query
+          schema:
+            type: integer
+            default: 30
+          description: Number of data points to return (max 5000).
+        - name: exchange
+          in: query
+          schema:
+            type: string
+          description: Exchange to which the instrument belongs.
+        - name: format
+          in: query
+          schema:
+            type: string
+            enum: [JSON, CSV]
+            default: JSON
+        - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Time series payload.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimeSeriesResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /time_series/cross:
+    get:
+      operationId: getTimeSeriesCross
+      tags:
+        - Time Series
+      summary: Cross time series
+      description: >-
+        Computes a cross-rate time series between two instruments (for example,
+        exotic currency pairs) that are not directly quoted.
+      parameters:
+        - name: symbol
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Base/quote cross expression, e.g. EUR/JPY derived cross.
+        - $ref: '#/components/parameters/interval'
+        - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Cross time series payload.
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /eod:
+    get:
+      operationId: getEndOfDay
+      tags:
+        - Core Data
+      summary: End of day price
+      description: Returns the latest end-of-day closing price and metadata for an instrument.
+      parameters:
+        - $ref: '#/components/parameters/symbol'
+        - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: End-of-day payload.
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /quote:
+    get:
+      operationId: getQuote
+      tags:
+        - Core Data
+      summary: Quote
+      description: >-
+        Returns a real-time quote for the instrument including price, open,
+        high, low, close, volume, 52-week range, and change metrics.
+      parameters:
+        - $ref: '#/components/parameters/symbol'
+        - $ref: '#/components/parameters/interval'
+        - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Quote payload.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /price:
+    get:
+      operationId: getPrice
+      tags:
+        - Core Data
+      summary: Real-time price
+      description: Returns the latest available real-time trading price for an instrument.
+      parameters:
+        - $ref: '#/components/parameters/symbol'
+        - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Price payload.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Price'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /market_movers/{market}:
+    get:
+      operationId: getMarketMovers
+      tags:
+        - Core Data
+      summary: Market movers
+      description: Returns the top gainers and losers by percentage change for a market.
+      parameters:
+        - name: market
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [stocks, etf, forex, crypto]
+          description: Market to list movers for.
+        - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Market movers payload.
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /market_state:
+    get:
+      operationId: getMarketState
+      tags:
+        - Core Data
+      summary: Market state
+      description: Returns the real-time open/closed state of exchanges.
+      parameters:
+        - name: exchange
+          in: query
+          schema:
+            type: string
+        - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Market state payload.
+  /rsi:
+    get:
+      operationId: getRSI
+      tags:
+        - Technical Indicators
+      summary: Relative Strength Index (RSI)
+      description: >-
+        Returns the RSI momentum indicator time series. Representative of the
+        100+ technical indicator endpoints (macd, bbands, ema, sma, adx, stoch,
+        atr, and more) that share the same parameter conventions.
+      parameters:
+        - $ref: '#/components/parameters/symbol'
+        - $ref: '#/components/parameters/interval'
+        - name: time_period
+          in: query
+          schema:
+            type: integer
+            default: 14
+        - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: RSI time series payload.
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /macd:
+    get:
+      operationId: getMACD
+      tags:
+        - Technical Indicators
+      summary: Moving Average Convergence Divergence (MACD)
+      description: Returns the MACD indicator time series for an instrument.
+      parameters:
+        - $ref: '#/components/parameters/symbol'
+        - $ref: '#/components/parameters/interval'
+        - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: MACD time series payload.
+  /bbands:
+    get:
+      operationId: getBBands
+      tags:
+        - Technical Indicators
+      summary: Bollinger Bands
+      description: Returns the Bollinger Bands overlay time series for an instrument.
+      parameters:
+        - $ref: '#/components/parameters/symbol'
+        - $ref: '#/components/parameters/interval'
+        - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Bollinger Bands time series payload.
+  /technical_indicators:
+    get:
+      operationId: listTechnicalIndicators
+      tags:
+        - Technical Indicators
+      summary: List technical indicators
+      description: Returns the catalog of all available technical indicators and their parameters.
+      parameters:
+        - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Technical indicator catalog.
+  /stocks:
+    get:
+      operationId: listStocks
+      tags:
+        - Reference Data
+      summary: List stocks
+      description: Returns the daily-updated catalog of available stock symbols across exchanges.
+      parameters:
+        - name: symbol
+          in: query
+          schema:
+            type: string
+        - name: exchange
+          in: query
+          schema:
+            type: string
+        - name: country
+          in: query
+          schema:
+            type: string
+        - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Stock catalog payload.
+  /forex_pairs:
+    get:
+      operationId: listForexPairs
+      tags:
+        - Reference Data
+      summary: List forex pairs
+      description: Returns the catalog of available foreign-exchange currency pairs.
+      parameters:
+        - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Forex pair catalog payload.
+  /cryptocurrencies:
+    get:
+      operationId: listCryptocurrencies
+      tags:
+        - Reference Data
+      summary: List cryptocurrencies
+      description: Returns the catalog of available cryptocurrency pairs across exchanges.
+      parameters:
+        - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Cryptocurrency catalog payload.
+  /etfs:
+    get:
+      operationId: listEtfs
+      tags:
+        - Reference Data
+      summary: List ETFs
+      description: Returns the catalog of available exchange-traded fund symbols.
+      parameters:
+        - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: ETF catalog payload.
+  /indices:
+    get:
+      operationId: listIndices
+      tags:
+        - Reference Data
+      summary: List indices
+      description: Returns the catalog of available market indices.
+      parameters:
+        - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Index catalog payload.
+  /exchanges:
+    get:
+      operationId: listExchanges
+      tags:
+        - Reference Data
+      summary: List exchanges
+      description: Returns the catalog of available equity exchanges.
+      parameters:
+        - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Exchange catalog payload.
+  /symbol_search:
+    get:
+      operationId: symbolSearch
+      tags:
+        - Reference Data
+      summary: Symbol search
+      description: Finds instruments by name, symbol, ISIN, or FIGI.
+      parameters:
+        - name: symbol
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Search term (name, ticker, ISIN, or FIGI).
+        - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Symbol search payload.
+  /earliest_timestamp:
+    get:
+      operationId: getEarliestTimestamp
+      tags:
+        - Reference Data
+      summary: Earliest timestamp
+      description: Returns the earliest date for which data is available for an instrument and interval.
+      parameters:
+        - $ref: '#/components/parameters/symbol'
+        - $ref: '#/components/parameters/interval'
+        - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Earliest timestamp payload.
+  /profile:
+    get:
+      operationId: getProfile
+      tags:
+        - Fundamentals
+      summary: Company profile
+      description: Returns the company profile (sector, industry, description, employees, and more).
+      parameters:
+        - $ref: '#/components/parameters/symbol'
+        - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Company profile payload.
+  /dividends:
+    get:
+      operationId: getDividends
+      tags:
+        - Fundamentals
+      summary: Dividends
+      description: Returns the dividend history for a company.
+      parameters:
+        - $ref: '#/components/parameters/symbol'
+        - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Dividends payload.
+  /earnings:
+    get:
+      operationId: getEarnings
+      tags:
+        - Fundamentals
+      summary: Earnings
+      description: Returns historical and upcoming earnings for a company.
+      parameters:
+        - $ref: '#/components/parameters/symbol'
+        - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Earnings payload.
+  /income_statement:
+    get:
+      operationId: getIncomeStatement
+      tags:
+        - Fundamentals
+      summary: Income statement
+      description: Returns the income statement for a company.
+      parameters:
+        - $ref: '#/components/parameters/symbol'
+        - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Income statement payload.
+  /balance_sheet:
+    get:
+      operationId: getBalanceSheet
+      tags:
+        - Fundamentals
+      summary: Balance sheet
+      description: Returns the balance sheet for a company.
+      parameters:
+        - $ref: '#/components/parameters/symbol'
+        - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Balance sheet payload.
+  /cash_flow:
+    get:
+      operationId: getCashFlow
+      tags:
+        - Fundamentals
+      summary: Cash flow
+      description: Returns the cash flow statement for a company.
+      parameters:
+        - $ref: '#/components/parameters/symbol'
+        - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Cash flow payload.
+  /statistics:
+    get:
+      operationId: getStatistics
+      tags:
+        - Fundamentals
+      summary: Statistics
+      description: Returns key valuation, profitability, and financial statistics for a company.
+      parameters:
+        - $ref: '#/components/parameters/symbol'
+        - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Statistics payload.
+components:
+  securitySchemes:
+    apikeyQuery:
+      type: apiKey
+      in: query
+      name: apikey
+      description: API key supplied as the `apikey` query parameter.
+    apikeyHeader:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'API key supplied as `Authorization: apikey <KEY>`.'
+  parameters:
+    symbol:
+      name: symbol
+      in: query
+      required: true
+      schema:
+        type: string
+      description: Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.
+    interval:
+      name: interval
+      in: query
+      required: true
+      schema:
+        type: string
+        enum:
+          - 1min
+          - 5min
+          - 15min
+          - 30min
+          - 45min
+          - 1h
+          - 2h
+          - 4h
+          - 1day
+          - 1week
+          - 1month
+      description: Time interval between two consecutive data points.
+    apikeyParam:
+      name: apikey
+      in: query
+      required: true
+      schema:
+        type: string
+      description: Your Twelve Data API key.
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    RateLimited:
+      description: API credit limit for the current minute has been exceeded.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: HTTP-style status code.
+        message:
+          type: string
+          description: Human-readable error message.
+        status:
+          type: string
+          example: error
+    Price:
+      type: object
+      properties:
+        price:
+          type: string
+          example: '201.23'
+    Quote:
+      type: object
+      properties:
+        symbol:
+          type: string
+        name:
+          type: string
+        exchange:
+          type: string
+        currency:
+          type: string
+        datetime:
+          type: string
+        open:
+          type: string
+        high:
+          type: string
+        low:
+          type: string
+        close:
+          type: string
+        volume:
+          type: string
+        fifty_two_week:
+          type: object
+          properties:
+            low:
+              type: string
+            high:
+              type: string
+    TimeSeriesResponse:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            symbol:
+              type: string
+            interval:
+              type: string
+            currency:
+              type: string
+            exchange:
+              type: string
+            type:
+              type: string
+        values:
+          type: array
+          items:
+            type: object
+            properties:
+              datetime:
+                type: string
+              open:
+                type: string
+              high:
+                type: string
+              low:
+                type: string
+              close:
+                type: string
+              volume:
+                type: string
+        status:
+          type: string
+          example: ok

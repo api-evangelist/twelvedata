@@ -1,0 +1,345 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Twelve Data REST API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "apikey": {
+        "key": "apikey",
+        "value": "{{apikey}}",
+        "in": "query"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Time Series",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Time series (OHLCV)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/time_series"
+          },
+          "docs": "Returns meta and time series (open, high, low, close, volume) for the requested instrument at the requested interval. Core endpoint for historical and intraday market data."
+        },
+        {
+          "info": {
+            "name": "Cross time series",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/time_series/cross"
+          },
+          "docs": "Computes a cross-rate time series between two instruments (for example, exotic currency pairs) that are not directly quoted."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Core Data",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "End of day price",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/eod"
+          },
+          "docs": "Returns the latest end-of-day closing price and metadata for an instrument."
+        },
+        {
+          "info": {
+            "name": "Quote",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/quote"
+          },
+          "docs": "Returns a real-time quote for the instrument including price, open, high, low, close, volume, 52-week range, and change metrics."
+        },
+        {
+          "info": {
+            "name": "Real-time price",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/price"
+          },
+          "docs": "Returns the latest available real-time trading price for an instrument."
+        },
+        {
+          "info": {
+            "name": "Market movers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/market_movers/{market}"
+          },
+          "docs": "Returns the top gainers and losers by percentage change for a market."
+        },
+        {
+          "info": {
+            "name": "Market state",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/market_state"
+          },
+          "docs": "Returns the real-time open/closed state of exchanges."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Technical Indicators",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Relative Strength Index (RSI)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/rsi"
+          },
+          "docs": "Returns the RSI momentum indicator time series. Representative of the 100+ technical indicator endpoints (macd, bbands, ema, sma, adx, stoch, atr, and more) that share the same parameter conventions."
+        },
+        {
+          "info": {
+            "name": "Moving Average Convergence Divergence (MACD)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/macd"
+          },
+          "docs": "Returns the MACD indicator time series for an instrument."
+        },
+        {
+          "info": {
+            "name": "Bollinger Bands",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/bbands"
+          },
+          "docs": "Returns the Bollinger Bands overlay time series for an instrument."
+        },
+        {
+          "info": {
+            "name": "List technical indicators",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/technical_indicators"
+          },
+          "docs": "Returns the catalog of all available technical indicators and their parameters."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Reference Data",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List stocks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/stocks"
+          },
+          "docs": "Returns the daily-updated catalog of available stock symbols across exchanges."
+        },
+        {
+          "info": {
+            "name": "List forex pairs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/forex_pairs"
+          },
+          "docs": "Returns the catalog of available foreign-exchange currency pairs."
+        },
+        {
+          "info": {
+            "name": "List cryptocurrencies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/cryptocurrencies"
+          },
+          "docs": "Returns the catalog of available cryptocurrency pairs across exchanges."
+        },
+        {
+          "info": {
+            "name": "List ETFs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/etfs"
+          },
+          "docs": "Returns the catalog of available exchange-traded fund symbols."
+        },
+        {
+          "info": {
+            "name": "List indices",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/indices"
+          },
+          "docs": "Returns the catalog of available market indices."
+        },
+        {
+          "info": {
+            "name": "List exchanges",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/exchanges"
+          },
+          "docs": "Returns the catalog of available equity exchanges."
+        },
+        {
+          "info": {
+            "name": "Symbol search",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/symbol_search"
+          },
+          "docs": "Finds instruments by name, symbol, ISIN, or FIGI."
+        },
+        {
+          "info": {
+            "name": "Earliest timestamp",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/earliest_timestamp"
+          },
+          "docs": "Returns the earliest date for which data is available for an instrument and interval."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Fundamentals",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Company profile",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/profile"
+          },
+          "docs": "Returns the company profile (sector, industry, description, employees, and more)."
+        },
+        {
+          "info": {
+            "name": "Dividends",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/dividends"
+          },
+          "docs": "Returns the dividend history for a company."
+        },
+        {
+          "info": {
+            "name": "Earnings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/earnings"
+          },
+          "docs": "Returns historical and upcoming earnings for a company."
+        },
+        {
+          "info": {
+            "name": "Income statement",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/income_statement"
+          },
+          "docs": "Returns the income statement for a company."
+        },
+        {
+          "info": {
+            "name": "Balance sheet",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/balance_sheet"
+          },
+          "docs": "Returns the balance sheet for a company."
+        },
+        {
+          "info": {
+            "name": "Cash flow",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/cash_flow"
+          },
+          "docs": "Returns the cash flow statement for a company."
+        },
+        {
+          "info": {
+            "name": "Statistics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/statistics"
+          },
+          "docs": "Returns key valuation, profitability, and financial statistics for a company."
+        }
+      ]
+    }
+  ]
+}

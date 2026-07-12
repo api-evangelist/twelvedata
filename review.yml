@@ -1,0 +1,100 @@
+aid: twelvedata
+name: Twelve Data
+review:
+  question: Does Twelve Data expose a documented public WebSocket API?
+  answer: true
+  date: '2026-07-11'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: true
+  asyncapiScopeNote: |
+    Twelve Data documents a genuine, bidirectional public WebSocket API for
+    real-time price streaming. An AsyncAPI 2.6 document was authored at
+    asyncapi/twelvedata-asyncapi.yml modeling the wss://ws.twelvedata.com/v1/quotes/price
+    channel: the client-to-server control messages (subscribe / unsubscribe /
+    reset) and the server-to-client events (price, subscribe-status, heartbeat).
+    This is a real WebSocket transport (wss://), not HTTP Server-Sent Events.
+findings:
+  summary: |
+    Twelve Data publishes a documented public WebSocket API in addition to its
+    REST API. The REST API (base https://api.twelvedata.com) covers time series
+    (OHLCV), quotes and prices, 100-plus technical indicators, reference /
+    catalog data, and company fundamentals, all authenticated with an apikey
+    supplied as a query parameter (?apikey=) or via the
+    `Authorization: apikey <KEY>` header, and metered as API credits. Separately,
+    Twelve Data operates a real-time price WebSocket at
+    wss://ws.twelvedata.com/v1/quotes/price. The client authenticates with the
+    apikey query parameter, opens a persistent connection, and sends JSON control
+    messages ({"action":"subscribe","params":{"symbols":"AAPL,EUR/USD,BTC/USD"}},
+    plus unsubscribe and reset). The server pushes `price` events (fields include
+    event, symbol, currency, exchange, type, timestamp, price, day_volume) at
+    roughly 170ms average latency, alongside `subscribe-status` acknowledgements
+    and periodic `heartbeat` events. WebSocket usage is metered separately from
+    REST credits: 1 WebSocket credit per successfully subscribed symbol.
+  accessModel: |
+    Public, self-service, key-based access. Anyone can register for a free
+    Basic plan (8 API credits/minute, 800 API credits/day, WebSocket on a small
+    trial allotment) and upgrade to paid Grow, Pro, Ultra, or Enterprise plans
+    for higher credit ceilings, more markets, real-time exchange coverage,
+    fundamentals, and larger WebSocket credit pools.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://api.twelvedata.com
+      documented: true
+      note: Time series, quotes/price, technical indicators, reference data, fundamentals. apikey query param or Authorization header.
+    - protocol: WebSocket
+      scheme: wss
+      baseURL: wss://ws.twelvedata.com/v1/quotes/price
+      documented: true
+      note: Real-time price streaming. Persistent bidirectional connection; JSON subscribe/unsubscribe/reset control messages; server pushes price, subscribe-status, and heartbeat events.
+  endpointsConfirmedRest:
+    - GET https://api.twelvedata.com/time_series
+    - GET https://api.twelvedata.com/time_series/cross
+    - GET https://api.twelvedata.com/eod
+    - GET https://api.twelvedata.com/quote
+    - GET https://api.twelvedata.com/price
+    - GET https://api.twelvedata.com/market_movers/{market}
+    - GET https://api.twelvedata.com/market_state
+    - GET https://api.twelvedata.com/rsi
+    - GET https://api.twelvedata.com/macd
+    - GET https://api.twelvedata.com/bbands
+    - GET https://api.twelvedata.com/technical_indicators
+    - GET https://api.twelvedata.com/stocks
+    - GET https://api.twelvedata.com/forex_pairs
+    - GET https://api.twelvedata.com/cryptocurrencies
+    - GET https://api.twelvedata.com/etfs
+    - GET https://api.twelvedata.com/indices
+    - GET https://api.twelvedata.com/exchanges
+    - GET https://api.twelvedata.com/symbol_search
+    - GET https://api.twelvedata.com/earliest_timestamp
+    - GET https://api.twelvedata.com/profile
+    - GET https://api.twelvedata.com/dividends
+    - GET https://api.twelvedata.com/earnings
+    - GET https://api.twelvedata.com/income_statement
+    - GET https://api.twelvedata.com/balance_sheet
+    - GET https://api.twelvedata.com/cash_flow
+    - GET https://api.twelvedata.com/statistics
+  endpointsConfirmedWebSocket:
+    - wss://ws.twelvedata.com/v1/quotes/price
+sources:
+  - url: https://twelvedata.com/docs
+    type: Documentation
+    note: REST base https://api.twelvedata.com; apikey auth; time series, quote, price, technical indicators, reference data, fundamentals.
+  - url: https://twelvedata.com/docs/websocket/ws-real-time-price
+    type: Documentation
+    note: Real-time price WebSocket at wss://ws.twelvedata.com/v1/quotes/price; subscribe/unsubscribe/reset control messages; price/heartbeat events; 1 WS credit per symbol.
+  - url: https://support.twelvedata.com/en/articles/5620516-how-to-stream-the-data
+    type: Documentation
+    note: How to stream data over the WebSocket; subscribe message format and event payloads.
+  - url: https://twelvedata.com/pricing
+    type: Plans
+    note: Basic (free, 800 credits/day), Grow, Pro, Ultra plans; WebSocket credits per plan.
+actions:
+  asyncapiPath: asyncapi/twelvedata-asyncapi.yml
+  apisYmlUpdated: true
+  reason: |
+    A documented public WebSocket surface exists. An AsyncAPI 2.6 document was
+    authored for the wss://ws.twelvedata.com/v1/quotes/price real-time price
+    stream, modeling both the client control messages and the server-pushed
+    events, and the WebSocket Streaming API is listed as a distinct API in
+    apis.yml alongside the REST APIs.

@@ -1,0 +1,89 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Twelve Data
+providerId: twelvedata
+created: '2026-07-11'
+modified: '2026-07-11'
+reconciled: true
+tags:
+- Market Data
+- Financial Data
+- Real-Time Data
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Twelve Data spend. Twelve Data bills a fixed monthly
+  subscription per plan (Basic free, Grow, Pro, Ultra) plus Enterprise
+  agreements. Consumption is governed by a credit system: each REST endpoint has
+  a data weight in API credits with a per-minute quota that resets each minute,
+  and the WebSocket stream consumes 1 credit per subscribed symbol from a
+  separate WebSocket credit pool. Cost is therefore driven by plan selection and
+  by staying within the plan's credit ceilings rather than by pure per-call
+  metering.
+notes: >-
+  Subscription prices and credit ceilings change; annual billing is discounted.
+  Verify against the Twelve Data pricing page during reconciliation.
+sources:
+- https://twelvedata.com/pricing
+- https://support.twelvedata.com/en/articles/5615854-credits
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Twelve Data
+serviceCategory: Financial Market Data
+billingModel:
+  pricingCategory: Subscription
+  billingFrequency: Monthly
+  billingCurrency: USD
+  chargeCategories:
+  - Purchase
+  - Usage
+focusColumns:
+  ServiceName: Twelve Data API
+  ServiceCategory: Financial Market Data
+  ProviderName: Twelve Data
+  PublisherName: Twelve Data
+  InvoiceIssuerName: Twelve Data
+  BillingCurrency: USD
+  ChargeCategory: Purchase
+  PricingCategory: Subscription
+meters:
+- name: plan_subscription
+  description: Fixed monthly subscription fee for the selected plan (Grow, Pro, Ultra).
+  unit: subscription
+  aggregation: max
+  dimensions:
+  - account
+  - plan
+- name: api_credits
+  description: Weighted API credits consumed per REST request; metered against the per-minute quota.
+  unit: credits
+  aggregation: sum
+  dimensions:
+  - account
+  - endpoint
+- name: websocket_credits
+  description: WebSocket credits consumed, one per successfully subscribed symbol on the real-time price stream.
+  unit: credits
+  aggregation: sum
+  dimensions:
+  - account
+  - symbol
+principles:
+- name: Visibility
+  description: Track API credit burn per endpoint and WebSocket credit use per symbol against the plan ceiling.
+- name: Allocation
+  description: Use separate API keys per workload or team to attribute credit consumption to cost centers.
+- name: Optimization
+  description: Choose the smallest plan that covers required markets and credit ceilings; use batch requests and cache reference data to conserve credits; unsubscribe idle WebSocket symbols.
+- name: Accountability
+  description: Assign an owner per API key; review monthly whether the plan tier still matches credit demand.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

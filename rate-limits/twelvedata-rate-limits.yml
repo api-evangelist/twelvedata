@@ -1,0 +1,61 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Twelve Data
+providerId: twelvedata
+created: '2026-07-11'
+modified: '2026-07-11'
+reconciled: true
+tags:
+- Market Data
+- Financial Data
+- Real-Time Data
+- Rate Limiting
+- Quotas
+- Throttling
+description: >-
+  Twelve Data throttles usage with a credit system rather than a simple
+  requests-per-second cap. Each API endpoint has a data weight expressed in API
+  credits; the per-minute credit quota resets each minute. The free Basic plan
+  allows 8 API credits per minute and 800 API credits per day. Paid plans raise
+  the per-minute ceiling (Grow 377, Pro 1,597, Ultra 10,946) and remove the daily
+  cap. The real-time WebSocket is metered separately: each successfully
+  subscribed symbol consumes 1 WebSocket credit against a per-plan WebSocket
+  credit pool.
+notes: >-
+  Per-endpoint data weights vary (a plain /price call is light; batch and some
+  fundamentals calls weigh more). Verify current per-minute ceilings, the daily
+  cap, and per-endpoint weights on the Twelve Data pricing and credits pages
+  during reconciliation.
+sources:
+- https://twelvedata.com/pricing
+- https://support.twelvedata.com/en/articles/5615854-credits
+- https://support.twelvedata.com/en/articles/5620516-how-to-stream-the-data
+responseCodes:
+  throttled: 429
+limits:
+- name: API Credits Per Minute
+  scope: account
+  metric: credits
+  limit: 8 on Basic; 377 Grow; 1597 Pro; 10946 Ultra
+  notes: Per-minute credit quota; resets each minute. Each endpoint consumes a weighted number of credits.
+- name: API Credits Per Day
+  scope: account
+  metric: credits
+  limit: 800 on Basic; unlimited on paid plans
+  notes: Daily cap applies only to the free Basic plan.
+- name: WebSocket Credits
+  scope: account
+  metric: credits
+  limit: 8 trial (Basic/Grow); 1500 Pro; 10000 Ultra
+  notes: One WebSocket credit is consumed per successfully subscribed symbol on wss://ws.twelvedata.com/v1/quotes/price.
+policies:
+- name: Credit Weighting
+  description: Each endpoint has a data weight; heavier endpoints (batch, some fundamentals) consume more credits per call.
+- name: Per-Minute Reset
+  description: The API credit quota resets every minute; clients should pace requests to stay under the per-minute ceiling.
+- name: Backoff Strategy
+  description: On HTTP 429, clients should back off and retry after the minute window resets rather than hammering the endpoint.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -1,0 +1,292 @@
+asyncapi: '2.6.0'
+id: 'urn:com:twelvedata:ws:v1:quotes:price'
+info:
+  title: Twelve Data Real-Time Price WebSocket
+  version: '1.0.0'
+  description: |
+    AsyncAPI 2.6 description of Twelve Data's **real-time price WebSocket**.
+
+    Unlike a one-way HTTP Server-Sent Events stream, this is a genuine,
+    bidirectional WebSocket (`wss://`) surface. The client opens a persistent
+    connection to `wss://ws.twelvedata.com/v1/quotes/price`, authenticates with
+    an `apikey` query parameter, and then sends JSON control messages
+    (`subscribe`, `unsubscribe`, `reset`) to manage which instruments it wants.
+    The server pushes `price` events as trades occur (average latency ~170 ms),
+    plus `subscribe-status` acknowledgements and periodic `heartbeat` events.
+
+    Each successfully subscribed symbol consumes 1 WebSocket credit. WebSocket
+    access is metered separately from REST API credits and varies by plan
+    (trial credits on Basic/Grow, 1,500 on Pro, 10,000 on Ultra).
+
+    Source: https://twelvedata.com/docs/websocket/ws-real-time-price
+  contact:
+    name: API Evangelist
+    email: kin@apievangelist.com
+    url: https://apievangelist.com
+  license:
+    name: API documentation - Twelve Data Terms of Service
+    url: https://twelvedata.com/terms
+  x-transport-notes:
+    transport: WebSocket
+    protocol: wss
+    direction: bidirectional
+    url: 'wss://ws.twelvedata.com/v1/quotes/price'
+    auth: 'apikey query parameter, e.g. ?apikey=YOUR_API_KEY'
+    subscribeMessage: '{"action":"subscribe","params":{"symbols":"AAPL,EUR/USD,BTC/USD"}}'
+    creditWeight: '1 WebSocket credit per successfully subscribed symbol'
+    source: https://twelvedata.com/docs/websocket/ws-real-time-price
+defaultContentType: application/json
+servers:
+  production:
+    url: ws.twelvedata.com/v1/quotes/price
+    protocol: wss
+    description: |
+      Twelve Data real-time price WebSocket server. Authenticate by appending
+      the `apikey` query parameter to the connection URL:
+      `wss://ws.twelvedata.com/v1/quotes/price?apikey=YOUR_API_KEY`.
+    security:
+      - apikeyQuery: []
+channels:
+  /v1/quotes/price:
+    description: |
+      Single multiplexed price channel. The client publishes control messages
+      (subscribe / unsubscribe / reset) and the server publishes price events,
+      subscription acknowledgements, and heartbeats over the same connection.
+    publish:
+      operationId: sendControlMessage
+      summary: Send a subscription control message to the server.
+      description: |
+        Client-to-server control messages. `subscribe` adds symbols to the
+        stream, `unsubscribe` removes them, and `reset` clears all current
+        subscriptions on the connection.
+      message:
+        oneOf:
+          - $ref: '#/components/messages/SubscribeAction'
+          - $ref: '#/components/messages/UnsubscribeAction'
+          - $ref: '#/components/messages/ResetAction'
+    subscribe:
+      operationId: receivePriceEvents
+      summary: Receive real-time price events and status messages from the server.
+      description: |
+        Server-to-client messages. After a successful `subscribe`, the server
+        emits a `subscribe-status` acknowledgement, then streams `price` events
+        as new trades arrive, interleaved with periodic `heartbeat` events.
+      message:
+        oneOf:
+          - $ref: '#/components/messages/PriceEvent'
+          - $ref: '#/components/messages/SubscribeStatus'
+          - $ref: '#/components/messages/Heartbeat'
+components:
+  securitySchemes:
+    apikeyQuery:
+      type: httpApiKey
+      in: query
+      name: apikey
+      description: Twelve Data API key passed as the `apikey` query parameter on the connection URL.
+  messages:
+    SubscribeAction:
+      name: subscribe
+      title: Subscribe to symbols
+      summary: Add one or more instruments to the price stream.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/SubscribeActionPayload'
+      examples:
+        - name: subscribeAAPL
+          summary: Subscribe to several instruments
+          payload:
+            action: subscribe
+            params:
+              symbols: 'AAPL,EUR/USD,BTC/USD'
+    UnsubscribeAction:
+      name: unsubscribe
+      title: Unsubscribe from symbols
+      summary: Remove one or more instruments from the price stream.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/SubscribeActionPayload'
+      examples:
+        - name: unsubscribeAAPL
+          summary: Unsubscribe from a single instrument
+          payload:
+            action: unsubscribe
+            params:
+              symbols: 'AAPL'
+    ResetAction:
+      name: reset
+      title: Reset subscriptions
+      summary: Clear all active subscriptions on the connection.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/ResetActionPayload'
+      examples:
+        - name: reset
+          summary: Reset all subscriptions
+          payload:
+            action: reset
+    PriceEvent:
+      name: price
+      title: Real-time price event
+      summary: A single real-time price update for a subscribed instrument.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/PriceEventPayload'
+      examples:
+        - name: applePrice
+          summary: Price tick for AAPL
+          payload:
+            event: price
+            symbol: AAPL
+            currency: USD
+            exchange: NASDAQ
+            type: 'Common Stock'
+            timestamp: 1618482192
+            price: 134.28
+            day_volume: 6323234
+    SubscribeStatus:
+      name: subscribe-status
+      title: Subscription status
+      summary: Acknowledgement listing which symbols were successfully subscribed and which failed.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/SubscribeStatusPayload'
+      examples:
+        - name: statusOk
+          summary: Successful subscription acknowledgement
+          payload:
+            event: subscribe-status
+            status: ok
+            success:
+              - symbol: AAPL
+                exchange: NASDAQ
+                mic_code: XNGS
+                type: 'Common Stock'
+            fails: []
+    Heartbeat:
+      name: heartbeat
+      title: Heartbeat
+      summary: Periodic keep-alive event confirming the connection is healthy.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/HeartbeatPayload'
+      examples:
+        - name: heartbeat
+          summary: Heartbeat event
+          payload:
+            event: heartbeat
+            status: ok
+  schemas:
+    SubscribeActionPayload:
+      type: object
+      required:
+        - action
+        - params
+      properties:
+        action:
+          type: string
+          enum:
+            - subscribe
+            - unsubscribe
+          description: The control action to perform.
+        params:
+          type: object
+          required:
+            - symbols
+          properties:
+            symbols:
+              type: string
+              description: Comma-separated list of instrument symbols, e.g. 'AAPL,EUR/USD,BTC/USD'.
+    ResetActionPayload:
+      type: object
+      required:
+        - action
+      properties:
+        action:
+          type: string
+          enum:
+            - reset
+          description: Clears all active subscriptions on the connection.
+    PriceEventPayload:
+      type: object
+      required:
+        - event
+        - symbol
+        - price
+      properties:
+        event:
+          type: string
+          enum:
+            - price
+          description: Event discriminator, always 'price' for a price tick.
+        symbol:
+          type: string
+          description: Instrument symbol.
+        currency:
+          type: string
+          description: Quote currency.
+        exchange:
+          type: string
+          description: Exchange the instrument trades on.
+        mic_code:
+          type: string
+          description: Market Identifier Code (ISO 10383) of the exchange.
+        type:
+          type: string
+          description: Instrument type, e.g. 'Common Stock', 'Digital Currency', 'Physical Currency'.
+        timestamp:
+          type: integer
+          description: Unix timestamp (seconds) of the price event.
+        price:
+          type: number
+          description: The real-time price.
+        day_volume:
+          type: integer
+          description: Cumulative traded volume for the current day, where available.
+    SubscribeStatusPayload:
+      type: object
+      required:
+        - event
+        - status
+      properties:
+        event:
+          type: string
+          enum:
+            - subscribe-status
+        status:
+          type: string
+          enum:
+            - ok
+            - error
+        success:
+          type: array
+          description: Instruments that were successfully subscribed.
+          items:
+            type: object
+            properties:
+              symbol:
+                type: string
+              exchange:
+                type: string
+              mic_code:
+                type: string
+              type:
+                type: string
+        fails:
+          type: array
+          description: Symbols that could not be subscribed.
+          items:
+            type: string
+    HeartbeatPayload:
+      type: object
+      required:
+        - event
+        - status
+      properties:
+        event:
+          type: string
+          enum:
+            - heartbeat
+        status:
+          type: string
+          enum:
+            - ok

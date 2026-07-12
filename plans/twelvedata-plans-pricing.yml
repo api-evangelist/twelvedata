@@ -1,0 +1,226 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Twelve Data
+providerId: twelvedata
+created: '2026-07-11'
+modified: '2026-07-11'
+reconciled: true
+tags:
+- Market Data
+- Financial Data
+- Stocks
+- Forex
+- Crypto
+- Real-Time Data
+- Plans
+description: >-
+  Twelve Data uses a credit-metered subscription model. Every API endpoint has a
+  data weight that determines how many API credits a request consumes, and the
+  per-minute credit quota resets each minute. The free Basic plan grants 8 API
+  credits per minute and 800 per day. Paid Grow, Pro, and Ultra plans raise the
+  per-minute credit ceiling, remove the daily cap, add markets, real-time
+  exchange coverage, fundamentals, and larger WebSocket credit pools. WebSocket
+  streaming is metered separately (1 WebSocket credit per subscribed symbol).
+  Enterprise adds compliance, dedicated support, and higher SLAs.
+notes: >-
+  Prices and credit ceilings are as published on the Twelve Data pricing page
+  and are subject to change; annual billing is discounted. Verify current
+  numbers on the pricing page during reconciliation. Startups and students may
+  qualify for a 20 percent discount and non-profits for free access.
+sources:
+- https://twelvedata.com/pricing
+- https://twelvedata.com/pricing-business
+- https://support.twelvedata.com/en/articles/5615854-credits
+plans:
+- id: twelvedata-basic
+  name: Basic
+  type: free
+  description: >-
+    Free plan with 8 API credits per minute and 800 API credits per day covering
+    real-time US equities and ETFs, forex, and crypto, plus reference data and
+    technical indicators. Includes a small WebSocket trial allotment.
+  entries:
+  - label: API Credits Per Minute
+    name: api_credits_per_minute
+    type: rate_limit
+    metric: credits
+    limit: 8
+    timeFrame: minute
+    geo: global
+    unit: 1
+    price: '0'
+    userMultiplied: false
+  - label: API Credits Per Day
+    name: api_credits_per_day
+    type: quota
+    metric: credits
+    limit: 800
+    timeFrame: day
+    geo: global
+    unit: 1
+    price: '0'
+    userMultiplied: false
+  - label: WebSocket Credits
+    name: websocket_credits
+    type: quota
+    metric: credits
+    limit: 8
+    timeFrame: concurrent
+    geo: global
+    unit: 1
+    price: trial allotment
+    userMultiplied: false
+  elements:
+  - name: Real-Time US Equities and ETFs
+  - name: Forex
+  - name: Crypto
+  - name: Reference Data
+  - name: Technical Indicators
+  - name: Batch Requests
+- id: twelvedata-grow
+  name: Grow
+  type: paid
+  description: >-
+    Entry paid plan with 377 API credits per minute, no daily limit, 20-plus
+    markets, end-of-day global equities and ETFs, commodities, and fundamentals.
+  entries:
+  - label: Monthly Subscription
+    name: grow_monthly
+    type: flat
+    metric: subscription
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: '79'
+    userMultiplied: false
+  - label: API Credits Per Minute
+    name: api_credits_per_minute
+    type: rate_limit
+    metric: credits
+    limit: 377
+    timeFrame: minute
+    geo: global
+    unit: 1
+    price: included
+    userMultiplied: false
+  elements:
+  - name: Everything in Basic
+  - name: 20-plus Markets
+  - name: EOD Global Equities and ETFs
+  - name: Commodities
+  - name: Fundamentals Data
+- id: twelvedata-pro
+  name: Pro
+  type: paid
+  description: >-
+    Professional plan with 1,597 API credits per minute, 70-plus markets,
+    real-time EU data, fixed income, mutual fund NAV, and 1,500 WebSocket credits.
+  entries:
+  - label: Monthly Subscription
+    name: pro_monthly
+    type: flat
+    metric: subscription
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: '229'
+    userMultiplied: false
+  - label: API Credits Per Minute
+    name: api_credits_per_minute
+    type: rate_limit
+    metric: credits
+    limit: 1597
+    timeFrame: minute
+    geo: global
+    unit: 1
+    price: included
+    userMultiplied: false
+  - label: WebSocket Credits
+    name: websocket_credits
+    type: quota
+    metric: credits
+    limit: 1500
+    timeFrame: concurrent
+    geo: global
+    unit: 1
+    price: included
+    userMultiplied: false
+  elements:
+  - name: Everything in Grow
+  - name: 70-plus Markets
+  - name: Real-Time EU Data
+  - name: Fixed Income
+  - name: Mutual Funds NAV
+- id: twelvedata-ultra
+  name: Ultra
+  type: paid
+  description: >-
+    Highest self-service plan with 10,946 API credits per minute, 84 markets,
+    all fundamentals and analysis data, 10,000 WebSocket credits, and a 99.95
+    percent uptime SLA with dedicated support.
+  entries:
+  - label: Monthly Subscription
+    name: ultra_monthly
+    type: flat
+    metric: subscription
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: '999'
+    userMultiplied: false
+  - label: API Credits Per Minute
+    name: api_credits_per_minute
+    type: rate_limit
+    metric: credits
+    limit: 10946
+    timeFrame: minute
+    geo: global
+    unit: 1
+    price: included
+    userMultiplied: false
+  - label: WebSocket Credits
+    name: websocket_credits
+    type: quota
+    metric: credits
+    limit: 10000
+    timeFrame: concurrent
+    geo: global
+    unit: 1
+    price: included
+    userMultiplied: false
+  elements:
+  - name: Everything in Pro
+  - name: 84 Markets
+  - name: All Fundamentals and Analysis Data
+  - name: 99.95 Percent SLA
+  - name: Dedicated Support
+- id: twelvedata-enterprise
+  name: Enterprise
+  type: enterprise
+  description: >-
+    Enterprise-grade plan with compliance features, comprehensive historical
+    market data, dedicated support, and a 99.99 percent uptime SLA. Contact
+    Twelve Data sales for pricing.
+  entries:
+  - label: Enterprise Agreement
+    name: enterprise
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Enterprise Compliance
+  - name: Comprehensive Historical Data
+  - name: 99.99 Percent SLA
+  - name: Dedicated Support
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -154,6 +154,8 @@ apis:
     receive pushed price events (roughly 170ms average latency), subscribe-status
     acknowledgements, and heartbeats.
 common:
+- type: AgenticAccess
+  url: agentic-access/twelvedata-agentic-access.yml
 - type: Authentication
   url: authentication/twelvedata-authentication.yml
 - type: LinkedIn

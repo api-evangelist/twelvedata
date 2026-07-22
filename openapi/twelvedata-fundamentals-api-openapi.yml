@@ -1,0 +1,137 @@
+openapi: 3.0.3
+info:
+  title: Twelve Data REST Core Data Fundamentals API
+  description: 'REST API for Twelve Data financial market data covering stocks, forex, cryptocurrencies, ETFs, indices, commodities, and funds. Provides historical and real-time time series (OHLCV), quotes and prices, 100+ technical indicators, reference / catalog data, and company fundamentals. All requests are authenticated with an apikey supplied either as a query parameter (?apikey=) or via the `Authorization: apikey <KEY>` header. Every endpoint consumes a data-weight number of API credits; the per-minute credit quota resets each minute.'
+  termsOfService: https://twelvedata.com/terms
+  contact:
+    name: Twelve Data Support
+    url: https://support.twelvedata.com
+  version: '1.0'
+servers:
+- url: https://api.twelvedata.com
+  description: Twelve Data REST base URL
+security:
+- apikeyQuery: []
+- apikeyHeader: []
+tags:
+- name: Fundamentals
+  description: Company profiles, statements, dividends, earnings, and analysis.
+paths:
+  /profile:
+    get:
+      operationId: getProfile
+      tags:
+      - Fundamentals
+      summary: Company profile
+      description: Returns the company profile (sector, industry, description, employees, and more).
+      parameters:
+      - $ref: '#/components/parameters/symbol'
+      - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Company profile payload.
+  /dividends:
+    get:
+      operationId: getDividends
+      tags:
+      - Fundamentals
+      summary: Dividends
+      description: Returns the dividend history for a company.
+      parameters:
+      - $ref: '#/components/parameters/symbol'
+      - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Dividends payload.
+  /earnings:
+    get:
+      operationId: getEarnings
+      tags:
+      - Fundamentals
+      summary: Earnings
+      description: Returns historical and upcoming earnings for a company.
+      parameters:
+      - $ref: '#/components/parameters/symbol'
+      - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Earnings payload.
+  /income_statement:
+    get:
+      operationId: getIncomeStatement
+      tags:
+      - Fundamentals
+      summary: Income statement
+      description: Returns the income statement for a company.
+      parameters:
+      - $ref: '#/components/parameters/symbol'
+      - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Income statement payload.
+  /balance_sheet:
+    get:
+      operationId: getBalanceSheet
+      tags:
+      - Fundamentals
+      summary: Balance sheet
+      description: Returns the balance sheet for a company.
+      parameters:
+      - $ref: '#/components/parameters/symbol'
+      - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Balance sheet payload.
+  /cash_flow:
+    get:
+      operationId: getCashFlow
+      tags:
+      - Fundamentals
+      summary: Cash flow
+      description: Returns the cash flow statement for a company.
+      parameters:
+      - $ref: '#/components/parameters/symbol'
+      - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Cash flow payload.
+  /statistics:
+    get:
+      operationId: getStatistics
+      tags:
+      - Fundamentals
+      summary: Statistics
+      description: Returns key valuation, profitability, and financial statistics for a company.
+      parameters:
+      - $ref: '#/components/parameters/symbol'
+      - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Statistics payload.
+components:
+  parameters:
+    symbol:
+      name: symbol
+      in: query
+      required: true
+      schema:
+        type: string
+      description: Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.
+    apikeyParam:
+      name: apikey
+      in: query
+      required: true
+      schema:
+        type: string
+      description: Your Twelve Data API key.
+  securitySchemes:
+    apikeyQuery:
+      type: apiKey
+      in: query
+      name: apikey
+      description: API key supplied as the `apikey` query parameter.
+    apikeyHeader:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'API key supplied as `Authorization: apikey <KEY>`.'

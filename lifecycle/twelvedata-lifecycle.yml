@@ -1,0 +1,22 @@
+generated: '2026-07-22'
+method: searched
+source: https://twelvedata.com/llms.txt + https://twelvedata.com/news + https://twelvedata.isitup.cloud
+versioning:
+  scheme: single-track
+  notes: The REST API is served unversioned at https://api.twelvedata.com (no
+    version segment in paths); the WebSocket carries /v1/ in its URL
+    (wss://ws.twelvedata.com/v1/quotes/price). Changes land continuously and are
+    announced in monthly product updates.
+changelog: https://twelvedata.com/news
+deprecation:
+  policy_url: null
+  sunset_header: false
+  notes: No published deprecation policy or RFC 8594 Sunset-header support found
+    as of 2026-07-22.
+sla:
+  uptime_target: '99.95%'
+  enterprise_uptime_target: '99.99%'
+  source: https://twelvedata.com/llms.txt (uptime SLA 99.95%; 99.99% on Enterprise)
+status_page: https://twelvedata.isitup.cloud
+roadmap: https://roadmap.twelvedata.com/
+deprecated_operations: []

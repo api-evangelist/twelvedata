@@ -1,0 +1,22 @@
+{
+  "provider": "twelvedata",
+  "sources": [
+    "twelvedata-core-data-api-openapi.yml",
+    "twelvedata-fundamentals-api-openapi.yml",
+    "twelvedata-reference-data-api-openapi.yml",
+    "twelvedata-technical-indicators-api-openapi.yml",
+    "twelvedata-time-series-api-openapi.yml"
+  ],
+  "outputs": [
+    "twelvedata-core-data-api-openapi.yml",
+    "twelvedata-fundamentals-api-openapi.yml",
+    "twelvedata-reference-data-api-openapi.yml",
+    "twelvedata-technical-indicators-api-openapi.yml",
+    "twelvedata-time-series-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

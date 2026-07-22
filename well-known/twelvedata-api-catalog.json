@@ -1,0 +1,38 @@
+{
+    "linkset": [
+        {
+            "anchor": "https://api.twelvedata.com",
+            "service-desc": [
+                {
+                    "href": "https://api.twelvedata.com/doc/swagger/openapi.json",
+                    "type": "application/json",
+                    "title": "Twelve Data API \u2014 OpenAPI specification"
+                }
+            ],
+            "service-doc": [
+                {
+                    "href": "https://twelvedata.com/llms.txt",
+                    "type": "text/markdown",
+                    "title": "Twelve Data llms.txt (site-wide index for LLMs)"
+                },
+                {
+                    "href": "https://twelvedata.com/docs",
+                    "type": "text/html",
+                    "title": "Twelve Data API documentation"
+                },
+                {
+                    "href": "https://twelvedata.com/docs/llms.txt",
+                    "type": "text/markdown",
+                    "title": "Twelve Data API documentation index for LLMs (llms.txt)"
+                }
+            ],
+            "service-meta": [
+                {
+                    "href": "https://twelvedata.com/auth.md",
+                    "type": "text/markdown",
+                    "title": "Authentication guide for agents"
+                }
+            ]
+        }
+    ]
+}

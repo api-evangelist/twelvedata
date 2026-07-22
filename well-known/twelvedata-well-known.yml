@@ -1,0 +1,40 @@
+generated: '2026-07-22'
+method: searched
+source: live probes of https://twelvedata.com, https://api.twelvedata.com, https://mcp.twelvedata.com
+hosts:
+- host: https://twelvedata.com
+  documents:
+  - path: /.well-known/api-catalog
+    status: 200
+    file: twelvedata-api-catalog.json
+    note: RFC 9727 linkset pointing at the OpenAPI (api.twelvedata.com/doc/swagger/openapi.json),
+      llms.txt, docs, and MCP server.
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+- host: https://api.twelvedata.com
+  documents:
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+- host: https://mcp.twelvedata.com
+  documents:
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: twelvedata-mcp-oauth-authorization-server.json
+    note: RFC 8414 metadata for the hosted MCP server OAuth (authorization_code +
+      refresh_token, PKCE S256, dynamic client registration, single scope "twelvedata").
+  - path: /.well-known/oauth-protected-resource
+    status: 404

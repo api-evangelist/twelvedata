@@ -1,0 +1,25 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Twelve Data Reference Data API
+  version: 1.0.0
+extends: openapi/twelvedata-reference-data-api-openapi.yml
+actions:
+- target: $.info
+  update:
+    x-apievangelist:
+      provider: twelvedata
+      generated: '2026-07-22'
+      artifacts:
+        authentication: authentication/twelvedata-authentication.yml
+        conventions: conventions/twelvedata-conventions.yml
+        errors: errors/twelvedata-problem-types.yml
+        rate-limits: rate-limits/twelvedata-rate-limits.yml
+        lifecycle: lifecycle/twelvedata-lifecycle.yml
+        mcp: mcp/twelvedata-mcp.yml
+        tool-crosswalk: mcp/twelvedata-tool-crosswalk.yml
+      upstream-spec: https://api.twelvedata.com/doc/swagger/openapi.json
+- target: $
+  update:
+    externalDocs:
+      description: Twelve Data API documentation
+      url: https://twelvedata.com/docs

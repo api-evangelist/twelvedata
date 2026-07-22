@@ -1,0 +1,371 @@
+generated: '2026-07-22'
+method: derived
+source: github.com/twelvedata/mcp src/tools/*.py (client.get endpoint calls) mapped against openapi/twelvedata-openapi-original.json
+surfaces:
+  openapi:
+    file: openapi/twelvedata-openapi-original.json
+    operations: 187
+    gated: false
+    note: Public spec at https://api.twelvedata.com/doc/swagger/openapi.json
+  mcp:
+    url: https://mcp.twelvedata.com/mcp
+    transport: streamable-http
+    gated: true
+    note: tools/list returns 401 invalid_token without OAuth; tool set read verbatim from the open-source server.
+  graphql: null
+coverage:
+  mcp_tools: 27
+  tools_bound: 24
+  mcp_only: 3
+  rest_operations: 187
+  rest_operations_with_tool: 162
+crosswalk:
+- tool: get_api_usage
+  category: account
+  rest:
+  - GetApiUsage
+  binding: rest
+  confidence: high
+- tool: search_symbol
+  category: account
+  rest:
+  - GetSymbolSearch
+  - GetCrossListings
+  binding: rest
+  confidence: high
+  note: Searches /symbol_search and enriches with /cross_listings.
+- tool: get_price
+  category: market
+  rest:
+  - GetPrice
+  binding: rest
+  confidence: high
+- tool: get_quote
+  category: market
+  rest:
+  - GetQuote
+  binding: rest
+  confidence: high
+- tool: get_time_series
+  category: market
+  rest:
+  - GetTimeSeries
+  binding: rest
+  confidence: high
+- tool: get_earliest_timestamp
+  category: market
+  rest:
+  - GetEarliestTimestamp
+  binding: rest
+  confidence: high
+- tool: get_market_state
+  category: market
+  rest:
+  - GetMarketState
+  binding: rest
+  confidence: high
+- tool: get_market_movers
+  category: market
+  rest:
+  - GetMarketMovers
+  binding: rest
+  confidence: high
+  note: market argument maps to /market_movers/{market} path segment (stocks, etfs, mutual_funds, forex, crypto,
+    commodities).
+- tool: currency_conversion
+  category: market
+  rest:
+  - GetCurrencyConversion
+  - GetExchangeRate
+  binding: rest
+  confidence: high
+  note: Calls /currency_conversion when an amount is given, otherwise /exchange_rate.
+- tool: get_market_cap
+  category: fundamentals
+  rest:
+  - GetMarketCap
+  - GetStatistics
+  binding: rest
+  confidence: high
+  note: Falls back to /statistics valuation data when needed.
+- tool: get_statistics
+  category: fundamentals
+  rest:
+  - GetStatistics
+  binding: rest
+  confidence: high
+- tool: get_company_info
+  category: fundamentals
+  rest:
+  - GetProfile
+  - GetLogo
+  - GetKeyExecutives
+  binding: rest
+  confidence: high
+  note: 'Composite: profile + logo + key executives.'
+- tool: get_company_news
+  category: fundamentals
+  rest:
+  - PressReleasesListParameters
+  binding: rest
+  confidence: high
+  note: Press releases rendered to markdown.
+- tool: get_financials
+  category: fundamentals
+  rest:
+  - GetIncomeStatement
+  - GetBalanceSheet
+  - GetCashFlow
+  binding: rest
+  confidence: high
+  note: statement argument selects income_statement | balance_sheet | cash_flow.
+- tool: get_earnings
+  category: fundamentals
+  rest:
+  - GetEarnings
+  - GetEarningsCalendar
+  binding: rest
+  confidence: high
+- tool: get_dividends
+  category: fundamentals
+  rest:
+  - GetDividends
+  - GetDividendsCalendar
+  binding: rest
+  confidence: high
+- tool: get_splits
+  category: fundamentals
+  rest:
+  - GetSplits
+  - GetSplitsCalendar
+  binding: rest
+  confidence: high
+- tool: get_ipo_calendar
+  category: fundamentals
+  rest:
+  - GetIpoCalendar
+  binding: rest
+  confidence: high
+- tool: get_etf_data
+  category: fundamentals
+  rest:
+  - GetETFsWorldSummary
+  - GetETFsWorldPerformance
+  - GetETFsWorldRisk
+  - GetETFsWorldComposition
+  binding: rest
+  confidence: high
+  note: data_type argument selects the /etfs/world/* view.
+- tool: get_technical_indicator
+  category: analysis
+  rest:
+  - GetTimeSeriesAd
+  - GetTimeSeriesAdOsc
+  - GetTimeSeriesAdd
+  - GetTimeSeriesAdx
+  - GetTimeSeriesAdxr
+  - GetTimeSeriesApo
+  - GetTimeSeriesAroon
+  - GetTimeSeriesAroonOsc
+  - GetTimeSeriesAtr
+  - GetTimeSeriesAvg
+  - GetTimeSeriesAvgPrice
+  - GetTimeSeriesBBands
+  - GetTimeSeriesBeta
+  - GetTimeSeriesBop
+  - GetTimeSeriesCci
+  - GetTimeSeriesCeil
+  - GetTimeSeriesCmo
+  - GetTimeSeriesCoppock
+  - GetTimeSeriesCorrel
+  - GetTimeSeriesCrsi
+  - GetTimeSeriesDema
+  - GetTimeSeriesDiv
+  - GetTimeSeriesDpo
+  - GetTimeSeriesDx
+  - GetTimeSeriesEma
+  - GetTimeSeriesExp
+  - GetTimeSeriesFloor
+  - GetTimeSeriesHeikinashiCandles
+  - GetTimeSeriesHlc3
+  - GetTimeSeriesHtDcPeriod
+  - GetTimeSeriesHtDcPhase
+  - GetTimeSeriesHtPhasor
+  - GetTimeSeriesHtSine
+  - GetTimeSeriesHtTrendMode
+  - GetTimeSeriesHtTrendline
+  - GetTimeSeriesIchimoku
+  - GetTimeSeriesKama
+  - GetTimeSeriesKeltner
+  - GetTimeSeriesKst
+  - GetTimeSeriesLinearReg
+  - GetTimeSeriesLinearRegAngle
+  - GetTimeSeriesLinearRegIntercept
+  - GetTimeSeriesLinearRegSlope
+  - GetTimeSeriesLn
+  - GetTimeSeriesLog10
+  - GetTimeSeriesMa
+  - GetTimeSeriesMacd
+  - GetTimeSeriesMacdExt
+  - GetTimeSeriesMacdSlope
+  - GetTimeSeriesMama
+  - GetTimeSeriesMax
+  - GetTimeSeriesMaxIndex
+  - GetTimeSeriesMcGinleyDynamic
+  - GetTimeSeriesMedPrice
+  - GetTimeSeriesMfi
+  - GetTimeSeriesMidPoint
+  - GetTimeSeriesMidPrice
+  - GetTimeSeriesMin
+  - GetTimeSeriesMinIndex
+  - GetTimeSeriesMinMax
+  - GetTimeSeriesMinMaxIndex
+  - GetTimeSeriesMinusDI
+  - GetTimeSeriesMinusDM
+  - GetTimeSeriesMom
+  - GetTimeSeriesMult
+  - GetTimeSeriesNatr
+  - GetTimeSeriesObv
+  - GetTimeSeriesPercent_B
+  - GetTimeSeriesPivotPointsHL
+  - GetTimeSeriesPlusDI
+  - GetTimeSeriesPlusDM
+  - GetTimeSeriesPpo
+  - GetTimeSeriesRoc
+  - GetTimeSeriesRocp
+  - GetTimeSeriesRocr
+  - GetTimeSeriesRocr100
+  - GetTimeSeriesRsi
+  - GetTimeSeriesRvol
+  - GetTimeSeriesSar
+  - GetTimeSeriesSarExt
+  - GetTimeSeriesSma
+  - GetTimeSeriesSqrt
+  - GetTimeSeriesStdDev
+  - GetTimeSeriesStoch
+  - GetTimeSeriesStochF
+  - GetTimeSeriesStochRsi
+  - GetTimeSeriesSub
+  - GetTimeSeriesSum
+  - GetTimeSeriesSuperTrend
+  - GetTimeSeriesSuperTrendHeikinAshiCandles
+  - GetTimeSeriesT3ma
+  - GetTimeSeriesTRange
+  - GetTimeSeriesTema
+  - GetTimeSeriesTrima
+  - GetTimeSeriesTsf
+  - GetTimeSeriesTypPrice
+  - GetTimeSeriesUltOsc
+  - GetTimeSeriesVar
+  - GetTimeSeriesVwap
+  - GetTimeSeriesWclPrice
+  - GetTimeSeriesWillR
+  - GetTimeSeriesWma
+  binding: rest
+  confidence: high
+  note: 'Fan-out: the indicator argument selects one of the 102 technical-indicator endpoints (/rsi, /macd, /bbands,
+    ...).'
+- tool: get_analyst_data
+  category: analysis
+  rest:
+  - GetAnalystRatingsUsEquities
+  - GetPriceTarget
+  - GetRecommendations
+  - GetEarningsEstimate
+  - GetRevenueEstimate
+  - GetEpsTrend
+  - GetEpsRevisions
+  - GetGrowthEstimates
+  binding: rest
+  confidence: high
+  note: data_type argument selects the analysis endpoint.
+- tool: get_mutual_fund_data
+  category: mutual_funds
+  rest:
+  - GetMutualFundsWorld
+  - GetMutualFundsWorldSummary
+  - GetMutualFundsWorldPerformance
+  - GetMutualFundsWorldRisk
+  - GetMutualFundsWorldRatings
+  - GetMutualFundsWorldComposition
+  - GetMutualFundsWorldPurchaseInfo
+  - GetMutualFundsWorldSustainability
+  binding: rest
+  confidence: high
+  note: data_type argument selects the /mutual_funds/world* view.
+- tool: get_reference_data
+  category: reference
+  rest:
+  - GetExchanges
+  - GetExchangeSchedule
+  - GetCountries
+  - GetInstrumentType
+  - GetCryptocurrencyExchanges
+  - GetETFsType
+  - GetMutualFundsType
+  binding: rest
+  confidence: high
+  note: data_type argument selects the reference catalog.
+- tool: get_regulatory_data
+  category: regulatory
+  rest:
+  - GetEdgarFilingsArchive
+  - GetInsiderTransactions
+  - GetInstitutionalHolders
+  - GetFundHolders
+  - GetDirectHolders
+  - GetTaxInfo
+  binding: rest
+  confidence: high
+  note: data_type argument selects the regulatory endpoint.
+mcp_only:
+- tool: oauth_login
+  reason: Hosted-server OAuth session bootstrap; no REST operation.
+- tool: auth_status
+  reason: Reports MCP auth/config state; no REST operation.
+- tool: oauth_configure
+  reason: Configures OAuth client credentials for self-hosted instances; no REST operation.
+rest_only:
+- capability: advanced
+  operations:
+  - advanced
+- capability: analysis
+  operations:
+  - GetAnalystRatingsLight
+- capability: etfs
+  operations:
+  - GetETFsFamily
+  - GetETFsList
+  - GetETFsWorld
+- capability: fundamentals
+  operations:
+  - GetBalanceSheetConsolidated
+  - GetCashFlowConsolidated
+  - GetIncomeStatementConsolidated
+  - GetLastChanges
+- capability: market_data
+  operations:
+  - GetEod
+  - GetTimeSeriesCross
+- capability: money_market_funds
+  operations:
+  - GetMoneyMarketFundsList
+  - GetMoneyMarketFundsWorld
+- capability: mutual_funds
+  operations:
+  - GetMutualFundsFamily
+  - GetMutualFundsList
+- capability: reference_data
+  operations:
+  - GetBonds
+  - GetCommodities
+  - GetCryptocurrencies
+  - GetEtf
+  - GetForexPairs
+  - GetFunds
+  - GetIntervals
+  - GetStocks
+  - GetTechnicalIndicators
+- capability: regulatory
+  operations:
+  - GetSourceSanctionedEntities

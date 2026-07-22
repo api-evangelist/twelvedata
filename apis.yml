@@ -10,7 +10,20 @@ description: Twelve Data is a financial market data provider offering real-time 
   an apikey and metered as API credits; a free Basic plan grants 800 API credits
   per day. Real-time price streaming is delivered over a WebSocket at
   wss://ws.twelvedata.com/v1/quotes/price.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: paid
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Paid · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/twelvedata.png
 tags:
 - Market Data
 - Financial Data
@@ -21,118 +34,9 @@ tags:
 - Technical Indicators
 - Fundamentals
 created: '2026-07-11'
-modified: '2026-07-11'
+modified: '2026-07-22'
 specificationVersion: '0.19'
 apis:
-- aid: twelvedata:twelvedata-time-series-api
-  name: Twelve Data Time Series API
-  tags:
-  - Time Series
-  - Market Data
-  - Financial Data
-  - Stocks
-  - Forex
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://twelvedata.com/docs#time-series
-  baseURL: https://api.twelvedata.com
-  properties:
-  - url: https://twelvedata.com/docs#time-series
-    type: Documentation
-  - url: openapi/twelvedata-openapi.yml
-    type: OpenAPI
-  - url: collections/twelvedata.postman_collection.json
-    type: PostmanCollection
-  - url: collections/twelvedata.opencollection.json
-    type: OpenCollection
-  description: Historical and intraday OHLCV time series for stocks, forex, crypto,
-    ETFs, indices, and commodities across intervals from 1min to 1month, including
-    end-of-day prices and cross-rate time series for exotic pairs.
-- aid: twelvedata:twelvedata-quotes-price-api
-  name: Twelve Data Quotes and Price API
-  tags:
-  - Quotes
-  - Real-Time Data
-  - Stocks
-  - Market Data
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://twelvedata.com/docs#core-data
-  baseURL: https://api.twelvedata.com
-  properties:
-  - url: https://twelvedata.com/docs#core-data
-    type: Documentation
-  - url: openapi/twelvedata-openapi.yml
-    type: OpenAPI
-  - url: collections/twelvedata.postman_collection.json
-    type: PostmanCollection
-  - url: collections/twelvedata.opencollection.json
-    type: OpenCollection
-  description: Real-time quotes and latest prices, market movers (top gainers and
-    losers), and exchange market state for any supported instrument via the /quote,
-    /price, /market_movers, and /market_state endpoints.
-- aid: twelvedata:twelvedata-technical-indicators-api
-  name: Twelve Data Technical Indicators API
-  tags:
-  - Technical Indicators
-  - Market Data
-  - Analysis
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://twelvedata.com/docs#technical-indicators
-  baseURL: https://api.twelvedata.com
-  properties:
-  - url: https://twelvedata.com/docs#technical-indicators
-    type: Documentation
-  - url: openapi/twelvedata-openapi.yml
-    type: OpenAPI
-  - url: collections/twelvedata.postman_collection.json
-    type: PostmanCollection
-  - url: collections/twelvedata.opencollection.json
-    type: OpenCollection
-  description: More than 100 technical analysis indicators computed server-side over
-    time series data, including RSI, MACD, Bollinger Bands, moving averages, ADX,
-    stochastics, and ATR, each sharing the same symbol and interval conventions.
-- aid: twelvedata:twelvedata-reference-data-api
-  name: Twelve Data Reference Data API
-  tags:
-  - Reference Data
-  - Stocks
-  - Forex
-  - Crypto
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://twelvedata.com/docs#reference-data
-  baseURL: https://api.twelvedata.com
-  properties:
-  - url: https://twelvedata.com/docs#reference-data
-    type: Documentation
-  - url: openapi/twelvedata-openapi.yml
-    type: OpenAPI
-  - url: collections/twelvedata.postman_collection.json
-    type: PostmanCollection
-  - url: collections/twelvedata.opencollection.json
-    type: OpenCollection
-  description: Catalogs of tradable instruments and market metadata - stocks, forex
-    pairs, cryptocurrencies, ETFs, indices, commodities, exchanges, and symbol
-    search by name, ISIN, or FIGI - used to discover symbols before requesting data.
-- aid: twelvedata:twelvedata-fundamentals-api
-  name: Twelve Data Fundamentals API
-  tags:
-  - Fundamentals
-  - Financial Data
-  - Stocks
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://twelvedata.com/docs#fundamentals
-  baseURL: https://api.twelvedata.com
-  properties:
-  - url: https://twelvedata.com/docs#fundamentals
-    type: Documentation
-  - url: openapi/twelvedata-openapi.yml
-    type: OpenAPI
-  - url: collections/twelvedata.postman_collection.json
-    type: PostmanCollection
-  - url: collections/twelvedata.opencollection.json
-    type: OpenCollection
-  description: Company fundamentals including profiles, dividends, earnings, income
-    statements, balance sheets, cash flow statements, and key valuation statistics
-    for equities.
 - aid: twelvedata:twelvedata-websocket-streaming-api
   name: Twelve Data WebSocket Streaming API
   tags:
@@ -148,12 +52,148 @@ apis:
     type: Documentation
   - url: asyncapi/twelvedata-asyncapi.yml
     type: AsyncAPI
-  description: Real-time price streaming over a persistent, bidirectional WebSocket
-    at wss://ws.twelvedata.com/v1/quotes/price. Clients authenticate with an apikey
-    query parameter, send JSON subscribe / unsubscribe / reset control messages, and
-    receive pushed price events (roughly 170ms average latency), subscribe-status
-    acknowledgements, and heartbeats.
+  description: >-
+    Real-time price streaming over a persistent, bidirectional WebSocket at wss://ws.twelvedata.com/v1/quotes/price.
+    Clients authenticate with an apikey query parameter, send JSON subscribe / unsubscribe / reset control
+    messages, and receive pushed price events (roughly 170ms average latency), subscribe-status acknowledgements,
+    and heartbeats.
+- aid: twelvedata:twelvedata-core-data-api
+  name: Twelve Data Core Data API
+  description: Real-time quotes, latest prices, and end-of-day data.
+  humanURL: https://twelvedata.com/docs#time-series
+  baseURL: https://api.twelvedata.com
+  tags:
+  - Core Data
+  properties:
+  - type: OpenAPI
+    url: openapi/twelvedata-core-data-api-openapi.yml
+  - type: OpenAPI
+    url: openapi/twelvedata-openapi-original.json
+  - type: Overlay
+    url: overlays/twelvedata-core-data-api-overlay.yaml
+  - type: Documentation
+    url: https://twelvedata.com/docs#time-series
+  - type: PostmanCollection
+    url: collections/twelvedata.postman_collection.json
+  - type: OpenCollection
+    url: collections/twelvedata.opencollection.json
+  - type: Documentation
+    url: https://twelvedata.com/docs#core-data
+  - type: Documentation
+    url: https://twelvedata.com/docs#technical-indicators
+  - type: Documentation
+    url: https://twelvedata.com/docs#reference-data
+  - type: Documentation
+    url: https://twelvedata.com/docs#fundamentals
+- aid: twelvedata:twelvedata-fundamentals-api
+  name: Twelve Data Fundamentals API
+  description: Company profiles, statements, dividends, earnings, and analysis.
+  humanURL: https://twelvedata.com/docs#time-series
+  baseURL: https://api.twelvedata.com
+  tags:
+  - Fundamentals
+  properties:
+  - type: OpenAPI
+    url: openapi/twelvedata-fundamentals-api-openapi.yml
+  - type: Overlay
+    url: overlays/twelvedata-fundamentals-api-overlay.yaml
+  - type: Documentation
+    url: https://twelvedata.com/docs#time-series
+  - type: PostmanCollection
+    url: collections/twelvedata.postman_collection.json
+  - type: OpenCollection
+    url: collections/twelvedata.opencollection.json
+  - type: Documentation
+    url: https://twelvedata.com/docs#core-data
+  - type: Documentation
+    url: https://twelvedata.com/docs#technical-indicators
+  - type: Documentation
+    url: https://twelvedata.com/docs#reference-data
+  - type: Documentation
+    url: https://twelvedata.com/docs#fundamentals
+- aid: twelvedata:twelvedata-reference-data-api
+  name: Twelve Data Reference Data API
+  description: Catalogs of instruments, exchanges, and supporting metadata.
+  humanURL: https://twelvedata.com/docs#time-series
+  baseURL: https://api.twelvedata.com
+  tags:
+  - Reference Data
+  properties:
+  - type: OpenAPI
+    url: openapi/twelvedata-reference-data-api-openapi.yml
+  - type: Overlay
+    url: overlays/twelvedata-reference-data-api-overlay.yaml
+  - type: Documentation
+    url: https://twelvedata.com/docs#time-series
+  - type: PostmanCollection
+    url: collections/twelvedata.postman_collection.json
+  - type: OpenCollection
+    url: collections/twelvedata.opencollection.json
+  - type: Documentation
+    url: https://twelvedata.com/docs#core-data
+  - type: Documentation
+    url: https://twelvedata.com/docs#technical-indicators
+  - type: Documentation
+    url: https://twelvedata.com/docs#reference-data
+  - type: Documentation
+    url: https://twelvedata.com/docs#fundamentals
+- aid: twelvedata:twelvedata-technical-indicators-api
+  name: Twelve Data Technical Indicators API
+  description: 100+ technical analysis indicators computed over time series.
+  humanURL: https://twelvedata.com/docs#time-series
+  baseURL: https://api.twelvedata.com
+  tags:
+  - Technical Indicators
+  properties:
+  - type: OpenAPI
+    url: openapi/twelvedata-technical-indicators-api-openapi.yml
+  - type: Overlay
+    url: overlays/twelvedata-technical-indicators-api-overlay.yaml
+  - type: Documentation
+    url: https://twelvedata.com/docs#time-series
+  - type: PostmanCollection
+    url: collections/twelvedata.postman_collection.json
+  - type: OpenCollection
+    url: collections/twelvedata.opencollection.json
+  - type: Documentation
+    url: https://twelvedata.com/docs#core-data
+  - type: Documentation
+    url: https://twelvedata.com/docs#technical-indicators
+  - type: Documentation
+    url: https://twelvedata.com/docs#reference-data
+  - type: Documentation
+    url: https://twelvedata.com/docs#fundamentals
+- aid: twelvedata:twelvedata-time-series-api
+  name: Twelve Data Time Series API
+  description: Historical and real-time OHLCV time series.
+  humanURL: https://twelvedata.com/docs#time-series
+  baseURL: https://api.twelvedata.com
+  tags:
+  - Time Series
+  properties:
+  - type: OpenAPI
+    url: openapi/twelvedata-time-series-api-openapi.yml
+  - type: Overlay
+    url: overlays/twelvedata-time-series-api-overlay.yaml
+  - type: Documentation
+    url: https://twelvedata.com/docs#time-series
+  - type: PostmanCollection
+    url: collections/twelvedata.postman_collection.json
+  - type: OpenCollection
+    url: collections/twelvedata.opencollection.json
+  - type: Documentation
+    url: https://twelvedata.com/docs#core-data
+  - type: Documentation
+    url: https://twelvedata.com/docs#technical-indicators
+  - type: Documentation
+    url: https://twelvedata.com/docs#reference-data
+  - type: Documentation
+    url: https://twelvedata.com/docs#fundamentals
 common:
+- type: TrustCenter
+  url: security/twelvedata-trust-center.yml
+- type: DomainSecurity
+  url: security/twelvedata-domain-security.yml
 - type: AgenticAccess
   url: agentic-access/twelvedata-agentic-access.yml
 - type: Authentication
@@ -174,6 +214,60 @@ common:
   type: Support
 - url: https://twelvedata.com/blog
   type: Blog
+- type: Packages
+  url: packages/twelvedata-packages.yml
+- type: SDKs
+  url: packages/twelvedata-packages.yml
+- type: CLI
+  url: cli/twelvedata-cli.yml
+- type: WellKnown
+  url: well-known/twelvedata-well-known.yml
+- type: MCPServer
+  url: mcp/twelvedata-mcp.yml
+- type: ToolCrosswalk
+  url: mcp/twelvedata-tool-crosswalk.yml
+- type: LLMsTxt
+  url: llms/twelvedata-llms.txt
+- type: Conformance
+  url: conformance/twelvedata-conformance.yml
+- type: Compliance
+  url: https://security.twelvedata.com/
+- type: ErrorCatalog
+  url: errors/twelvedata-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/twelvedata-lifecycle.yml
+- type: StatusPage
+  url: https://twelvedata.isitup.cloud
+- type: Roadmap
+  url: https://roadmap.twelvedata.com/
+- type: ChangeLog
+  url: changelog/twelvedata-changelog.yml
+- type: Conventions
+  url: conventions/twelvedata-conventions.yml
+- type: Sandbox
+  url: sandbox/twelvedata-sandbox.yml
+- type: Components
+  url: components/twelvedata-components.yml
+- type: DataModel
+  url: data-model/twelvedata-data-model.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: DeveloperPortal
+  url: https://twelvedata.com/account
+- type: APIReference
+  url: https://twelvedata.com/docs
+- type: GettingStarted
+  url: https://twelvedata.com/docs
+- type: Pricing
+  url: https://twelvedata.com/pricing
+- type: SignUp
+  url: https://twelvedata.com/register
+- type: TermsOfService
+  url: https://twelvedata.com/terms
+- type: PrivacyPolicy
+  url: https://twelvedata.com/privacy
+- type: GitHubOrganization
+  url: https://github.com/twelvedata
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

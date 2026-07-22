@@ -1,0 +1,128 @@
+generated: '2026-07-22'
+method: searched
+status: published
+source: https://github.com/twelvedata/mcp
+docs: https://twelvedata.com/docs/llms/ai/ai-mcp-server.md
+server:
+  name: twelvedata
+  transport: streamable-http
+  url: https://mcp.twelvedata.com/mcp
+  open_source: https://github.com/twelvedata/mcp
+  local_transport: stdio
+  auth:
+    hosted: OAuth 2.0 authorization-code + PKCE via mcp.twelvedata.com (RFC 8414
+      metadata at /.well-known/oauth-authorization-server, dynamic client
+      registration, scope "twelvedata"); login links the user's Twelve Data API key.
+    local: TWELVE_DATA_API_KEY environment variable (.env), no OAuth.
+notes: >-
+  Live tools/list on the hosted endpoint returns 401 invalid_token (OAuth-gated);
+  the tool inventory below was taken verbatim from the open-source server
+  (src/tools/*.py, @mcp.tool functions) on 2026-07-22. Input schemas are the
+  Python function signatures in the repository; the REST parameter contracts are
+  bound in mcp/twelvedata-tool-crosswalk.yml.
+tools:
+- name: oauth_login
+  category: account
+  description: Start the OAuth login flow linking the user's Twelve Data account.
+- name: auth_status
+  category: account
+  description: Report the current authentication/configuration status.
+- name: oauth_configure
+  category: account
+  description: Configure OAuth client_id/client_secret for a self-hosted instance.
+- name: get_api_usage
+  category: account
+  description: Current API credit usage and quota for the authenticated key.
+  source_operation: openapi/twelvedata-openapi-original.json#GetApiUsage
+- name: search_symbol
+  category: account
+  description: Search instruments by symbol or name; includes cross-listings.
+  source_operation: openapi/twelvedata-openapi-original.json#GetSymbolSearch
+- name: get_price
+  category: market
+  description: Latest price for a symbol.
+  source_operation: openapi/twelvedata-openapi-original.json#GetPrice
+- name: get_quote
+  category: market
+  description: Full quote (OHLC, volume, change) for a symbol.
+  source_operation: openapi/twelvedata-openapi-original.json#GetQuote
+- name: get_time_series
+  category: market
+  description: Historical OHLCV bars (1min-1month) for a symbol.
+  source_operation: openapi/twelvedata-openapi-original.json#GetTimeSeries
+- name: get_earliest_timestamp
+  category: market
+  description: Earliest available bar for a symbol/interval.
+  source_operation: openapi/twelvedata-openapi-original.json#GetEarliestTimestamp
+- name: get_market_state
+  category: market
+  description: Whether a market/exchange is currently open.
+  source_operation: openapi/twelvedata-openapi-original.json#GetMarketState
+- name: get_market_movers
+  category: market
+  description: Top gainers/losers for stocks, ETFs, forex, crypto, commodities, funds.
+  source_operation: openapi/twelvedata-openapi-original.json#GetMarketMovers
+- name: currency_conversion
+  category: market
+  description: Convert an amount between currencies, or fetch the exchange rate.
+  source_operation: openapi/twelvedata-openapi-original.json#GetCurrencyConversion
+- name: get_market_cap
+  category: fundamentals
+  description: Market capitalization for a company.
+  source_operation: openapi/twelvedata-openapi-original.json#GetMarketCap
+- name: get_statistics
+  category: fundamentals
+  description: Key statistics (valuation, financial highlights) for a company.
+  source_operation: openapi/twelvedata-openapi-original.json#GetStatistics
+- name: get_company_info
+  category: fundamentals
+  description: Company profile, logo, and key executives.
+  source_operation: openapi/twelvedata-openapi-original.json#GetProfile
+- name: get_company_news
+  category: fundamentals
+  description: Company news and press releases.
+  source_operation: openapi/twelvedata-openapi-original.json#PressReleasesListParameters
+- name: get_financials
+  category: fundamentals
+  description: Income statement, balance sheet, or cash flow statement.
+  source_operation: openapi/twelvedata-openapi-original.json#GetIncomeStatement
+- name: get_earnings
+  category: fundamentals
+  description: Earnings history and earnings calendar.
+  source_operation: openapi/twelvedata-openapi-original.json#GetEarnings
+- name: get_dividends
+  category: fundamentals
+  description: Dividend history and dividends calendar.
+  source_operation: openapi/twelvedata-openapi-original.json#GetDividends
+- name: get_splits
+  category: fundamentals
+  description: Split history and splits calendar.
+  source_operation: openapi/twelvedata-openapi-original.json#GetSplits
+- name: get_ipo_calendar
+  category: fundamentals
+  description: Upcoming and past IPOs.
+  source_operation: openapi/twelvedata-openapi-original.json#GetIpoCalendar
+- name: get_etf_data
+  category: fundamentals
+  description: ETF summary, performance, risk, and composition.
+  source_operation: openapi/twelvedata-openapi-original.json#GetETFsWorldSummary
+- name: get_technical_indicator
+  category: analysis
+  description: Compute any of 100+ server-side technical indicators over a time series.
+  source_operation: openapi/twelvedata-openapi-original.json#GetTimeSeriesRsi
+- name: get_analyst_data
+  category: analysis
+  description: Analyst ratings, price targets, recommendations, EPS/revenue/growth estimates.
+  source_operation: openapi/twelvedata-openapi-original.json#GetAnalystRatingsUsEquities
+- name: get_mutual_fund_data
+  category: mutual_funds
+  description: Mutual fund profile, performance, risk, ratings, composition, sustainability.
+  source_operation: openapi/twelvedata-openapi-original.json#GetMutualFundsWorld
+- name: get_reference_data
+  category: reference
+  description: Exchanges, exchange schedules, countries, instrument types, fund/ETF types.
+  source_operation: openapi/twelvedata-openapi-original.json#GetExchanges
+- name: get_regulatory_data
+  category: regulatory
+  description: SEC EDGAR filings, insider transactions, institutional/fund/direct holders, tax info.
+  source_operation: openapi/twelvedata-openapi-original.json#GetInsiderTransactions

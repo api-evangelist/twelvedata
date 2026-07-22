@@ -1,0 +1,23 @@
+generated: '2026-07-22'
+method: generated
+skills:
+- file: twelvedata-price-and-history.md
+  name: Fetch a price and its history
+  api: openapi/twelvedata-core-data-api-openapi.yml
+  operations: [getPrice, getQuote, symbolSearch, getTimeSeries, getEarliestTimestamp]
+  notes: symbolSearch/getEarliestTimestamp live in the reference-data spec; getTimeSeries
+    in the time-series spec (see the skill frontmatter for the per-spec mapping).
+- file: twelvedata-technical-analysis.md
+  name: Run technical analysis on a symbol
+  api: openapi/twelvedata-technical-indicators-api-openapi.yml
+  operations: [listTechnicalIndicators, getRSI, getMACD, getBBands]
+- file: twelvedata-fundamentals-research.md
+  name: Research company fundamentals
+  api: openapi/twelvedata-fundamentals-api-openapi.yml
+  operations: [getProfile, getStatistics, getIncomeStatement, getBalanceSheet, getCashFlow, getEarnings, getDividends]
+- file: twelvedata-market-screening.md
+  name: Screen markets and instruments
+  api: openapi/twelvedata-reference-data-api-openapi.yml
+  operations: [listStocks, listForexPairs, listCryptocurrencies, listEtfs, listExchanges, getMarketState, getMarketMovers, getEndOfDay]
+  notes: getMarketState/getMarketMovers/getEndOfDay live in the core-data spec (see
+    the skill frontmatter for the per-spec mapping).

@@ -1,22 +1,40 @@
-generated: '2026-07-11'
-method: derived
-source: openapi/twelvedata-openapi.yml
+generated: '2026-07-22'
+method: searched
+source: https://twelvedata.com/docs/llms/introduction.md (Authentication section)
+docs: https://twelvedata.com/docs
 summary:
   types:
   - apiKey
+  api_key_in:
+  - query
+  - header
 schemes:
 - name: apikey_query
   type: apiKey
   in: query
   keyName: apikey
   sources:
-  - openapi/twelvedata-openapi.yml
-  notes: API key supplied as the apikey query parameter, e.g. ?apikey=YOUR_API_KEY. Also used to authenticate the WebSocket connection URL.
+  - openapi/twelvedata-openapi-original.json
+  notes: API key supplied as the apikey query parameter, e.g. ?apikey=YOUR_API_KEY.
+    Also used to authenticate the WebSocket connection URL. Matches securityScheme
+    queryParameter in the provider-published OpenAPI.
 - name: apikey_header
   type: apiKey
   in: header
   keyName: Authorization
   format: 'apikey <KEY>'
   sources:
-  - openapi/twelvedata-openapi.yml
-  notes: 'API key supplied via the Authorization header as: Authorization: apikey YOUR_API_KEY.'
+  - openapi/twelvedata-openapi-original.json
+  notes: 'Recommended method — API key supplied via the Authorization header as:
+    Authorization: apikey YOUR_API_KEY. Matches securityScheme authorizationHeader
+    in the provider-published OpenAPI.'
+key_issuance:
+  signup: https://twelvedata.com/register
+  dashboard: https://twelvedata.com/account/api-keys
+  demo_key: apikey=demo (published demo key for demo requests)
+related:
+  mcp_oauth: >-
+    The hosted MCP server (https://mcp.twelvedata.com/mcp) fronts the API-key
+    model with OAuth 2.0 authorization-code + PKCE (RFC 8414 metadata captured
+    in well-known/twelvedata-mcp-oauth-authorization-server.json, scope
+    "twelvedata"); login links the user's Twelve Data API key.

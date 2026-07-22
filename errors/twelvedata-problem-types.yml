@@ -1,0 +1,56 @@
+generated: '2026-07-22'
+method: searched
+source: https://twelvedata.com/docs/llms/introduction.md (Errors section)
+format: json-envelope
+envelope:
+  description: All errors return a JSON object with code, message, and status keys.
+  fields:
+    code: Numeric error code (mirrors HTTP status)
+    message: Human-readable explanation, often naming the offending parameter
+    status: '"error"'
+  example:
+    code: 400
+    message: 'Invalid **interval** provided: 0.99min. Supported intervals: 1min,
+      5min, 15min, 30min, 45min, 1h, 2h, 4h, 8h, 1day, 1week, 1month'
+    status: error
+problems:
+- status: 400
+  code: 400
+  title: Bad Request
+  detail: Invalid or incorrect parameter(s) provided.
+  remediation: Check the message in the response for details and correct the input
+    against the API documentation.
+- status: 401
+  code: 401
+  title: Unauthorized
+  detail: Invalid or incorrect API key.
+  remediation: Verify the API key; keys are issued at https://twelvedata.com/account/api-keys.
+- status: 403
+  code: 403
+  title: Forbidden
+  detail: API key lacks permissions for the requested resource (plan upgrade required).
+  remediation: Upgrade the plan at https://twelvedata.com/pricing.
+- status: 404
+  code: 404
+  title: Not Found
+  detail: Requested data could not be found.
+  remediation: Loosen parameters; they may be too restrictive.
+- status: 414
+  code: 414
+  title: Parameter Too Long
+  detail: Input parameter array exceeds the allowed length.
+  remediation: Follow the message guidance to adjust the parameter length.
+- status: 429
+  code: 429
+  title: Too Many Requests
+  detail: API credit limit reached for the key (per-minute or daily quota).
+  remediation: Wait for the per-minute credit window to reset or upgrade the plan.
+    See rate-limits/twelvedata-rate-limits.yml.
+- status: 500
+  code: 500
+  title: Internal Server Error
+  detail: Server-side issue occurred.
+  remediation: Retry later; contact support at https://twelvedata.com/contact if persistent.
+cross_links:
+- rate-limits/twelvedata-rate-limits.yml
+- conventions/twelvedata-conventions.yml

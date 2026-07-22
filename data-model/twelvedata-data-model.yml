@@ -1,0 +1,76 @@
+generated: '2026-07-22'
+method: derived
+source: openapi/twelvedata-openapi-original.json (795 component schemas, 187 operations)
+notes: >-
+  Twelve Data is a read-only market-data graph keyed on the instrument symbol.
+  Nearly every operation takes symbol (plus optional exchange / mic_code /
+  country disambiguators) and returns a projection of one of the entities below.
+  There are no writable resources; entity identity is (symbol, exchange).
+entities:
+- name: Instrument
+  id_fields: [symbol, exchange, mic_code, country]
+  subtypes: [Stock, ForexPair, Cryptocurrency, ETF, MutualFund, MoneyMarketFund, Bond, Commodity, Index]
+  source_operations: [GetStocks, GetForexPairs, GetCryptocurrencies, GetEtf, GetFunds, GetBonds, GetCommodities, GetSymbolSearch, GetCrossListings]
+- name: Exchange
+  id_fields: [exchange, mic_code, country]
+  source_operations: [GetExchanges, GetExchangeSchedule, GetMarketState, GetCryptocurrencyExchanges]
+- name: TimeSeries
+  id_fields: [symbol, interval]
+  source_operations: [GetTimeSeries, GetTimeSeriesCross, GetEod, GetEarliestTimestamp]
+  notes: OHLCV bars; the 102 technical-indicator operations are computed views over this entity.
+- name: Quote
+  id_fields: [symbol]
+  source_operations: [GetQuote, GetPrice, GetMarketMovers]
+- name: CompanyFundamentals
+  id_fields: [symbol]
+  source_operations: [GetProfile, GetStatistics, GetMarketCap, GetIncomeStatement, GetBalanceSheet, GetCashFlow, GetDividends, GetSplits, GetEarnings, GetKeyExecutives, GetLogo, PressReleasesListParameters]
+- name: AnalystView
+  id_fields: [symbol]
+  source_operations: [GetAnalystRatingsUsEquities, GetPriceTarget, GetRecommendations, GetEarningsEstimate, GetRevenueEstimate, GetEpsTrend, GetEpsRevisions, GetGrowthEstimates]
+- name: FundProfile
+  id_fields: [symbol]
+  source_operations: [GetETFsWorld, GetMutualFundsWorld, GetMoneyMarketFundsWorld]
+  notes: World summary/performance/risk/composition views for ETFs, mutual funds, and money market funds.
+- name: RegulatoryRecord
+  id_fields: [symbol]
+  source_operations: [GetEdgarFilingsArchive, GetInsiderTransactions, GetInstitutionalHolders, GetFundHolders, GetDirectHolders, GetTaxInfo, GetSourceSanctionedEntities]
+- name: Calendar
+  id_fields: [date-range]
+  source_operations: [GetEarningsCalendar, GetDividendsCalendar, GetSplitsCalendar, GetIpoCalendar]
+relationships:
+- from: Instrument
+  to: Exchange
+  type: belongs_to
+  via: exchange / mic_code
+- from: TimeSeries
+  to: Instrument
+  type: belongs_to
+  via: symbol
+- from: Quote
+  to: Instrument
+  type: belongs_to
+  via: symbol
+- from: CompanyFundamentals
+  to: Instrument
+  type: has_one
+  via: symbol
+- from: AnalystView
+  to: Instrument
+  type: has_one
+  via: symbol
+- from: FundProfile
+  to: Instrument
+  type: has_one
+  via: symbol
+- from: RegulatoryRecord
+  to: Instrument
+  type: has_many
+  via: symbol
+- from: Calendar
+  to: Instrument
+  type: has_many
+  via: symbol entries
+- from: Instrument
+  to: Instrument
+  type: has_many
+  via: cross_listings (same issuer listed on multiple exchanges)

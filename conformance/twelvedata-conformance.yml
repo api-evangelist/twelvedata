@@ -1,0 +1,41 @@
+generated: '2026-07-22'
+method: derived
+source: openapi/twelvedata-openapi-original.json + https://security.twelvedata.com/ + well-known probes
+standards:
+- id: openapi-3.1
+  conforms: true
+  evidence: Provider publishes OpenAPI 3.1.0 (187 operations) at https://api.twelvedata.com/doc/swagger/openapi.json
+- id: rfc9727-api-catalog
+  conforms: true
+  evidence: /.well-known/api-catalog linkset on twelvedata.com points at the OpenAPI, docs, llms.txt, and MCP server
+- id: llms-txt
+  conforms: true
+  evidence: /llms.txt on twelvedata.com and /docs/llms.txt with full markdown docs mirror under /docs/llms/
+- id: mcp
+  conforms: true
+  evidence: Hosted streamable-http MCP server at https://mcp.twelvedata.com/mcp; open source at github.com/twelvedata/mcp
+- id: oauth2
+  conforms: true
+  evidence: MCP server uses OAuth 2.0 authorization-code + PKCE with RFC 8414 metadata
+    (well-known/twelvedata-mcp-oauth-authorization-server.json); the REST API itself is API-key only
+- id: rfc8414-authorization-server-metadata
+  conforms: true
+  evidence: https://mcp.twelvedata.com/.well-known/oauth-authorization-server returns issuer metadata
+- id: oidc
+  conforms: false
+  evidence: No openid-configuration on any host
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: Errors use a proprietary {code, message, status} JSON envelope, not application/problem+json
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt returns 404 on twelvedata.com and api.twelvedata.com
+- id: idempotency
+  conforms: false
+  evidence: Read-only API; no idempotency-key contract published
+- id: soc2
+  conforms: true
+  evidence: SOC 2 listed on the Twelve Data trust center (https://security.twelvedata.com/)
+- id: gdpr
+  conforms: true
+  evidence: GDPR listed on the Twelve Data trust center (https://security.twelvedata.com/)

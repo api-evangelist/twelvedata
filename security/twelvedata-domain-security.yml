@@ -1,0 +1,26 @@
+generated: '2026-07-22'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: twelvedata.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct  8 06:43:27 2026 GMT
+  hsts: false
+- host: ws.twelvedata.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct  8 06:43:27 2026 GMT
+  hsts: null
+- host: api.twelvedata.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct  8 06:43:27 2026 GMT
+  hsts: null
+domains:
+- domain: twelvedata.com
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: reject

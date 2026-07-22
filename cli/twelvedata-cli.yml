@@ -1,0 +1,44 @@
+generated: '2026-07-22'
+method: searched
+source: https://github.com/twelvedata/twelvedata-cli
+name: twelvedata
+description: >-
+  Official Twelve Data CLI (Go). Every Twelve Data API endpoint is exposed as a
+  subcommand with predictable flags and structured output — real-time and
+  historical market data, fundamentals, 100+ technical indicators, analyst
+  estimates, ETFs and mutual funds. Designed for both interactive use and
+  agent/CI consumption: `twelvedata commands` prints the full command tree as
+  JSON for agents, and `--raw` / piped-stdout machine mode prints URLs instead
+  of opening a browser.
+install:
+- method: curl
+  command: curl -fsSL https://raw.githubusercontent.com/twelvedata/twelvedata-cli/main/install.sh | bash
+- method: homebrew
+  command: brew install twelvedata/cli/twelvedata
+- method: powershell
+  command: irm https://raw.githubusercontent.com/twelvedata/twelvedata-cli/main/install.ps1 | iex
+- method: go
+  command: go install github.com/twelvedata/twelvedata-cli/cmd/twelvedata@latest
+- method: binaries
+  url: https://github.com/twelvedata/twelvedata-cli/releases/latest
+auth:
+  command: twelvedata login
+  notes: Links the CLI to a Twelve Data API key.
+commands:
+- group: market data
+  examples:
+  - twelvedata time-series --symbol AAPL --interval 1day
+  - twelvedata quote --symbol AAPL
+  - twelvedata price --symbol AAPL
+- group: discovery
+  examples:
+  - twelvedata commands            # full command tree as JSON for agents
+  - twelvedata --help
+- group: navigation
+  examples:
+  - twelvedata docs                # opens API reference (prints URL in machine mode)
+  - twelvedata dashboard
+flows:
+- name: agent / CI usage
+  notes: Machine mode (--raw, piped stdout, CI) emits structured output and URLs
+    to stdout, safe for scripts and agent subprocesses.

@@ -1,0 +1,69 @@
+# Twelve Data
+
+> Twelve Data is a financial market data platform providing real-time and historical data for stocks, forex, cryptocurrencies, ETFs, mutual funds, bonds, and commodities via REST API, WebSocket, SDKs, and an MCP server. Coverage spans 1M+ instruments across 250+ exchanges in 90+ countries. Free tier available; REST base URL is https://api.twelvedata.com, WebSocket is wss://ws.twelvedata.com.
+
+Key facts for quick orientation:
+
+- Authentication: API key via `apikey` query parameter or `Authorization: apikey <key>` header. Get a key at https://twelvedata.com/register (free Basic plan, no credit card).
+- Quickstart: `curl "https://api.twelvedata.com/price?symbol=AAPL&apikey=your_api_key"`
+- Credits model: most endpoints cost 1 credit per symbol; premium data (fundamentals, analysis) costs more. Plan tiers: Basic (free) → Grow → Pro → Ultra (individual); Venture → Enterprise → Enterprise+ (business).
+- All documentation pages are available as clean markdown for LLMs under https://twelvedata.com/docs/llms/
+- OpenAPI spec: https://api.twelvedata.com/doc/swagger/openapi.json
+- Hosted MCP server: https://mcp.twelvedata.com (streamable-http); open source at https://github.com/twelvedata/mcp
+- Real-time WebSocket streaming latency averages ~170 ms; uptime SLA 99.95% (99.99% on Enterprise).
+
+## Docs
+
+- [Introduction](https://twelvedata.com/docs/llms/introduction.md): Quickstart, authentication, API keys, base URLs, error codes, rate limits, SDKs, OpenAPI spec
+- [Market data](https://twelvedata.com/docs/llms/market-data.md): /time_series (OHLCV bars, 1min–1month), /quote, /price, /eod, /market_movers, cross rates — for stocks, forex, crypto, ETFs
+- [Reference data](https://twelvedata.com/docs/llms/reference-data.md): Instrument catalogs (/stocks, /forex_pairs, /cryptocurrencies, /etfs, /funds, /bonds, /commodities), /symbol_search, /exchanges, /market_state, exchange schedules
+- [Fundamentals](https://twelvedata.com/docs/llms/fundamentals.md): Income statements, balance sheets, cash flows, company profiles, statistics, dividends, splits, earnings, IPO/earnings/dividends calendars, market cap, key executives
+- [Currencies](https://twelvedata.com/docs/llms/currencies.md): /exchange_rate and /currency_conversion for forex and crypto pairs
+- [ETFs](https://twelvedata.com/docs/llms/etfs.md): ETF directory, NAV, performance, risk metrics, holdings and composition
+- [Mutual funds](https://twelvedata.com/docs/llms/mutual-funds.md): Fund directory, NAV, performance, ratings, risk, composition, purchase info, ESG/sustainability
+- [Technical indicators](https://twelvedata.com/docs/llms/technical-indicators.md): 100+ server-side indicators (SMA, EMA, RSI, MACD, Bollinger Bands, VWAP, SuperTrend…) computed over any time series
+- [Analysis](https://twelvedata.com/docs/llms/analysis.md): Analyst estimates (EPS, revenue), EPS trends and revisions, growth estimates, recommendations, price targets, ratings
+- [Regulatory](https://twelvedata.com/docs/llms/regulatory.md): SEC EDGAR filings, insider transactions, institutional/fund/direct holders, tax info, sanctions lists
+- [Advanced](https://twelvedata.com/docs/llms/advanced.md): /batch for bundled requests, /api_usage for programmatic quota tracking
+- [WebSocket overview](https://twelvedata.com/docs/llms/websocket/ws-overview.md): Connection, auth, limits — wss://ws.twelvedata.com
+- [WebSocket real-time price](https://twelvedata.com/docs/llms/websocket/ws-real-time-price.md): Subscribe/unsubscribe message format, price events, heartbeat
+- [Docs index for LLMs](https://twelvedata.com/docs/llms.txt): Machine-readable index of all documentation sections
+
+## AI & integrations
+
+- [MCP server docs](https://twelvedata.com/docs/llms/ai/ai-mcp-server.md): Connect AI assistants to Twelve Data via Model Context Protocol; hosted at https://mcp.twelvedata.com, source at https://github.com/twelvedata/mcp
+- [AI Data Assistant](https://twelvedata.com/docs/llms/ai/ai-data-assistant.md): Natural-language market data assistant (custom GPT on ChatGPT)
+- [Python SDK](https://github.com/twelvedata/twelvedata-python): Official client — `pip install twelvedata`; pandas integration, WebSocket support
+- [R SDK](https://github.com/twelvedata/twelvedata-r-sdk): Official R client
+- [OpenAPI specification](https://api.twelvedata.com/doc/swagger/openapi.json): Full machine-readable API spec for codegen and tooling
+- [Excel add-in](https://twelvedata.com/excel): Real-time and historical data in Microsoft Excel
+- [Google Sheets add-on](https://twelvedata.com/google-sheets): Codeless market data in Google Sheets
+
+## Pricing & plans
+
+- [Pricing for AI agents](https://twelvedata.com/pricing.md): Machine-readable plan comparison — credits per minute, WebSocket limits, market coverage per tier
+- [Pricing (individual)](https://twelvedata.com/pricing): Basic free; Grow from $29/mo; Pro from $99/mo; Ultra from $329/mo; annual billing 17% off
+- [Pricing (business)](https://twelvedata.com/pricing-business): Venture from $149/mo; Enterprise from $1,099/mo with 99.99% SLA; Enterprise+ custom (SOC 2, data residency, white-labeling)
+- [Exchanges & coverage](https://twelvedata.com/exchanges): All supported exchanges with real-time/delayed/EOD status, trading hours, and minimum plan per exchange
+
+## Products
+
+- [Stocks API](https://twelvedata.com/stocks): US and international equities — real-time streaming, intraday history (1min–8h), EOD back to earliest records
+- [Forex API](https://twelvedata.com/forex): 140 currencies, 1,300+ pairs, 20+ years of history available on free plans
+- [Crypto API](https://twelvedata.com/cryptocurrency): 180+ cryptocurrency exchanges, thousands of pairs, AI-cleansed data
+
+## Company & support
+
+- [About](https://twelvedata.com/about): Mission — organize the world's financial data and make it universally accessible; Twelve Data Pte. Ltd., Singapore
+- [Help center](https://support.twelvedata.com): Getting started, guides, FAQs, spreadsheet add-ons, account and billing
+- [Contact](https://twelvedata.com/contact): Sales, support, demo booking
+- [News & changelog](https://twelvedata.com/news): Monthly product updates and data coverage announcements
+- [System status](https://twelvedata.isitup.cloud): Live API status page
+- [GitHub](https://github.com/twelvedata): Official SDKs, MCP server, and open-source tools
+
+## Optional
+
+- [Careers](https://twelvedata.com/careers): Open roles
+- [Startups program](https://twelvedata.com/startups): 20% discount for startups; students 20%; non-profits free
+- [Education](https://twelvedata.com/education): Educational resources
+- [Brand assets](https://twelvedata.com/brand-assets): Logos and brand guidelines

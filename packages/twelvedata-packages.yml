@@ -1,0 +1,97 @@
+generated: '2026-07-22'
+method: searched
+source: https://twelvedata.com/docs/llms/introduction.md (Libraries section) + registry probes (PyPI, npm, pkg.go.dev, GitHub org)
+packages:
+- language: python
+  registry: pypi
+  name: twelvedata
+  version: 1.4.0
+  url: https://pypi.org/project/twelvedata/
+  install: pip install twelvedata
+  repository: https://github.com/twelvedata/twelvedata-python
+  official: true
+  notes: Flagship SDK; pandas integration and WebSocket support (pip install twelvedata[pandas,websocket]).
+- language: javascript
+  registry: npm
+  name: "@twelvedata/twelvedata-node"
+  version: 1.2.7
+  url: https://www.npmjs.com/package/@twelvedata/twelvedata-node
+  install: npm install @twelvedata/twelvedata-node
+  repository: https://github.com/twelvedata/twelvedata-node
+  official: true
+- language: go
+  registry: pkg.go.dev
+  name: github.com/twelvedata/twelvedata-go
+  url: https://pkg.go.dev/github.com/twelvedata/twelvedata-go
+  install: go get github.com/twelvedata/twelvedata-go
+  repository: https://github.com/twelvedata/twelvedata-go
+  official: true
+- language: java
+  registry: github
+  name: twelvedata-java
+  url: https://github.com/twelvedata/twelvedata-java
+  repository: https://github.com/twelvedata/twelvedata-java
+  official: true
+  notes: Not published to Maven Central as of 2026-07-22; consumed from GitHub.
+- language: r
+  registry: github
+  name: twelvedata-r-sdk
+  url: https://github.com/twelvedata/twelvedata-r-sdk
+  repository: https://github.com/twelvedata/twelvedata-r-sdk
+  official: true
+- language: go
+  registry: github
+  name: twelvedata-cli
+  url: https://github.com/twelvedata/twelvedata-cli
+  install: brew install twelvedata/cli/twelvedata
+  repository: https://github.com/twelvedata/twelvedata-cli
+  official: true
+  notes: First-party CLI binary (Homebrew tap twelvedata/homebrew-cli, install.sh,
+    PowerShell, go install, prebuilt binaries). Command surface catalogued in cli/twelvedata-cli.yml.
+- language: python
+  registry: github
+  name: mcp
+  url: https://github.com/twelvedata/mcp
+  repository: https://github.com/twelvedata/mcp
+  official: true
+  notes: Open-source MCP server (hosted at https://mcp.twelvedata.com/mcp).
+- language: javascript
+  registry: github
+  name: n8n-nodes-twelvedata
+  url: https://github.com/twelvedata/n8n-nodes-twelvedata
+  repository: https://github.com/twelvedata/n8n-nodes-twelvedata
+  official: true
+  notes: n8n workflow-automation node.
+- language: csharp
+  registry: github
+  name: TwelveDataSharp
+  url: https://github.com/pseudomarkets/TwelveDataSharp
+  official: false
+  notes: Community library listed in official docs.
+- language: javascript
+  registry: npm
+  name: twelvedata
+  version: 3.0.1
+  url: https://www.npmjs.com/package/twelvedata
+  install: npm install twelvedata
+  repository: https://github.com/evzaboun/twelvedata
+  official: false
+  notes: Community library listed in official docs.
+- language: php
+  registry: github
+  name: ingelby/twelvedata
+  url: https://github.com/ingelby/twelvedata
+  official: false
+  notes: Community library listed in official docs.
+- language: go
+  registry: github
+  name: soulgarden/twelvedata
+  url: https://github.com/soulgarden/twelvedata
+  official: false
+  notes: Community library listed in official docs.
+- language: typescript
+  registry: github
+  name: twelve-data-wrapper
+  url: https://github.com/Clyde-Goodall/twelve-data-wrapper
+  official: false
+  notes: Community library listed in official docs.

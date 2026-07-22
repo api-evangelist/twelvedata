@@ -1,0 +1,27 @@
+generated: '2026-07-22'
+method: searched
+source: https://twelvedata.com/llms.txt (Docs + AI & integrations sections)
+notes: Twelve Data ships end-user embedded surfaces rather than JS web components —
+  spreadsheet add-ins that put live market data inside Excel and Google Sheets,
+  plus hosted AI surfaces.
+families:
+- family: spreadsheet-add-ins
+  components:
+  - name: Excel Add-in
+    url: https://twelvedata.com/excel
+    description: Real-time and historical market data inside Microsoft Excel.
+    official: true
+  - name: Google Sheets Add-on
+    url: https://twelvedata.com/google-sheets
+    description: Codeless market data in Google Sheets.
+    official: true
+- family: hosted-ai-surfaces
+  components:
+  - name: AI Data Assistant
+    url: https://twelvedata.com/docs/llms/ai/ai-data-assistant.md
+    description: Natural-language market data assistant (custom GPT on ChatGPT).
+    official: true
+  - name: Request builder
+    url: https://twelvedata.com/docs
+    description: Interactive request builder in the docs for composing API calls.
+    official: true

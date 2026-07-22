@@ -1,0 +1,216 @@
+openapi: 3.0.3
+info:
+  title: Twelve Data REST Core Data API
+  description: 'REST API for Twelve Data financial market data covering stocks, forex, cryptocurrencies, ETFs, indices, commodities, and funds. Provides historical and real-time time series (OHLCV), quotes and prices, 100+ technical indicators, reference / catalog data, and company fundamentals. All requests are authenticated with an apikey supplied either as a query parameter (?apikey=) or via the `Authorization: apikey <KEY>` header. Every endpoint consumes a data-weight number of API credits; the per-minute credit quota resets each minute.'
+  termsOfService: https://twelvedata.com/terms
+  contact:
+    name: Twelve Data Support
+    url: https://support.twelvedata.com
+  version: '1.0'
+servers:
+- url: https://api.twelvedata.com
+  description: Twelve Data REST base URL
+security:
+- apikeyQuery: []
+- apikeyHeader: []
+tags:
+- name: Core Data
+  description: Real-time quotes, latest prices, and end-of-day data.
+paths:
+  /eod:
+    get:
+      operationId: getEndOfDay
+      tags:
+      - Core Data
+      summary: End of day price
+      description: Returns the latest end-of-day closing price and metadata for an instrument.
+      parameters:
+      - $ref: '#/components/parameters/symbol'
+      - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: End-of-day payload.
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /quote:
+    get:
+      operationId: getQuote
+      tags:
+      - Core Data
+      summary: Quote
+      description: Returns a real-time quote for the instrument including price, open, high, low, close, volume, 52-week range, and change metrics.
+      parameters:
+      - $ref: '#/components/parameters/symbol'
+      - $ref: '#/components/parameters/interval'
+      - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Quote payload.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /price:
+    get:
+      operationId: getPrice
+      tags:
+      - Core Data
+      summary: Real-time price
+      description: Returns the latest available real-time trading price for an instrument.
+      parameters:
+      - $ref: '#/components/parameters/symbol'
+      - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Price payload.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Price'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /market_movers/{market}:
+    get:
+      operationId: getMarketMovers
+      tags:
+      - Core Data
+      summary: Market movers
+      description: Returns the top gainers and losers by percentage change for a market.
+      parameters:
+      - name: market
+        in: path
+        required: true
+        schema:
+          type: string
+          enum:
+          - stocks
+          - etf
+          - forex
+          - crypto
+        description: Market to list movers for.
+      - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Market movers payload.
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /market_state:
+    get:
+      operationId: getMarketState
+      tags:
+      - Core Data
+      summary: Market state
+      description: Returns the real-time open/closed state of exchanges.
+      parameters:
+      - name: exchange
+        in: query
+        schema:
+          type: string
+      - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Market state payload.
+components:
+  parameters:
+    symbol:
+      name: symbol
+      in: query
+      required: true
+      schema:
+        type: string
+      description: Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.
+    apikeyParam:
+      name: apikey
+      in: query
+      required: true
+      schema:
+        type: string
+      description: Your Twelve Data API key.
+    interval:
+      name: interval
+      in: query
+      required: true
+      schema:
+        type: string
+        enum:
+        - 1min
+        - 5min
+        - 15min
+        - 30min
+        - 45min
+        - 1h
+        - 2h
+        - 4h
+        - 1day
+        - 1week
+        - 1month
+      description: Time interval between two consecutive data points.
+  schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: HTTP-style status code.
+        message:
+          type: string
+          description: Human-readable error message.
+        status:
+          type: string
+          example: error
+    Quote:
+      type: object
+      properties:
+        symbol:
+          type: string
+        name:
+          type: string
+        exchange:
+          type: string
+        currency:
+          type: string
+        datetime:
+          type: string
+        open:
+          type: string
+        high:
+          type: string
+        low:
+          type: string
+        close:
+          type: string
+        volume:
+          type: string
+        fifty_two_week:
+          type: object
+          properties:
+            low:
+              type: string
+            high:
+              type: string
+    Price:
+      type: object
+      properties:
+        price:
+          type: string
+          example: '201.23'
+  responses:
+    RateLimited:
+      description: API credit limit for the current minute has been exceeded.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    apikeyQuery:
+      type: apiKey
+      in: query
+      name: apikey
+      description: API key supplied as the `apikey` query parameter.
+    apikeyHeader:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'API key supplied as `Authorization: apikey <KEY>`.'

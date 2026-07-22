@@ -1,0 +1,14 @@
+generated: '2026-07-22'
+method: searched
+probe: true
+source: https://security.twelvedata.com/
+url: https://security.twelvedata.com/
+certifications:
+- SOC 2
+- GDPR
+evidence:
+- source: https://security.twelvedata.com/
+  keywords:
+  - soc 2
+  - trust center
+  - gdpr

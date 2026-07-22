@@ -1,0 +1,58 @@
+generated: '2026-07-22'
+method: searched
+source: https://twelvedata.com/docs/llms/introduction.md + openapi/twelvedata-openapi-original.json
+authentication:
+  style: api-key
+  methods:
+  - API key as apikey query parameter (?apikey=your_api_key)
+  - 'API key via header (recommended): Authorization: apikey your_api_key'
+  docs: authentication/twelvedata-authentication.yml
+idempotency:
+  supported: false
+  notes: Read-only data API — all 187 documented REST operations are GET except
+    POST /batch. No Idempotency-Key header or idempotency contract is published.
+request_semantics:
+  parameter_separator: '&'
+  case_sensitivity: Parameter names are case-insensitive (symbol=AAPL equals symbol=aapl)
+  multiple_values: Comma-separated where supported
+  symbol_formats:
+    stocks: AAPL
+    crypto: BTC/USD
+    forex: EUR/USD
+pagination:
+  style: window
+  params:
+  - outputsize (number of bars/rows returned, endpoint-specific defaults)
+  - start_date / end_date (time-window slicing on time-series endpoints)
+  notes: No cursor/offset pagination; time-series endpoints page by output size
+    and date windows.
+batching:
+  endpoint: POST /batch
+  docs: https://twelvedata.com/docs/llms/advanced/batch-requests.md
+  notes: Submit and monitor batch jobs to pull large datasets asynchronously.
+response_format:
+  default: JSON
+  null_values: Fields may be null when data is unavailable for specific metrics —
+    expected behavior, not an error; implement null handling.
+  csv: Many endpoints accept format=CSV.
+error_envelope:
+  shape: '{code, message, status}'
+  docs: errors/twelvedata-problem-types.yml
+rate_limit_signaling:
+  model: API credits — each endpoint has a data weight; per-minute credit quota
+    resets every minute; free plan also has a daily cap.
+  throttled_status: 429
+  usage_endpoint: GET /api_usage (programmatic quota tracking)
+  docs: rate-limits/twelvedata-rate-limits.yml
+versioning:
+  style: unversioned REST base URL; /v1/ on the WebSocket
+  docs: lifecycle/twelvedata-lifecycle.yml
+best_practices:
+- Implement retry logic for transient errors (429, 500)
+- Cache frequently accessed responses to conserve credits
+- Store the API key securely; never expose it client-side
+cross_links:
+- errors/twelvedata-problem-types.yml
+- lifecycle/twelvedata-lifecycle.yml
+- authentication/twelvedata-authentication.yml
+- rate-limits/twelvedata-rate-limits.yml

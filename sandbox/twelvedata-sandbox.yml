@@ -1,0 +1,22 @@
+generated: '2026-07-22'
+method: searched
+source: https://twelvedata.com/docs/llms/introduction.md
+model: demo-key-and-trial-symbols
+test_vs_live:
+  notes: No separate sandbox host — the production API at https://api.twelvedata.com
+    serves demo traffic via a published demo key and per-exchange trial symbols.
+demo_key:
+  value: demo
+  usage: apikey=demo
+  notes: Published demo API key for demo requests; a personal key is required for
+    full access.
+trial_symbols:
+  url: https://twelvedata.com/exchanges
+  notes: Premium endpoints and exchange data can be tested with the trial symbols
+    listed per exchange on the exchanges page before upgrading. Mutual funds were
+    added to the demo environment in the May 2026 update.
+free_tier:
+  plan: Basic
+  credits: 800 API credits/day, 8 per minute
+  signup: https://twelvedata.com/register
+  notes: Free plan (no credit card) is the de-facto sandbox for development.

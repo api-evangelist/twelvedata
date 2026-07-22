@@ -1,0 +1,146 @@
+openapi: 3.0.3
+info:
+  title: Twelve Data REST Core Data Technical Indicators API
+  description: 'REST API for Twelve Data financial market data covering stocks, forex, cryptocurrencies, ETFs, indices, commodities, and funds. Provides historical and real-time time series (OHLCV), quotes and prices, 100+ technical indicators, reference / catalog data, and company fundamentals. All requests are authenticated with an apikey supplied either as a query parameter (?apikey=) or via the `Authorization: apikey <KEY>` header. Every endpoint consumes a data-weight number of API credits; the per-minute credit quota resets each minute.'
+  termsOfService: https://twelvedata.com/terms
+  contact:
+    name: Twelve Data Support
+    url: https://support.twelvedata.com
+  version: '1.0'
+servers:
+- url: https://api.twelvedata.com
+  description: Twelve Data REST base URL
+security:
+- apikeyQuery: []
+- apikeyHeader: []
+tags:
+- name: Technical Indicators
+  description: 100+ technical analysis indicators computed over time series.
+paths:
+  /rsi:
+    get:
+      operationId: getRSI
+      tags:
+      - Technical Indicators
+      summary: Relative Strength Index (RSI)
+      description: Returns the RSI momentum indicator time series. Representative of the 100+ technical indicator endpoints (macd, bbands, ema, sma, adx, stoch, atr, and more) that share the same parameter conventions.
+      parameters:
+      - $ref: '#/components/parameters/symbol'
+      - $ref: '#/components/parameters/interval'
+      - name: time_period
+        in: query
+        schema:
+          type: integer
+          default: 14
+      - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: RSI time series payload.
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /macd:
+    get:
+      operationId: getMACD
+      tags:
+      - Technical Indicators
+      summary: Moving Average Convergence Divergence (MACD)
+      description: Returns the MACD indicator time series for an instrument.
+      parameters:
+      - $ref: '#/components/parameters/symbol'
+      - $ref: '#/components/parameters/interval'
+      - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: MACD time series payload.
+  /bbands:
+    get:
+      operationId: getBBands
+      tags:
+      - Technical Indicators
+      summary: Bollinger Bands
+      description: Returns the Bollinger Bands overlay time series for an instrument.
+      parameters:
+      - $ref: '#/components/parameters/symbol'
+      - $ref: '#/components/parameters/interval'
+      - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Bollinger Bands time series payload.
+  /technical_indicators:
+    get:
+      operationId: listTechnicalIndicators
+      tags:
+      - Technical Indicators
+      summary: List technical indicators
+      description: Returns the catalog of all available technical indicators and their parameters.
+      parameters:
+      - $ref: '#/components/parameters/apikeyParam'
+      responses:
+        '200':
+          description: Technical indicator catalog.
+components:
+  parameters:
+    symbol:
+      name: symbol
+      in: query
+      required: true
+      schema:
+        type: string
+      description: Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.
+    apikeyParam:
+      name: apikey
+      in: query
+      required: true
+      schema:
+        type: string
+      description: Your Twelve Data API key.
+    interval:
+      name: interval
+      in: query
+      required: true
+      schema:
+        type: string
+        enum:
+        - 1min
+        - 5min
+        - 15min
+        - 30min
+        - 45min
+        - 1h
+        - 2h
+        - 4h
+        - 1day
+        - 1week
+        - 1month
+      description: Time interval between two consecutive data points.
+  schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: HTTP-style status code.
+        message:
+          type: string
+          description: Human-readable error message.
+        status:
+          type: string
+          example: error
+  responses:
+    RateLimited:
+      description: API credit limit for the current minute has been exceeded.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    apikeyQuery:
+      type: apiKey
+      in: query
+      name: apikey
+      description: API key supplied as the `apikey` query parameter.
+    apikeyHeader:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'API key supplied as `Authorization: apikey <KEY>`.'

@@ -1,0 +1,42 @@
+generated: '2026-07-22'
+method: searched
+source: https://twelvedata.com/news
+scheme: monthly-updates
+notes: Twelve Data publishes a dated monthly product-update changelog at
+  /news (entries back to 2024), alongside occasional feature announcements
+  (e.g. Cboe market data). The API itself is unversioned; changes are additive
+  and announced in these updates.
+entries:
+- date: 2026-06
+  url: https://twelvedata.com/news/june-2026-update
+  breaking: false
+  highlights:
+  - Twelve Data MCP Server brings market data straight into AI assistants
+  - Smarter currency and cross-asset conversion fixes
+  - More predictable API error responses
+  - Faster docs experience
+- date: 2026-05
+  url: https://twelvedata.com/news/may-2026-updates
+  breaking: false
+  highlights:
+  - Java client is live
+  - Press releases available without ASX licence
+  - Mutual funds in the demo environment
+  - Broader crypto and currency logo coverage
+- date: 2026-04
+  url: https://twelvedata.com/news/april-2026-updates
+  breaking: false
+  highlights:
+  - Node.js and Go clients are live
+  - A dataset for training world models
+  - Currency converter page
+  - Exchange status at a glance
+- date: 2026-03
+  url: https://twelvedata.com/news/march-2026-updates
+  breaking: false
+- date: 2026-02
+  url: https://twelvedata.com/news/february-2026-updates
+  breaking: false
+- date: 2026-01
+  url: https://twelvedata.com/news/january-2026-updates
+  breaking: false

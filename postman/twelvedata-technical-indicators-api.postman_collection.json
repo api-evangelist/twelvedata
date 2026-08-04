@@ -1,0 +1,475 @@
+{
+  "info": {
+    "_postman_id": "9ec49eba-bb26-4d60-95cf-afa414888499",
+    "name": "Twelve Data REST Core Data Technical Indicators API",
+    "description": "REST API for Twelve Data financial market data covering stocks, forex, cryptocurrencies, ETFs, indices, commodities, and funds. Provides historical and real-time time series (OHLCV), quotes and prices, 100+ technical indicators, reference / catalog data, and company fundamentals. All requests are authenticated with an apikey supplied either as a query parameter (?apikey=) or via the `Authorization: apikey <KEY>` header. Every endpoint consumes a data-weight number of API credits; the per-minute credit quota resets each minute.\n\nContact Support:\n Name: Twelve Data Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T03:21:23.000Z",
+    "updatedAt": "2026-07-28T03:21:23.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-9ec49eba-bb26-4d60-95cf-afa414888499"
+  },
+  "item": [
+    {
+      "name": "rsi",
+      "item": [
+        {
+          "name": "Relative Strength Index (RSI)",
+          "id": "3e5e6ac9-eaaa-47ff-8660-6a8cc336e655",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rsi?symbol=<string>&interval=30min&time_period=14&apikey=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rsi"
+              ],
+              "query": [
+                {
+                  "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                  "key": "symbol",
+                  "value": "<string>"
+                },
+                {
+                  "description": "(Required) Time interval between two consecutive data points.",
+                  "key": "interval",
+                  "value": "30min"
+                },
+                {
+                  "key": "time_period",
+                  "value": "14"
+                },
+                {
+                  "description": "(Required) Your Twelve Data API key.",
+                  "key": "apikey",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Returns the RSI momentum indicator time series. Representative of the 100+ technical indicator endpoints (macd, bbands, ema, sma, adx, stoch, atr, and more) that share the same parameter conventions."
+          },
+          "response": [
+            {
+              "id": "ecc87a1b-299f-44c5-9d4f-4a42875fec03",
+              "name": "RSI time series payload.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/rsi?symbol=<string>&interval=30min&time_period=14&apikey=<API Key>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "rsi"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                      "key": "symbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) Time interval between two consecutive data points.",
+                      "key": "interval",
+                      "value": "30min"
+                    },
+                    {
+                      "key": "time_period",
+                      "value": "14"
+                    },
+                    {
+                      "description": "(Required) Your Twelve Data API key.",
+                      "key": "apikey",
+                      "value": "<API Key>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T03:21:24.000Z",
+              "updatedAt": "2026-07-28T03:21:24.000Z",
+              "uid": "35240-ecc87a1b-299f-44c5-9d4f-4a42875fec03"
+            },
+            {
+              "id": "72d2c07d-26ac-40ae-8e27-ecea6dcbd27a",
+              "name": "API credit limit for the current minute has been exceeded.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/rsi?symbol=<string>&interval=30min&time_period=14&apikey=<API Key>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "rsi"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                      "key": "symbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) Time interval between two consecutive data points.",
+                      "key": "interval",
+                      "value": "30min"
+                    },
+                    {
+                      "key": "time_period",
+                      "value": "14"
+                    },
+                    {
+                      "description": "(Required) Your Twelve Data API key.",
+                      "key": "apikey",
+                      "value": "<API Key>"
+                    }
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<integer>\",\n  \"message\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T03:21:24.000Z",
+              "updatedAt": "2026-07-28T03:21:24.000Z",
+              "uid": "35240-72d2c07d-26ac-40ae-8e27-ecea6dcbd27a"
+            }
+          ],
+          "createdAt": "2026-07-28T03:21:24.000Z",
+          "updatedAt": "2026-07-28T03:21:24.000Z",
+          "uid": "35240-3e5e6ac9-eaaa-47ff-8660-6a8cc336e655"
+        }
+      ],
+      "id": "91842079-8a90-4af8-92b7-76961055a421",
+      "createdAt": "2026-07-28T03:21:23.000Z",
+      "updatedAt": "2026-07-28T03:21:23.000Z",
+      "uid": "35240-91842079-8a90-4af8-92b7-76961055a421"
+    },
+    {
+      "name": "macd",
+      "item": [
+        {
+          "name": "Moving Average Convergence Divergence (MACD)",
+          "id": "b3daec08-a8fb-4cc1-be21-5c557a448fbf",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/macd?symbol=<string>&interval=30min&apikey=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "macd"
+              ],
+              "query": [
+                {
+                  "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                  "key": "symbol",
+                  "value": "<string>"
+                },
+                {
+                  "description": "(Required) Time interval between two consecutive data points.",
+                  "key": "interval",
+                  "value": "30min"
+                },
+                {
+                  "description": "(Required) Your Twelve Data API key.",
+                  "key": "apikey",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Returns the MACD indicator time series for an instrument."
+          },
+          "response": [
+            {
+              "id": "ef118747-15c9-44b2-90f5-1fbdbb826457",
+              "name": "MACD time series payload.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/macd?symbol=<string>&interval=30min&apikey=<API Key>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "macd"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                      "key": "symbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) Time interval between two consecutive data points.",
+                      "key": "interval",
+                      "value": "30min"
+                    },
+                    {
+                      "description": "(Required) Your Twelve Data API key.",
+                      "key": "apikey",
+                      "value": "<API Key>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T03:21:24.000Z",
+              "updatedAt": "2026-07-28T03:21:24.000Z",
+              "uid": "35240-ef118747-15c9-44b2-90f5-1fbdbb826457"
+            }
+          ],
+          "createdAt": "2026-07-28T03:21:24.000Z",
+          "updatedAt": "2026-07-28T03:21:24.000Z",
+          "uid": "35240-b3daec08-a8fb-4cc1-be21-5c557a448fbf"
+        }
+      ],
+      "id": "4e6a66a7-1c26-4c9a-84ea-4ea9d128a504",
+      "createdAt": "2026-07-28T03:21:23.000Z",
+      "updatedAt": "2026-07-28T03:21:23.000Z",
+      "uid": "35240-4e6a66a7-1c26-4c9a-84ea-4ea9d128a504"
+    },
+    {
+      "name": "bbands",
+      "item": [
+        {
+          "name": "Bollinger Bands",
+          "id": "603ed343-fa48-4a1e-80b9-bbda0e039e34",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/bbands?symbol=<string>&interval=30min&apikey=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "bbands"
+              ],
+              "query": [
+                {
+                  "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                  "key": "symbol",
+                  "value": "<string>"
+                },
+                {
+                  "description": "(Required) Time interval between two consecutive data points.",
+                  "key": "interval",
+                  "value": "30min"
+                },
+                {
+                  "description": "(Required) Your Twelve Data API key.",
+                  "key": "apikey",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Returns the Bollinger Bands overlay time series for an instrument."
+          },
+          "response": [
+            {
+              "id": "53de9427-91ec-41d1-b22c-eb9346eb35ad",
+              "name": "Bollinger Bands time series payload.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/bbands?symbol=<string>&interval=30min&apikey=<API Key>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "bbands"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                      "key": "symbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) Time interval between two consecutive data points.",
+                      "key": "interval",
+                      "value": "30min"
+                    },
+                    {
+                      "description": "(Required) Your Twelve Data API key.",
+                      "key": "apikey",
+                      "value": "<API Key>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T03:21:24.000Z",
+              "updatedAt": "2026-07-28T03:21:24.000Z",
+              "uid": "35240-53de9427-91ec-41d1-b22c-eb9346eb35ad"
+            }
+          ],
+          "createdAt": "2026-07-28T03:21:24.000Z",
+          "updatedAt": "2026-07-28T03:21:24.000Z",
+          "uid": "35240-603ed343-fa48-4a1e-80b9-bbda0e039e34"
+        }
+      ],
+      "id": "250ee6d0-0ddd-47af-a543-34d0a4871276",
+      "createdAt": "2026-07-28T03:21:23.000Z",
+      "updatedAt": "2026-07-28T03:21:23.000Z",
+      "uid": "35240-250ee6d0-0ddd-47af-a543-34d0a4871276"
+    },
+    {
+      "name": "technical_indicators",
+      "item": [
+        {
+          "name": "List technical indicators",
+          "id": "c9d1bc91-cd3d-4d09-86e1-120c0f31c85e",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/technical_indicators?apikey=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "technical_indicators"
+              ],
+              "query": [
+                {
+                  "description": "(Required) Your Twelve Data API key.",
+                  "key": "apikey",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Returns the catalog of all available technical indicators and their parameters."
+          },
+          "response": [
+            {
+              "id": "05a9a4d3-c2a5-4f78-b87c-bbab6b795e6e",
+              "name": "Technical indicator catalog.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/technical_indicators?apikey=<API Key>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "technical_indicators"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Your Twelve Data API key.",
+                      "key": "apikey",
+                      "value": "<API Key>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T03:21:24.000Z",
+              "updatedAt": "2026-07-28T03:21:24.000Z",
+              "uid": "35240-05a9a4d3-c2a5-4f78-b87c-bbab6b795e6e"
+            }
+          ],
+          "createdAt": "2026-07-28T03:21:24.000Z",
+          "updatedAt": "2026-07-28T03:21:24.000Z",
+          "uid": "35240-c9d1bc91-cd3d-4d09-86e1-120c0f31c85e"
+        }
+      ],
+      "id": "7418e531-1ba7-4030-ae39-beef92cb2383",
+      "createdAt": "2026-07-28T03:21:23.000Z",
+      "updatedAt": "2026-07-28T03:21:23.000Z",
+      "uid": "35240-7418e531-1ba7-4030-ae39-beef92cb2383"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "apikey",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "query",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.twelvedata.com"
+    }
+  ]
+}

@@ -1,0 +1,734 @@
+{
+  "info": {
+    "_postman_id": "3bb5b3fd-a35d-414d-a33f-da601e1a2b43",
+    "name": "Twelve Data REST Core Data API",
+    "description": "REST API for Twelve Data financial market data covering stocks, forex, cryptocurrencies, ETFs, indices, commodities, and funds. Provides historical and real-time time series (OHLCV), quotes and prices, 100+ technical indicators, reference / catalog data, and company fundamentals. All requests are authenticated with an apikey supplied either as a query parameter (?apikey=) or via the `Authorization: apikey <KEY>` header. Every endpoint consumes a data-weight number of API credits; the per-minute credit quota resets each minute.\n\nContact Support:\n Name: Twelve Data Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T03:20:58.000Z",
+    "updatedAt": "2026-07-28T03:20:58.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-3bb5b3fd-a35d-414d-a33f-da601e1a2b43"
+  },
+  "item": [
+    {
+      "name": "eod",
+      "item": [
+        {
+          "name": "End of day price",
+          "id": "a5526742-93e7-4f9a-ab83-2243d9b58576",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/eod?symbol=<string>&apikey=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "eod"
+              ],
+              "query": [
+                {
+                  "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                  "key": "symbol",
+                  "value": "<string>"
+                },
+                {
+                  "description": "(Required) Your Twelve Data API key.",
+                  "key": "apikey",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Returns the latest end-of-day closing price and metadata for an instrument."
+          },
+          "response": [
+            {
+              "id": "50e9f5fb-a2aa-4e3b-8342-f5137961c83f",
+              "name": "End-of-day payload.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/eod?symbol=<string>&apikey=<API Key>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "eod"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                      "key": "symbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) Your Twelve Data API key.",
+                      "key": "apikey",
+                      "value": "<API Key>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T03:20:58.000Z",
+              "updatedAt": "2026-07-28T03:20:58.000Z",
+              "uid": "35240-50e9f5fb-a2aa-4e3b-8342-f5137961c83f"
+            },
+            {
+              "id": "1c76c8c2-974c-4dc1-93c8-864ed235897c",
+              "name": "API credit limit for the current minute has been exceeded.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/eod?symbol=<string>&apikey=<API Key>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "eod"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                      "key": "symbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) Your Twelve Data API key.",
+                      "key": "apikey",
+                      "value": "<API Key>"
+                    }
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<integer>\",\n  \"message\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T03:20:58.000Z",
+              "updatedAt": "2026-07-28T03:20:58.000Z",
+              "uid": "35240-1c76c8c2-974c-4dc1-93c8-864ed235897c"
+            }
+          ],
+          "createdAt": "2026-07-28T03:20:58.000Z",
+          "updatedAt": "2026-07-28T03:20:58.000Z",
+          "uid": "35240-a5526742-93e7-4f9a-ab83-2243d9b58576"
+        }
+      ],
+      "id": "2e4264b4-aee8-46f2-a826-c42a53574d43",
+      "createdAt": "2026-07-28T03:20:58.000Z",
+      "updatedAt": "2026-07-28T03:20:58.000Z",
+      "uid": "35240-2e4264b4-aee8-46f2-a826-c42a53574d43"
+    },
+    {
+      "name": "quote",
+      "item": [
+        {
+          "name": "Quote",
+          "id": "dde75a83-291d-4cd5-b5f8-3b2e10ad5700",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/quote?symbol=<string>&interval=45min&apikey=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "quote"
+              ],
+              "query": [
+                {
+                  "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                  "key": "symbol",
+                  "value": "<string>"
+                },
+                {
+                  "description": "(Required) Time interval between two consecutive data points.",
+                  "key": "interval",
+                  "value": "45min"
+                },
+                {
+                  "description": "(Required) Your Twelve Data API key.",
+                  "key": "apikey",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Returns a real-time quote for the instrument including price, open, high, low, close, volume, 52-week range, and change metrics."
+          },
+          "response": [
+            {
+              "id": "1aaa1669-f5ef-4106-873b-28546b337ba4",
+              "name": "Quote payload.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/quote?symbol=<string>&interval=45min&apikey=<API Key>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "quote"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                      "key": "symbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) Time interval between two consecutive data points.",
+                      "key": "interval",
+                      "value": "45min"
+                    },
+                    {
+                      "description": "(Required) Your Twelve Data API key.",
+                      "key": "apikey",
+                      "value": "<API Key>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"symbol\": \"<string>\",\n  \"name\": \"<string>\",\n  \"exchange\": \"<string>\",\n  \"currency\": \"<string>\",\n  \"datetime\": \"<string>\",\n  \"open\": \"<string>\",\n  \"high\": \"<string>\",\n  \"low\": \"<string>\",\n  \"close\": \"<string>\",\n  \"volume\": \"<string>\",\n  \"fifty_two_week\": {\n    \"low\": \"<string>\",\n    \"high\": \"<string>\"\n  }\n}",
+              "createdAt": "2026-07-28T03:20:58.000Z",
+              "updatedAt": "2026-07-28T03:20:58.000Z",
+              "uid": "35240-1aaa1669-f5ef-4106-873b-28546b337ba4"
+            },
+            {
+              "id": "0e28ee56-cabd-47f0-b95a-03c009e55f55",
+              "name": "API credit limit for the current minute has been exceeded.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/quote?symbol=<string>&interval=45min&apikey=<API Key>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "quote"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                      "key": "symbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) Time interval between two consecutive data points.",
+                      "key": "interval",
+                      "value": "45min"
+                    },
+                    {
+                      "description": "(Required) Your Twelve Data API key.",
+                      "key": "apikey",
+                      "value": "<API Key>"
+                    }
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<integer>\",\n  \"message\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T03:20:58.000Z",
+              "updatedAt": "2026-07-28T03:20:58.000Z",
+              "uid": "35240-0e28ee56-cabd-47f0-b95a-03c009e55f55"
+            }
+          ],
+          "createdAt": "2026-07-28T03:20:58.000Z",
+          "updatedAt": "2026-07-28T03:20:58.000Z",
+          "uid": "35240-dde75a83-291d-4cd5-b5f8-3b2e10ad5700"
+        }
+      ],
+      "id": "61582356-2cb4-4c7a-8bb3-30d2ccb7c900",
+      "createdAt": "2026-07-28T03:20:58.000Z",
+      "updatedAt": "2026-07-28T03:20:58.000Z",
+      "uid": "35240-61582356-2cb4-4c7a-8bb3-30d2ccb7c900"
+    },
+    {
+      "name": "price",
+      "item": [
+        {
+          "name": "Real-time price",
+          "id": "e613b281-1844-4738-a454-3c8a7cecb388",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/price?symbol=<string>&apikey=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "price"
+              ],
+              "query": [
+                {
+                  "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                  "key": "symbol",
+                  "value": "<string>"
+                },
+                {
+                  "description": "(Required) Your Twelve Data API key.",
+                  "key": "apikey",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Returns the latest available real-time trading price for an instrument."
+          },
+          "response": [
+            {
+              "id": "0eaa357c-3155-42c2-a72e-31b4d0639a9e",
+              "name": "Price payload.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/price?symbol=<string>&apikey=<API Key>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "price"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                      "key": "symbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) Your Twelve Data API key.",
+                      "key": "apikey",
+                      "value": "<API Key>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"price\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T03:20:58.000Z",
+              "updatedAt": "2026-07-28T03:20:58.000Z",
+              "uid": "35240-0eaa357c-3155-42c2-a72e-31b4d0639a9e"
+            },
+            {
+              "id": "a4b40c19-7dc6-4dde-b6be-a7f62d1d097f",
+              "name": "API credit limit for the current minute has been exceeded.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/price?symbol=<string>&apikey=<API Key>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "price"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                      "key": "symbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) Your Twelve Data API key.",
+                      "key": "apikey",
+                      "value": "<API Key>"
+                    }
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<integer>\",\n  \"message\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T03:20:58.000Z",
+              "updatedAt": "2026-07-28T03:20:58.000Z",
+              "uid": "35240-a4b40c19-7dc6-4dde-b6be-a7f62d1d097f"
+            }
+          ],
+          "createdAt": "2026-07-28T03:20:58.000Z",
+          "updatedAt": "2026-07-28T03:20:58.000Z",
+          "uid": "35240-e613b281-1844-4738-a454-3c8a7cecb388"
+        }
+      ],
+      "id": "3216dcb2-cc22-4994-a55c-3ff10c089491",
+      "createdAt": "2026-07-28T03:20:58.000Z",
+      "updatedAt": "2026-07-28T03:20:58.000Z",
+      "uid": "35240-3216dcb2-cc22-4994-a55c-3ff10c089491"
+    },
+    {
+      "name": "market_movers",
+      "item": [
+        {
+          "name": "{market}",
+          "item": [
+            {
+              "name": "Market movers",
+              "id": "187ed93c-ff07-47ce-a4ed-eb1cf0f7c022",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/market_movers/:market?apikey=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "market_movers",
+                    ":market"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Your Twelve Data API key.",
+                      "key": "apikey",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "id": "e614128d-f255-4adf-91d4-c4a4b837a06a",
+                      "key": "market",
+                      "value": "crypto",
+                      "description": "(Required) Market to list movers for."
+                    }
+                  ]
+                },
+                "description": "Returns the top gainers and losers by percentage change for a market."
+              },
+              "response": [
+                {
+                  "id": "dc966247-a0c5-4cc7-9b02-a7147adbf818",
+                  "name": "Market movers payload.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/market_movers/:market?apikey=<API Key>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "market_movers",
+                        ":market"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) Your Twelve Data API key.",
+                          "key": "apikey",
+                          "value": "<API Key>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "market"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T03:20:58.000Z",
+                  "updatedAt": "2026-07-28T03:20:58.000Z",
+                  "uid": "35240-dc966247-a0c5-4cc7-9b02-a7147adbf818"
+                },
+                {
+                  "id": "955b0e77-2e4a-4d40-be3f-1297d8c66e73",
+                  "name": "API credit limit for the current minute has been exceeded.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/market_movers/:market?apikey=<API Key>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "market_movers",
+                        ":market"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) Your Twelve Data API key.",
+                          "key": "apikey",
+                          "value": "<API Key>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "market"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<integer>\",\n  \"message\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T03:20:58.000Z",
+                  "updatedAt": "2026-07-28T03:20:58.000Z",
+                  "uid": "35240-955b0e77-2e4a-4d40-be3f-1297d8c66e73"
+                }
+              ],
+              "createdAt": "2026-07-28T03:20:58.000Z",
+              "updatedAt": "2026-07-28T03:20:58.000Z",
+              "uid": "35240-187ed93c-ff07-47ce-a4ed-eb1cf0f7c022"
+            }
+          ],
+          "id": "67835c10-1d18-4be5-9fd7-d83c4f9cdcfa",
+          "createdAt": "2026-07-28T03:20:58.000Z",
+          "updatedAt": "2026-07-28T03:20:58.000Z",
+          "uid": "35240-67835c10-1d18-4be5-9fd7-d83c4f9cdcfa"
+        }
+      ],
+      "id": "f521eca2-759d-4ff4-9374-2291678c11cc",
+      "createdAt": "2026-07-28T03:20:58.000Z",
+      "updatedAt": "2026-07-28T03:20:58.000Z",
+      "uid": "35240-f521eca2-759d-4ff4-9374-2291678c11cc"
+    },
+    {
+      "name": "market_state",
+      "item": [
+        {
+          "name": "Market state",
+          "id": "009c3077-e12d-4472-b2db-8e0b67e4fde0",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/market_state?exchange=<string>&apikey=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "market_state"
+              ],
+              "query": [
+                {
+                  "key": "exchange",
+                  "value": "<string>"
+                },
+                {
+                  "description": "(Required) Your Twelve Data API key.",
+                  "key": "apikey",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Returns the real-time open/closed state of exchanges."
+          },
+          "response": [
+            {
+              "id": "fcbe9ccb-7cba-4dd8-977b-62dfd06fb784",
+              "name": "Market state payload.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/market_state?exchange=<string>&apikey=<API Key>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "market_state"
+                  ],
+                  "query": [
+                    {
+                      "key": "exchange",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) Your Twelve Data API key.",
+                      "key": "apikey",
+                      "value": "<API Key>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T03:20:58.000Z",
+              "updatedAt": "2026-07-28T03:20:58.000Z",
+              "uid": "35240-fcbe9ccb-7cba-4dd8-977b-62dfd06fb784"
+            }
+          ],
+          "createdAt": "2026-07-28T03:20:58.000Z",
+          "updatedAt": "2026-07-28T03:20:58.000Z",
+          "uid": "35240-009c3077-e12d-4472-b2db-8e0b67e4fde0"
+        }
+      ],
+      "id": "66683fac-d5bb-48c0-8bb3-c1ae26acf413",
+      "createdAt": "2026-07-28T03:20:58.000Z",
+      "updatedAt": "2026-07-28T03:20:58.000Z",
+      "uid": "35240-66683fac-d5bb-48c0-8bb3-c1ae26acf413"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "apikey",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "query",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.twelvedata.com"
+    }
+  ]
+}

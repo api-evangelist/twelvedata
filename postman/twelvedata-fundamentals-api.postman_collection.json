@@ -1,0 +1,642 @@
+{
+  "info": {
+    "_postman_id": "938395c4-7351-402c-a3d6-995b8d77c195",
+    "name": "Twelve Data REST Core Data Fundamentals API",
+    "description": "REST API for Twelve Data financial market data covering stocks, forex, cryptocurrencies, ETFs, indices, commodities, and funds. Provides historical and real-time time series (OHLCV), quotes and prices, 100+ technical indicators, reference / catalog data, and company fundamentals. All requests are authenticated with an apikey supplied either as a query parameter (?apikey=) or via the `Authorization: apikey <KEY>` header. Every endpoint consumes a data-weight number of API credits; the per-minute credit quota resets each minute.\n\nContact Support:\n Name: Twelve Data Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T03:21:21.000Z",
+    "updatedAt": "2026-07-28T03:21:21.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-938395c4-7351-402c-a3d6-995b8d77c195"
+  },
+  "item": [
+    {
+      "name": "profile",
+      "item": [
+        {
+          "name": "Company profile",
+          "id": "5895036e-7ff1-4c2d-9ccd-bca220ee5c70",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/profile?symbol=<string>&apikey=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "profile"
+              ],
+              "query": [
+                {
+                  "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                  "key": "symbol",
+                  "value": "<string>"
+                },
+                {
+                  "description": "(Required) Your Twelve Data API key.",
+                  "key": "apikey",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Returns the company profile (sector, industry, description, employees, and more)."
+          },
+          "response": [
+            {
+              "id": "1011a201-7d0e-4f56-9d09-1577b3a4f8c5",
+              "name": "Company profile payload.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/profile?symbol=<string>&apikey=<API Key>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "profile"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                      "key": "symbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) Your Twelve Data API key.",
+                      "key": "apikey",
+                      "value": "<API Key>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T03:21:21.000Z",
+              "updatedAt": "2026-07-28T03:21:21.000Z",
+              "uid": "35240-1011a201-7d0e-4f56-9d09-1577b3a4f8c5"
+            }
+          ],
+          "createdAt": "2026-07-28T03:21:21.000Z",
+          "updatedAt": "2026-07-28T03:21:21.000Z",
+          "uid": "35240-5895036e-7ff1-4c2d-9ccd-bca220ee5c70"
+        }
+      ],
+      "id": "eed66afb-01f1-4b89-bb41-162cb7fe0c52",
+      "createdAt": "2026-07-28T03:21:21.000Z",
+      "updatedAt": "2026-07-28T03:21:21.000Z",
+      "uid": "35240-eed66afb-01f1-4b89-bb41-162cb7fe0c52"
+    },
+    {
+      "name": "dividends",
+      "item": [
+        {
+          "name": "Dividends",
+          "id": "0d05502b-0bbe-458f-a900-24908860e7b0",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/dividends?symbol=<string>&apikey=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "dividends"
+              ],
+              "query": [
+                {
+                  "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                  "key": "symbol",
+                  "value": "<string>"
+                },
+                {
+                  "description": "(Required) Your Twelve Data API key.",
+                  "key": "apikey",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Returns the dividend history for a company."
+          },
+          "response": [
+            {
+              "id": "40f980a3-3a7f-4629-9b24-1b6a0ffc630d",
+              "name": "Dividends payload.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/dividends?symbol=<string>&apikey=<API Key>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "dividends"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                      "key": "symbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) Your Twelve Data API key.",
+                      "key": "apikey",
+                      "value": "<API Key>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T03:21:21.000Z",
+              "updatedAt": "2026-07-28T03:21:21.000Z",
+              "uid": "35240-40f980a3-3a7f-4629-9b24-1b6a0ffc630d"
+            }
+          ],
+          "createdAt": "2026-07-28T03:21:21.000Z",
+          "updatedAt": "2026-07-28T03:21:21.000Z",
+          "uid": "35240-0d05502b-0bbe-458f-a900-24908860e7b0"
+        }
+      ],
+      "id": "c26f2419-8f94-4f61-9cfd-34f8c572dfa6",
+      "createdAt": "2026-07-28T03:21:21.000Z",
+      "updatedAt": "2026-07-28T03:21:21.000Z",
+      "uid": "35240-c26f2419-8f94-4f61-9cfd-34f8c572dfa6"
+    },
+    {
+      "name": "earnings",
+      "item": [
+        {
+          "name": "Earnings",
+          "id": "44e00483-6581-4a13-a578-38a0c9e6668a",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/earnings?symbol=<string>&apikey=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "earnings"
+              ],
+              "query": [
+                {
+                  "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                  "key": "symbol",
+                  "value": "<string>"
+                },
+                {
+                  "description": "(Required) Your Twelve Data API key.",
+                  "key": "apikey",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Returns historical and upcoming earnings for a company."
+          },
+          "response": [
+            {
+              "id": "eb4448ce-0a48-4092-b632-0b70e42a37ac",
+              "name": "Earnings payload.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/earnings?symbol=<string>&apikey=<API Key>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "earnings"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                      "key": "symbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) Your Twelve Data API key.",
+                      "key": "apikey",
+                      "value": "<API Key>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T03:21:21.000Z",
+              "updatedAt": "2026-07-28T03:21:21.000Z",
+              "uid": "35240-eb4448ce-0a48-4092-b632-0b70e42a37ac"
+            }
+          ],
+          "createdAt": "2026-07-28T03:21:21.000Z",
+          "updatedAt": "2026-07-28T03:21:21.000Z",
+          "uid": "35240-44e00483-6581-4a13-a578-38a0c9e6668a"
+        }
+      ],
+      "id": "9ee7eeee-7d8e-4497-bb4c-e83518482239",
+      "createdAt": "2026-07-28T03:21:21.000Z",
+      "updatedAt": "2026-07-28T03:21:21.000Z",
+      "uid": "35240-9ee7eeee-7d8e-4497-bb4c-e83518482239"
+    },
+    {
+      "name": "income_statement",
+      "item": [
+        {
+          "name": "Income statement",
+          "id": "e681e885-7bb1-44be-9a56-63c08496ce0f",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/income_statement?symbol=<string>&apikey=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "income_statement"
+              ],
+              "query": [
+                {
+                  "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                  "key": "symbol",
+                  "value": "<string>"
+                },
+                {
+                  "description": "(Required) Your Twelve Data API key.",
+                  "key": "apikey",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Returns the income statement for a company."
+          },
+          "response": [
+            {
+              "id": "39ec5603-0a2f-4a98-be3c-4a44679743c6",
+              "name": "Income statement payload.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/income_statement?symbol=<string>&apikey=<API Key>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "income_statement"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                      "key": "symbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) Your Twelve Data API key.",
+                      "key": "apikey",
+                      "value": "<API Key>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T03:21:21.000Z",
+              "updatedAt": "2026-07-28T03:21:21.000Z",
+              "uid": "35240-39ec5603-0a2f-4a98-be3c-4a44679743c6"
+            }
+          ],
+          "createdAt": "2026-07-28T03:21:21.000Z",
+          "updatedAt": "2026-07-28T03:21:21.000Z",
+          "uid": "35240-e681e885-7bb1-44be-9a56-63c08496ce0f"
+        }
+      ],
+      "id": "16b239fa-b375-4c21-a245-d5edc868be24",
+      "createdAt": "2026-07-28T03:21:21.000Z",
+      "updatedAt": "2026-07-28T03:21:21.000Z",
+      "uid": "35240-16b239fa-b375-4c21-a245-d5edc868be24"
+    },
+    {
+      "name": "balance_sheet",
+      "item": [
+        {
+          "name": "Balance sheet",
+          "id": "5bffb220-212f-4224-8a15-d45fde35f229",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/balance_sheet?symbol=<string>&apikey=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "balance_sheet"
+              ],
+              "query": [
+                {
+                  "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                  "key": "symbol",
+                  "value": "<string>"
+                },
+                {
+                  "description": "(Required) Your Twelve Data API key.",
+                  "key": "apikey",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Returns the balance sheet for a company."
+          },
+          "response": [
+            {
+              "id": "d440b015-d41c-45fa-a21a-4a16ee1c86af",
+              "name": "Balance sheet payload.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/balance_sheet?symbol=<string>&apikey=<API Key>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "balance_sheet"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                      "key": "symbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) Your Twelve Data API key.",
+                      "key": "apikey",
+                      "value": "<API Key>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T03:21:21.000Z",
+              "updatedAt": "2026-07-28T03:21:21.000Z",
+              "uid": "35240-d440b015-d41c-45fa-a21a-4a16ee1c86af"
+            }
+          ],
+          "createdAt": "2026-07-28T03:21:21.000Z",
+          "updatedAt": "2026-07-28T03:21:21.000Z",
+          "uid": "35240-5bffb220-212f-4224-8a15-d45fde35f229"
+        }
+      ],
+      "id": "59f34c41-18ba-44a0-b9e3-167149038d76",
+      "createdAt": "2026-07-28T03:21:21.000Z",
+      "updatedAt": "2026-07-28T03:21:21.000Z",
+      "uid": "35240-59f34c41-18ba-44a0-b9e3-167149038d76"
+    },
+    {
+      "name": "cash_flow",
+      "item": [
+        {
+          "name": "Cash flow",
+          "id": "cef25560-c907-45d7-b8ef-2b3079be0bd8",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/cash_flow?symbol=<string>&apikey=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cash_flow"
+              ],
+              "query": [
+                {
+                  "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                  "key": "symbol",
+                  "value": "<string>"
+                },
+                {
+                  "description": "(Required) Your Twelve Data API key.",
+                  "key": "apikey",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Returns the cash flow statement for a company."
+          },
+          "response": [
+            {
+              "id": "e4a0ac35-43b7-44d0-981d-6e0306b53c6a",
+              "name": "Cash flow payload.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/cash_flow?symbol=<string>&apikey=<API Key>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "cash_flow"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                      "key": "symbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) Your Twelve Data API key.",
+                      "key": "apikey",
+                      "value": "<API Key>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T03:21:21.000Z",
+              "updatedAt": "2026-07-28T03:21:21.000Z",
+              "uid": "35240-e4a0ac35-43b7-44d0-981d-6e0306b53c6a"
+            }
+          ],
+          "createdAt": "2026-07-28T03:21:21.000Z",
+          "updatedAt": "2026-07-28T03:21:21.000Z",
+          "uid": "35240-cef25560-c907-45d7-b8ef-2b3079be0bd8"
+        }
+      ],
+      "id": "ed1d5754-6ade-4347-a315-9aaa367fb51b",
+      "createdAt": "2026-07-28T03:21:21.000Z",
+      "updatedAt": "2026-07-28T03:21:21.000Z",
+      "uid": "35240-ed1d5754-6ade-4347-a315-9aaa367fb51b"
+    },
+    {
+      "name": "statistics",
+      "item": [
+        {
+          "name": "Statistics",
+          "id": "89d400be-5046-48cc-9aa1-d65247ce30bb",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/statistics?symbol=<string>&apikey=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "statistics"
+              ],
+              "query": [
+                {
+                  "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                  "key": "symbol",
+                  "value": "<string>"
+                },
+                {
+                  "description": "(Required) Your Twelve Data API key.",
+                  "key": "apikey",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Returns key valuation, profitability, and financial statistics for a company."
+          },
+          "response": [
+            {
+              "id": "85eefdcf-5b50-4ba0-993e-83974cc90497",
+              "name": "Statistics payload.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/statistics?symbol=<string>&apikey=<API Key>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "statistics"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                      "key": "symbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) Your Twelve Data API key.",
+                      "key": "apikey",
+                      "value": "<API Key>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T03:21:21.000Z",
+              "updatedAt": "2026-07-28T03:21:21.000Z",
+              "uid": "35240-85eefdcf-5b50-4ba0-993e-83974cc90497"
+            }
+          ],
+          "createdAt": "2026-07-28T03:21:21.000Z",
+          "updatedAt": "2026-07-28T03:21:21.000Z",
+          "uid": "35240-89d400be-5046-48cc-9aa1-d65247ce30bb"
+        }
+      ],
+      "id": "709c4e06-d57e-4c6c-aa1c-3417ca6ebca8",
+      "createdAt": "2026-07-28T03:21:21.000Z",
+      "updatedAt": "2026-07-28T03:21:21.000Z",
+      "uid": "35240-709c4e06-d57e-4c6c-aa1c-3417ca6ebca8"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "apikey",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "query",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.twelvedata.com"
+    }
+  ]
+}

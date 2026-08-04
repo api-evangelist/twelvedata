@@ -1,0 +1,702 @@
+{
+  "info": {
+    "_postman_id": "24cacf41-a7dc-434e-b4ff-55fa5e517188",
+    "name": "Twelve Data REST Core Data Reference Data API",
+    "description": "REST API for Twelve Data financial market data covering stocks, forex, cryptocurrencies, ETFs, indices, commodities, and funds. Provides historical and real-time time series (OHLCV), quotes and prices, 100+ technical indicators, reference / catalog data, and company fundamentals. All requests are authenticated with an apikey supplied either as a query parameter (?apikey=) or via the `Authorization: apikey <KEY>` header. Every endpoint consumes a data-weight number of API credits; the per-minute credit quota resets each minute.\n\nContact Support:\n Name: Twelve Data Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T03:21:22.000Z",
+    "updatedAt": "2026-07-28T03:21:22.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-24cacf41-a7dc-434e-b4ff-55fa5e517188"
+  },
+  "item": [
+    {
+      "name": "stocks",
+      "item": [
+        {
+          "name": "List stocks",
+          "id": "a2947c39-0592-44e8-9a38-22ead5e3fee4",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/stocks?symbol=<string>&exchange=<string>&country=<string>&apikey=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "stocks"
+              ],
+              "query": [
+                {
+                  "key": "symbol",
+                  "value": "<string>"
+                },
+                {
+                  "key": "exchange",
+                  "value": "<string>"
+                },
+                {
+                  "key": "country",
+                  "value": "<string>"
+                },
+                {
+                  "description": "(Required) Your Twelve Data API key.",
+                  "key": "apikey",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Returns the daily-updated catalog of available stock symbols across exchanges."
+          },
+          "response": [
+            {
+              "id": "525f161f-2718-4164-b539-3a77624323af",
+              "name": "Stock catalog payload.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/stocks?symbol=<string>&exchange=<string>&country=<string>&apikey=<API Key>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "stocks"
+                  ],
+                  "query": [
+                    {
+                      "key": "symbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "exchange",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "country",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) Your Twelve Data API key.",
+                      "key": "apikey",
+                      "value": "<API Key>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T03:21:23.000Z",
+              "updatedAt": "2026-07-28T03:21:23.000Z",
+              "uid": "35240-525f161f-2718-4164-b539-3a77624323af"
+            }
+          ],
+          "createdAt": "2026-07-28T03:21:22.000Z",
+          "updatedAt": "2026-07-28T03:21:22.000Z",
+          "uid": "35240-a2947c39-0592-44e8-9a38-22ead5e3fee4"
+        }
+      ],
+      "id": "0877d13c-d1e5-4924-9372-422f6d64a651",
+      "createdAt": "2026-07-28T03:21:22.000Z",
+      "updatedAt": "2026-07-28T03:21:22.000Z",
+      "uid": "35240-0877d13c-d1e5-4924-9372-422f6d64a651"
+    },
+    {
+      "name": "forex_pairs",
+      "item": [
+        {
+          "name": "List forex pairs",
+          "id": "8b95bc3e-5de4-4f51-88b3-a545f29d0f72",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/forex_pairs?apikey=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "forex_pairs"
+              ],
+              "query": [
+                {
+                  "description": "(Required) Your Twelve Data API key.",
+                  "key": "apikey",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Returns the catalog of available foreign-exchange currency pairs."
+          },
+          "response": [
+            {
+              "id": "70a5c5f2-c29a-420f-b279-db49be15de8e",
+              "name": "Forex pair catalog payload.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/forex_pairs?apikey=<API Key>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "forex_pairs"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Your Twelve Data API key.",
+                      "key": "apikey",
+                      "value": "<API Key>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T03:21:23.000Z",
+              "updatedAt": "2026-07-28T03:21:23.000Z",
+              "uid": "35240-70a5c5f2-c29a-420f-b279-db49be15de8e"
+            }
+          ],
+          "createdAt": "2026-07-28T03:21:22.000Z",
+          "updatedAt": "2026-07-28T03:21:22.000Z",
+          "uid": "35240-8b95bc3e-5de4-4f51-88b3-a545f29d0f72"
+        }
+      ],
+      "id": "7485253a-e9c2-436a-a640-b5ede7be7ac6",
+      "createdAt": "2026-07-28T03:21:22.000Z",
+      "updatedAt": "2026-07-28T03:21:22.000Z",
+      "uid": "35240-7485253a-e9c2-436a-a640-b5ede7be7ac6"
+    },
+    {
+      "name": "cryptocurrencies",
+      "item": [
+        {
+          "name": "List cryptocurrencies",
+          "id": "c0990925-4d28-4521-a1fe-fe64b305d727",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/cryptocurrencies?apikey=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cryptocurrencies"
+              ],
+              "query": [
+                {
+                  "description": "(Required) Your Twelve Data API key.",
+                  "key": "apikey",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Returns the catalog of available cryptocurrency pairs across exchanges."
+          },
+          "response": [
+            {
+              "id": "91e84330-3614-4599-bbca-338585b286e7",
+              "name": "Cryptocurrency catalog payload.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/cryptocurrencies?apikey=<API Key>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "cryptocurrencies"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Your Twelve Data API key.",
+                      "key": "apikey",
+                      "value": "<API Key>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T03:21:23.000Z",
+              "updatedAt": "2026-07-28T03:21:23.000Z",
+              "uid": "35240-91e84330-3614-4599-bbca-338585b286e7"
+            }
+          ],
+          "createdAt": "2026-07-28T03:21:22.000Z",
+          "updatedAt": "2026-07-28T03:21:22.000Z",
+          "uid": "35240-c0990925-4d28-4521-a1fe-fe64b305d727"
+        }
+      ],
+      "id": "7161f709-16b7-4817-910c-d851c78108c9",
+      "createdAt": "2026-07-28T03:21:22.000Z",
+      "updatedAt": "2026-07-28T03:21:22.000Z",
+      "uid": "35240-7161f709-16b7-4817-910c-d851c78108c9"
+    },
+    {
+      "name": "etfs",
+      "item": [
+        {
+          "name": "List ETFs",
+          "id": "2fe346ff-6ccd-42f1-a68b-473f7c4fb673",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/etfs?apikey=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "etfs"
+              ],
+              "query": [
+                {
+                  "description": "(Required) Your Twelve Data API key.",
+                  "key": "apikey",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Returns the catalog of available exchange-traded fund symbols."
+          },
+          "response": [
+            {
+              "id": "ac5d0419-da2f-4dbd-84c1-78ea4001d07f",
+              "name": "ETF catalog payload.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/etfs?apikey=<API Key>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "etfs"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Your Twelve Data API key.",
+                      "key": "apikey",
+                      "value": "<API Key>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T03:21:23.000Z",
+              "updatedAt": "2026-07-28T03:21:23.000Z",
+              "uid": "35240-ac5d0419-da2f-4dbd-84c1-78ea4001d07f"
+            }
+          ],
+          "createdAt": "2026-07-28T03:21:22.000Z",
+          "updatedAt": "2026-07-28T03:21:22.000Z",
+          "uid": "35240-2fe346ff-6ccd-42f1-a68b-473f7c4fb673"
+        }
+      ],
+      "id": "a544465f-7656-4702-926c-fa96c48778b9",
+      "createdAt": "2026-07-28T03:21:22.000Z",
+      "updatedAt": "2026-07-28T03:21:22.000Z",
+      "uid": "35240-a544465f-7656-4702-926c-fa96c48778b9"
+    },
+    {
+      "name": "indices",
+      "item": [
+        {
+          "name": "List indices",
+          "id": "2be30214-96a1-458c-a3c9-b7cbd9c995eb",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/indices?apikey=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "indices"
+              ],
+              "query": [
+                {
+                  "description": "(Required) Your Twelve Data API key.",
+                  "key": "apikey",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Returns the catalog of available market indices."
+          },
+          "response": [
+            {
+              "id": "26dc0959-6c2c-4747-83bf-c84d7cb819fc",
+              "name": "Index catalog payload.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/indices?apikey=<API Key>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "indices"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Your Twelve Data API key.",
+                      "key": "apikey",
+                      "value": "<API Key>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T03:21:23.000Z",
+              "updatedAt": "2026-07-28T03:21:23.000Z",
+              "uid": "35240-26dc0959-6c2c-4747-83bf-c84d7cb819fc"
+            }
+          ],
+          "createdAt": "2026-07-28T03:21:22.000Z",
+          "updatedAt": "2026-07-28T03:21:22.000Z",
+          "uid": "35240-2be30214-96a1-458c-a3c9-b7cbd9c995eb"
+        }
+      ],
+      "id": "9ac4035b-8207-4c66-ab42-91fd55ae19be",
+      "createdAt": "2026-07-28T03:21:22.000Z",
+      "updatedAt": "2026-07-28T03:21:22.000Z",
+      "uid": "35240-9ac4035b-8207-4c66-ab42-91fd55ae19be"
+    },
+    {
+      "name": "exchanges",
+      "item": [
+        {
+          "name": "List exchanges",
+          "id": "accd1a1f-1bc0-478a-a894-38ce89d12756",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/exchanges?apikey=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "exchanges"
+              ],
+              "query": [
+                {
+                  "description": "(Required) Your Twelve Data API key.",
+                  "key": "apikey",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Returns the catalog of available equity exchanges."
+          },
+          "response": [
+            {
+              "id": "6957b8ed-aee6-4735-a0e5-bd60f2cc049d",
+              "name": "Exchange catalog payload.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/exchanges?apikey=<API Key>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "exchanges"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Your Twelve Data API key.",
+                      "key": "apikey",
+                      "value": "<API Key>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T03:21:23.000Z",
+              "updatedAt": "2026-07-28T03:21:23.000Z",
+              "uid": "35240-6957b8ed-aee6-4735-a0e5-bd60f2cc049d"
+            }
+          ],
+          "createdAt": "2026-07-28T03:21:22.000Z",
+          "updatedAt": "2026-07-28T03:21:22.000Z",
+          "uid": "35240-accd1a1f-1bc0-478a-a894-38ce89d12756"
+        }
+      ],
+      "id": "b3ebefbc-8d80-401d-a9ac-fa0bb257e0e5",
+      "createdAt": "2026-07-28T03:21:22.000Z",
+      "updatedAt": "2026-07-28T03:21:22.000Z",
+      "uid": "35240-b3ebefbc-8d80-401d-a9ac-fa0bb257e0e5"
+    },
+    {
+      "name": "symbol_search",
+      "item": [
+        {
+          "name": "Symbol search",
+          "id": "96ca1a60-2b93-4c24-8910-55e077178de8",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/symbol_search?symbol=<string>&apikey=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "symbol_search"
+              ],
+              "query": [
+                {
+                  "description": "(Required) Search term (name, ticker, ISIN, or FIGI).",
+                  "key": "symbol",
+                  "value": "<string>"
+                },
+                {
+                  "description": "(Required) Your Twelve Data API key.",
+                  "key": "apikey",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Finds instruments by name, symbol, ISIN, or FIGI."
+          },
+          "response": [
+            {
+              "id": "59f7301b-0e81-4893-bac6-5d135aae803e",
+              "name": "Symbol search payload.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/symbol_search?symbol=<string>&apikey=<API Key>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "symbol_search"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Search term (name, ticker, ISIN, or FIGI).",
+                      "key": "symbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) Your Twelve Data API key.",
+                      "key": "apikey",
+                      "value": "<API Key>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T03:21:23.000Z",
+              "updatedAt": "2026-07-28T03:21:23.000Z",
+              "uid": "35240-59f7301b-0e81-4893-bac6-5d135aae803e"
+            }
+          ],
+          "createdAt": "2026-07-28T03:21:22.000Z",
+          "updatedAt": "2026-07-28T03:21:22.000Z",
+          "uid": "35240-96ca1a60-2b93-4c24-8910-55e077178de8"
+        }
+      ],
+      "id": "b83035be-5a1a-4395-ab2a-24a5e74d9788",
+      "createdAt": "2026-07-28T03:21:22.000Z",
+      "updatedAt": "2026-07-28T03:21:22.000Z",
+      "uid": "35240-b83035be-5a1a-4395-ab2a-24a5e74d9788"
+    },
+    {
+      "name": "earliest_timestamp",
+      "item": [
+        {
+          "name": "Earliest timestamp",
+          "id": "67bfda41-fa9b-4cec-98fe-681fbb6087f1",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/earliest_timestamp?symbol=<string>&interval=1min&apikey=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "earliest_timestamp"
+              ],
+              "query": [
+                {
+                  "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                  "key": "symbol",
+                  "value": "<string>"
+                },
+                {
+                  "description": "(Required) Time interval between two consecutive data points.",
+                  "key": "interval",
+                  "value": "1min"
+                },
+                {
+                  "description": "(Required) Your Twelve Data API key.",
+                  "key": "apikey",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Returns the earliest date for which data is available for an instrument and interval."
+          },
+          "response": [
+            {
+              "id": "de3cecb7-abd0-42ed-b1db-2d7ba39dd575",
+              "name": "Earliest timestamp payload.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/earliest_timestamp?symbol=<string>&interval=1min&apikey=<API Key>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "earliest_timestamp"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                      "key": "symbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) Time interval between two consecutive data points.",
+                      "key": "interval",
+                      "value": "1min"
+                    },
+                    {
+                      "description": "(Required) Your Twelve Data API key.",
+                      "key": "apikey",
+                      "value": "<API Key>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T03:21:23.000Z",
+              "updatedAt": "2026-07-28T03:21:23.000Z",
+              "uid": "35240-de3cecb7-abd0-42ed-b1db-2d7ba39dd575"
+            }
+          ],
+          "createdAt": "2026-07-28T03:21:22.000Z",
+          "updatedAt": "2026-07-28T03:21:22.000Z",
+          "uid": "35240-67bfda41-fa9b-4cec-98fe-681fbb6087f1"
+        }
+      ],
+      "id": "d6a4d423-7ce3-4b8b-b960-e2c0dfd1ef46",
+      "createdAt": "2026-07-28T03:21:22.000Z",
+      "updatedAt": "2026-07-28T03:21:22.000Z",
+      "uid": "35240-d6a4d423-7ce3-4b8b-b960-e2c0dfd1ef46"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "apikey",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "query",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.twelvedata.com"
+    }
+  ]
+}

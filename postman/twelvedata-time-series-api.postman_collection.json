@@ -1,0 +1,473 @@
+{
+  "info": {
+    "_postman_id": "b8f03510-ed74-4fb8-9f57-b12cb38c4ae9",
+    "name": "Twelve Data REST Core Data Time Series API",
+    "description": "REST API for Twelve Data financial market data covering stocks, forex, cryptocurrencies, ETFs, indices, commodities, and funds. Provides historical and real-time time series (OHLCV), quotes and prices, 100+ technical indicators, reference / catalog data, and company fundamentals. All requests are authenticated with an apikey supplied either as a query parameter (?apikey=) or via the `Authorization: apikey <KEY>` header. Every endpoint consumes a data-weight number of API credits; the per-minute credit quota resets each minute.\n\nContact Support:\n Name: Twelve Data Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T03:21:24.000Z",
+    "updatedAt": "2026-07-28T03:21:24.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-b8f03510-ed74-4fb8-9f57-b12cb38c4ae9"
+  },
+  "item": [
+    {
+      "name": "time_series",
+      "item": [
+        {
+          "name": "cross",
+          "item": [
+            {
+              "name": "Cross time series",
+              "id": "7cb23737-efce-4c42-a28b-2ceb4a8c26bc",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/time_series/cross?symbol=<string>&interval=30min&apikey=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "time_series",
+                    "cross"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Base/quote cross expression, e.g. EUR/JPY derived cross.",
+                      "key": "symbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) Time interval between two consecutive data points.",
+                      "key": "interval",
+                      "value": "30min"
+                    },
+                    {
+                      "description": "(Required) Your Twelve Data API key.",
+                      "key": "apikey",
+                      "value": "<string>"
+                    }
+                  ]
+                },
+                "description": "Computes a cross-rate time series between two instruments (for example, exotic currency pairs) that are not directly quoted."
+              },
+              "response": [
+                {
+                  "id": "31eeb0e6-b45d-493c-8e92-fd4552337242",
+                  "name": "Cross time series payload.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/time_series/cross?symbol=<string>&interval=30min&apikey=<API Key>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "time_series",
+                        "cross"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) Base/quote cross expression, e.g. EUR/JPY derived cross.",
+                          "key": "symbol",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) Time interval between two consecutive data points.",
+                          "key": "interval",
+                          "value": "30min"
+                        },
+                        {
+                          "description": "(Required) Your Twelve Data API key.",
+                          "key": "apikey",
+                          "value": "<API Key>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T03:21:24.000Z",
+                  "updatedAt": "2026-07-28T03:21:24.000Z",
+                  "uid": "35240-31eeb0e6-b45d-493c-8e92-fd4552337242"
+                },
+                {
+                  "id": "cd528528-1ff2-44e0-aaf6-0a51c8f1c5e8",
+                  "name": "API credit limit for the current minute has been exceeded.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/time_series/cross?symbol=<string>&interval=30min&apikey=<API Key>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "time_series",
+                        "cross"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) Base/quote cross expression, e.g. EUR/JPY derived cross.",
+                          "key": "symbol",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) Time interval between two consecutive data points.",
+                          "key": "interval",
+                          "value": "30min"
+                        },
+                        {
+                          "description": "(Required) Your Twelve Data API key.",
+                          "key": "apikey",
+                          "value": "<API Key>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"code\": \"<integer>\",\n  \"message\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T03:21:24.000Z",
+                  "updatedAt": "2026-07-28T03:21:24.000Z",
+                  "uid": "35240-cd528528-1ff2-44e0-aaf6-0a51c8f1c5e8"
+                }
+              ],
+              "createdAt": "2026-07-28T03:21:24.000Z",
+              "updatedAt": "2026-07-28T03:21:24.000Z",
+              "uid": "35240-7cb23737-efce-4c42-a28b-2ceb4a8c26bc"
+            }
+          ],
+          "id": "2005c7d0-5feb-4c8d-a1aa-677ed4551175",
+          "createdAt": "2026-07-28T03:21:24.000Z",
+          "updatedAt": "2026-07-28T03:21:24.000Z",
+          "uid": "35240-2005c7d0-5feb-4c8d-a1aa-677ed4551175"
+        },
+        {
+          "name": "Time series (OHLCV)",
+          "id": "e2976b9c-2e86-4d62-ad04-27777597288c",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/time_series?symbol=<string>&interval=30min&outputsize=30&exchange=<string>&format=JSON&apikey=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "time_series"
+              ],
+              "query": [
+                {
+                  "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                  "key": "symbol",
+                  "value": "<string>"
+                },
+                {
+                  "description": "(Required) Time interval between two consecutive data points.",
+                  "key": "interval",
+                  "value": "30min"
+                },
+                {
+                  "description": "Number of data points to return (max 5000).",
+                  "key": "outputsize",
+                  "value": "30"
+                },
+                {
+                  "description": "Exchange to which the instrument belongs.",
+                  "key": "exchange",
+                  "value": "<string>"
+                },
+                {
+                  "key": "format",
+                  "value": "JSON"
+                },
+                {
+                  "description": "(Required) Your Twelve Data API key.",
+                  "key": "apikey",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Returns meta and time series (open, high, low, close, volume) for the requested instrument at the requested interval. Core endpoint for historical and intraday market data."
+          },
+          "response": [
+            {
+              "id": "a1b55c52-e30d-4602-a8e4-401c9e0836ae",
+              "name": "Time series payload.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/time_series?symbol=<string>&interval=30min&outputsize=30&exchange=<string>&format=JSON&apikey=<API Key>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "time_series"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                      "key": "symbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) Time interval between two consecutive data points.",
+                      "key": "interval",
+                      "value": "30min"
+                    },
+                    {
+                      "description": "Number of data points to return (max 5000).",
+                      "key": "outputsize",
+                      "value": "30"
+                    },
+                    {
+                      "description": "Exchange to which the instrument belongs.",
+                      "key": "exchange",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "format",
+                      "value": "JSON"
+                    },
+                    {
+                      "description": "(Required) Your Twelve Data API key.",
+                      "key": "apikey",
+                      "value": "<API Key>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"meta\": {\n    \"symbol\": \"<string>\",\n    \"interval\": \"<string>\",\n    \"currency\": \"<string>\",\n    \"exchange\": \"<string>\",\n    \"type\": \"<string>\"\n  },\n  \"values\": [\n    {\n      \"datetime\": \"<string>\",\n      \"open\": \"<string>\",\n      \"high\": \"<string>\",\n      \"low\": \"<string>\",\n      \"close\": \"<string>\",\n      \"volume\": \"<string>\"\n    },\n    {\n      \"datetime\": \"<string>\",\n      \"open\": \"<string>\",\n      \"high\": \"<string>\",\n      \"low\": \"<string>\",\n      \"close\": \"<string>\",\n      \"volume\": \"<string>\"\n    }\n  ],\n  \"status\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T03:21:24.000Z",
+              "updatedAt": "2026-07-28T03:21:24.000Z",
+              "uid": "35240-a1b55c52-e30d-4602-a8e4-401c9e0836ae"
+            },
+            {
+              "id": "867ef72d-671d-41d7-b541-606ec6db2532",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/time_series?symbol=<string>&interval=30min&outputsize=30&exchange=<string>&format=JSON&apikey=<API Key>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "time_series"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                      "key": "symbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) Time interval between two consecutive data points.",
+                      "key": "interval",
+                      "value": "30min"
+                    },
+                    {
+                      "description": "Number of data points to return (max 5000).",
+                      "key": "outputsize",
+                      "value": "30"
+                    },
+                    {
+                      "description": "Exchange to which the instrument belongs.",
+                      "key": "exchange",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "format",
+                      "value": "JSON"
+                    },
+                    {
+                      "description": "(Required) Your Twelve Data API key.",
+                      "key": "apikey",
+                      "value": "<API Key>"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<integer>\",\n  \"message\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T03:21:24.000Z",
+              "updatedAt": "2026-07-28T03:21:24.000Z",
+              "uid": "35240-867ef72d-671d-41d7-b541-606ec6db2532"
+            },
+            {
+              "id": "83932009-c220-4b53-a284-1adbe1daf3a1",
+              "name": "API credit limit for the current minute has been exceeded.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/time_series?symbol=<string>&interval=30min&outputsize=30&exchange=<string>&format=JSON&apikey=<API Key>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "time_series"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.",
+                      "key": "symbol",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) Time interval between two consecutive data points.",
+                      "key": "interval",
+                      "value": "30min"
+                    },
+                    {
+                      "description": "Number of data points to return (max 5000).",
+                      "key": "outputsize",
+                      "value": "30"
+                    },
+                    {
+                      "description": "Exchange to which the instrument belongs.",
+                      "key": "exchange",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "format",
+                      "value": "JSON"
+                    },
+                    {
+                      "description": "(Required) Your Twelve Data API key.",
+                      "key": "apikey",
+                      "value": "<API Key>"
+                    }
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"code\": \"<integer>\",\n  \"message\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T03:21:24.000Z",
+              "updatedAt": "2026-07-28T03:21:24.000Z",
+              "uid": "35240-83932009-c220-4b53-a284-1adbe1daf3a1"
+            }
+          ],
+          "createdAt": "2026-07-28T03:21:24.000Z",
+          "updatedAt": "2026-07-28T03:21:24.000Z",
+          "uid": "35240-e2976b9c-2e86-4d62-ad04-27777597288c"
+        }
+      ],
+      "id": "f3b53905-fbaf-40ff-88d6-1305b71eb34a",
+      "createdAt": "2026-07-28T03:21:24.000Z",
+      "updatedAt": "2026-07-28T03:21:24.000Z",
+      "uid": "35240-f3b53905-fbaf-40ff-88d6-1305b71eb34a"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "apikey",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "query",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.twelvedata.com"
+    }
+  ]
+}

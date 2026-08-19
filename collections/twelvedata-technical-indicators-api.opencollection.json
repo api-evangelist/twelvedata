@@ -1,0 +1,143 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Twelve Data REST Core Data Technical Indicators API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "apikey",
+      "value": "{{apikey}}",
+      "placement": "query"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Technical Indicators",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Relative Strength Index (RSI)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/rsi",
+            "params": [
+              {
+                "name": "symbol",
+                "value": "",
+                "type": "query",
+                "description": "Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD."
+              },
+              {
+                "name": "interval",
+                "value": "",
+                "type": "query",
+                "description": "Time interval between two consecutive data points."
+              },
+              {
+                "name": "time_period",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "apikey",
+                "value": "",
+                "type": "query",
+                "description": "Your Twelve Data API key."
+              }
+            ]
+          },
+          "docs": "Returns the RSI momentum indicator time series. Representative of the 100+ technical indicator endpoints (macd, bbands, ema, sma, adx, stoch, atr, and more) that share the same parameter conventions."
+        },
+        {
+          "info": {
+            "name": "Moving Average Convergence Divergence (MACD)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/macd",
+            "params": [
+              {
+                "name": "symbol",
+                "value": "",
+                "type": "query",
+                "description": "Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD."
+              },
+              {
+                "name": "interval",
+                "value": "",
+                "type": "query",
+                "description": "Time interval between two consecutive data points."
+              },
+              {
+                "name": "apikey",
+                "value": "",
+                "type": "query",
+                "description": "Your Twelve Data API key."
+              }
+            ]
+          },
+          "docs": "Returns the MACD indicator time series for an instrument."
+        },
+        {
+          "info": {
+            "name": "Bollinger Bands",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/bbands",
+            "params": [
+              {
+                "name": "symbol",
+                "value": "",
+                "type": "query",
+                "description": "Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD."
+              },
+              {
+                "name": "interval",
+                "value": "",
+                "type": "query",
+                "description": "Time interval between two consecutive data points."
+              },
+              {
+                "name": "apikey",
+                "value": "",
+                "type": "query",
+                "description": "Your Twelve Data API key."
+              }
+            ]
+          },
+          "docs": "Returns the Bollinger Bands overlay time series for an instrument."
+        },
+        {
+          "info": {
+            "name": "List technical indicators",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/technical_indicators",
+            "params": [
+              {
+                "name": "apikey",
+                "value": "",
+                "type": "query",
+                "description": "Your Twelve Data API key."
+              }
+            ]
+          },
+          "docs": "Returns the catalog of all available technical indicators and their parameters."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

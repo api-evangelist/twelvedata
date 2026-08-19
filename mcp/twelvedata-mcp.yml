@@ -10,15 +10,12 @@ server:
   open_source: https://github.com/twelvedata/mcp
   local_transport: stdio
   auth:
-    hosted: OAuth 2.0 authorization-code + PKCE via mcp.twelvedata.com (RFC 8414
-      metadata at /.well-known/oauth-authorization-server, dynamic client
-      registration, scope "twelvedata"); login links the user's Twelve Data API key.
+    hosted: OAuth 2.0 authorization-code + PKCE via mcp.twelvedata.com (RFC 8414 metadata at /.well-known/oauth-authorization-server,
+      dynamic client registration, scope "twelvedata"); login links the user's Twelve Data API key.
     local: TWELVE_DATA_API_KEY environment variable (.env), no OAuth.
-notes: >-
-  Live tools/list on the hosted endpoint returns 401 invalid_token (OAuth-gated);
-  the tool inventory below was taken verbatim from the open-source server
-  (src/tools/*.py, @mcp.tool functions) on 2026-07-22. Input schemas are the
-  Python function signatures in the repository; the REST parameter contracts are
+notes: Live tools/list on the hosted endpoint returns 401 invalid_token (OAuth-gated); the tool inventory
+  below was taken verbatim from the open-source server (src/tools/*.py, @mcp.tool functions) on 2026-07-22.
+  Input schemas are the Python function signatures in the repository; the REST parameter contracts are
   bound in mcp/twelvedata-tool-crosswalk.yml.
 tools:
 - name: oauth_login
@@ -126,3 +123,10 @@ tools:
   category: regulatory
   description: SEC EDGAR filings, insider transactions, institutional/fund/direct holders, tax info.
   source_operation: openapi/twelvedata-openapi-original.json#GetInsiderTransactions
+deployment:
+  mode: remote
+  endpoint: https://mcp.twelvedata.com/mcp
+  verified: probed
+  probe: gated
+  checked: '2026-08-12'
+  source: catalog MCP census

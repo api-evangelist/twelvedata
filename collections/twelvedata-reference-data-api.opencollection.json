@@ -1,0 +1,211 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Twelve Data REST Core Data Reference Data API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "apikey",
+      "value": "{{apikey}}",
+      "placement": "query"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Reference Data",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List stocks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/stocks",
+            "params": [
+              {
+                "name": "symbol",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "exchange",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "country",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "apikey",
+                "value": "",
+                "type": "query",
+                "description": "Your Twelve Data API key."
+              }
+            ]
+          },
+          "docs": "Returns the daily-updated catalog of available stock symbols across exchanges."
+        },
+        {
+          "info": {
+            "name": "List forex pairs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/forex_pairs",
+            "params": [
+              {
+                "name": "apikey",
+                "value": "",
+                "type": "query",
+                "description": "Your Twelve Data API key."
+              }
+            ]
+          },
+          "docs": "Returns the catalog of available foreign-exchange currency pairs."
+        },
+        {
+          "info": {
+            "name": "List cryptocurrencies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/cryptocurrencies",
+            "params": [
+              {
+                "name": "apikey",
+                "value": "",
+                "type": "query",
+                "description": "Your Twelve Data API key."
+              }
+            ]
+          },
+          "docs": "Returns the catalog of available cryptocurrency pairs across exchanges."
+        },
+        {
+          "info": {
+            "name": "List ETFs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/etfs",
+            "params": [
+              {
+                "name": "apikey",
+                "value": "",
+                "type": "query",
+                "description": "Your Twelve Data API key."
+              }
+            ]
+          },
+          "docs": "Returns the catalog of available exchange-traded fund symbols."
+        },
+        {
+          "info": {
+            "name": "List indices",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/indices",
+            "params": [
+              {
+                "name": "apikey",
+                "value": "",
+                "type": "query",
+                "description": "Your Twelve Data API key."
+              }
+            ]
+          },
+          "docs": "Returns the catalog of available market indices."
+        },
+        {
+          "info": {
+            "name": "List exchanges",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/exchanges",
+            "params": [
+              {
+                "name": "apikey",
+                "value": "",
+                "type": "query",
+                "description": "Your Twelve Data API key."
+              }
+            ]
+          },
+          "docs": "Returns the catalog of available equity exchanges."
+        },
+        {
+          "info": {
+            "name": "Symbol search",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/symbol_search",
+            "params": [
+              {
+                "name": "symbol",
+                "value": "",
+                "type": "query",
+                "description": "Search term (name, ticker, ISIN, or FIGI)."
+              },
+              {
+                "name": "apikey",
+                "value": "",
+                "type": "query",
+                "description": "Your Twelve Data API key."
+              }
+            ]
+          },
+          "docs": "Finds instruments by name, symbol, ISIN, or FIGI."
+        },
+        {
+          "info": {
+            "name": "Earliest timestamp",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/earliest_timestamp",
+            "params": [
+              {
+                "name": "symbol",
+                "value": "",
+                "type": "query",
+                "description": "Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD."
+              },
+              {
+                "name": "interval",
+                "value": "",
+                "type": "query",
+                "description": "Time interval between two consecutive data points."
+              },
+              {
+                "name": "apikey",
+                "value": "",
+                "type": "query",
+                "description": "Your Twelve Data API key."
+              }
+            ]
+          },
+          "docs": "Returns the earliest date for which data is available for an instrument and interval."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

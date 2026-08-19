@@ -1,0 +1,105 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Twelve Data REST Core Data Time Series API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "apikey",
+      "value": "{{apikey}}",
+      "placement": "query"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Time Series",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Time series (OHLCV)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/time_series",
+            "params": [
+              {
+                "name": "symbol",
+                "value": "",
+                "type": "query",
+                "description": "Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD."
+              },
+              {
+                "name": "interval",
+                "value": "",
+                "type": "query",
+                "description": "Time interval between two consecutive data points."
+              },
+              {
+                "name": "outputsize",
+                "value": "",
+                "type": "query",
+                "description": "Number of data points to return (max 5000)."
+              },
+              {
+                "name": "exchange",
+                "value": "",
+                "type": "query",
+                "description": "Exchange to which the instrument belongs."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "apikey",
+                "value": "",
+                "type": "query",
+                "description": "Your Twelve Data API key."
+              }
+            ]
+          },
+          "docs": "Returns meta and time series (open, high, low, close, volume) for the requested instrument at the requested interval. Core endpoint for historical and intraday market data."
+        },
+        {
+          "info": {
+            "name": "Cross time series",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/time_series/cross",
+            "params": [
+              {
+                "name": "symbol",
+                "value": "",
+                "type": "query",
+                "description": "Base/quote cross expression, e.g. EUR/JPY derived cross."
+              },
+              {
+                "name": "interval",
+                "value": "",
+                "type": "query",
+                "description": "Time interval between two consecutive data points."
+              },
+              {
+                "name": "apikey",
+                "value": "",
+                "type": "query",
+                "description": "Your Twelve Data API key."
+              }
+            ]
+          },
+          "docs": "Computes a cross-rate time series between two instruments (for example, exotic currency pairs) that are not directly quoted."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

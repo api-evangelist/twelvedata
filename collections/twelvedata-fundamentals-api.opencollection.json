@@ -1,0 +1,201 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Twelve Data REST Core Data Fundamentals API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "apikey",
+      "value": "{{apikey}}",
+      "placement": "query"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Fundamentals",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Company profile",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/profile",
+            "params": [
+              {
+                "name": "symbol",
+                "value": "",
+                "type": "query",
+                "description": "Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD."
+              },
+              {
+                "name": "apikey",
+                "value": "",
+                "type": "query",
+                "description": "Your Twelve Data API key."
+              }
+            ]
+          },
+          "docs": "Returns the company profile (sector, industry, description, employees, and more)."
+        },
+        {
+          "info": {
+            "name": "Dividends",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/dividends",
+            "params": [
+              {
+                "name": "symbol",
+                "value": "",
+                "type": "query",
+                "description": "Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD."
+              },
+              {
+                "name": "apikey",
+                "value": "",
+                "type": "query",
+                "description": "Your Twelve Data API key."
+              }
+            ]
+          },
+          "docs": "Returns the dividend history for a company."
+        },
+        {
+          "info": {
+            "name": "Earnings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/earnings",
+            "params": [
+              {
+                "name": "symbol",
+                "value": "",
+                "type": "query",
+                "description": "Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD."
+              },
+              {
+                "name": "apikey",
+                "value": "",
+                "type": "query",
+                "description": "Your Twelve Data API key."
+              }
+            ]
+          },
+          "docs": "Returns historical and upcoming earnings for a company."
+        },
+        {
+          "info": {
+            "name": "Income statement",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/income_statement",
+            "params": [
+              {
+                "name": "symbol",
+                "value": "",
+                "type": "query",
+                "description": "Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD."
+              },
+              {
+                "name": "apikey",
+                "value": "",
+                "type": "query",
+                "description": "Your Twelve Data API key."
+              }
+            ]
+          },
+          "docs": "Returns the income statement for a company."
+        },
+        {
+          "info": {
+            "name": "Balance sheet",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/balance_sheet",
+            "params": [
+              {
+                "name": "symbol",
+                "value": "",
+                "type": "query",
+                "description": "Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD."
+              },
+              {
+                "name": "apikey",
+                "value": "",
+                "type": "query",
+                "description": "Your Twelve Data API key."
+              }
+            ]
+          },
+          "docs": "Returns the balance sheet for a company."
+        },
+        {
+          "info": {
+            "name": "Cash flow",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/cash_flow",
+            "params": [
+              {
+                "name": "symbol",
+                "value": "",
+                "type": "query",
+                "description": "Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD."
+              },
+              {
+                "name": "apikey",
+                "value": "",
+                "type": "query",
+                "description": "Your Twelve Data API key."
+              }
+            ]
+          },
+          "docs": "Returns the cash flow statement for a company."
+        },
+        {
+          "info": {
+            "name": "Statistics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/statistics",
+            "params": [
+              {
+                "name": "symbol",
+                "value": "",
+                "type": "query",
+                "description": "Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD."
+              },
+              {
+                "name": "apikey",
+                "value": "",
+                "type": "query",
+                "description": "Your Twelve Data API key."
+              }
+            ]
+          },
+          "docs": "Returns key valuation, profitability, and financial statistics for a company."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

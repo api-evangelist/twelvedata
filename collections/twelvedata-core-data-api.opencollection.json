@@ -1,0 +1,156 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Twelve Data REST Core Data API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "apikey",
+      "value": "{{apikey}}",
+      "placement": "query"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Core Data",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "End of day price",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/eod",
+            "params": [
+              {
+                "name": "symbol",
+                "value": "",
+                "type": "query",
+                "description": "Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD."
+              },
+              {
+                "name": "apikey",
+                "value": "",
+                "type": "query",
+                "description": "Your Twelve Data API key."
+              }
+            ]
+          },
+          "docs": "Returns the latest end-of-day closing price and metadata for an instrument."
+        },
+        {
+          "info": {
+            "name": "Quote",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/quote",
+            "params": [
+              {
+                "name": "symbol",
+                "value": "",
+                "type": "query",
+                "description": "Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD."
+              },
+              {
+                "name": "interval",
+                "value": "",
+                "type": "query",
+                "description": "Time interval between two consecutive data points."
+              },
+              {
+                "name": "apikey",
+                "value": "",
+                "type": "query",
+                "description": "Your Twelve Data API key."
+              }
+            ]
+          },
+          "docs": "Returns a real-time quote for the instrument including price, open, high, low, close, volume, 52-week range, and change metrics."
+        },
+        {
+          "info": {
+            "name": "Real-time price",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/price",
+            "params": [
+              {
+                "name": "symbol",
+                "value": "",
+                "type": "query",
+                "description": "Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD."
+              },
+              {
+                "name": "apikey",
+                "value": "",
+                "type": "query",
+                "description": "Your Twelve Data API key."
+              }
+            ]
+          },
+          "docs": "Returns the latest available real-time trading price for an instrument."
+        },
+        {
+          "info": {
+            "name": "Market movers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/market_movers/:market",
+            "params": [
+              {
+                "name": "market",
+                "value": "",
+                "type": "path",
+                "description": "Market to list movers for."
+              },
+              {
+                "name": "apikey",
+                "value": "",
+                "type": "query",
+                "description": "Your Twelve Data API key."
+              }
+            ]
+          },
+          "docs": "Returns the top gainers and losers by percentage change for a market."
+        },
+        {
+          "info": {
+            "name": "Market state",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.twelvedata.com/market_state",
+            "params": [
+              {
+                "name": "exchange",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "apikey",
+                "value": "",
+                "type": "query",
+                "description": "Your Twelve Data API key."
+              }
+            ]
+          },
+          "docs": "Returns the real-time open/closed state of exchanges."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

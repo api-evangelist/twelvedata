@@ -35,7 +35,7 @@ tags:
 - Fundamentals
 created: '2026-07-11'
 modified: '2026-07-22'
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 apis:
 - aid: twelvedata:twelvedata-websocket-streaming-api
   name: Twelve Data WebSocket Streaming API

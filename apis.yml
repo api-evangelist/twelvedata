@@ -67,8 +67,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/twelvedata-core-data-api-openapi.yml
-  - type: OpenAPI
-    url: openapi/twelvedata-openapi-original.json
   - type: Overlay
     url: overlays/twelvedata-core-data-api-overlay.yaml
   - type: Documentation
@@ -189,6 +187,96 @@ apis:
     url: https://twelvedata.com/docs#reference-data
   - type: Documentation
     url: https://twelvedata.com/docs#fundamentals
+- aid: twelvedata:twelvedata-advanced-api
+  name: Twelve Data Advanced API
+  description: The advanced API from Twelve Data — 2 operation(s) for advanced.
+  humanURL: https://twelvedata.com/docs/websocket/ws-real-time-price
+  baseURL: wss://ws.twelvedata.com/v1/quotes/price
+  tags:
+  - advanced
+  properties:
+  - type: OpenAPI
+    url: openapi/twelvedata-advanced-api-openapi.yml
+- aid: twelvedata:twelvedata-analysis-api
+  name: Twelve Data Analysis API
+  description: The analysis API from Twelve Data — 9 operation(s) for analysis.
+  humanURL: https://twelvedata.com/docs/websocket/ws-real-time-price
+  baseURL: wss://ws.twelvedata.com/v1/quotes/price
+  tags:
+  - analysis
+  properties:
+  - type: OpenAPI
+    url: openapi/twelvedata-analysis-api-openapi.yml
+- aid: twelvedata:twelvedata-currencies-api
+  name: Twelve Data Currencies API
+  description: The currencies API from Twelve Data — 2 operation(s) for currencies.
+  humanURL: https://twelvedata.com/docs/websocket/ws-real-time-price
+  baseURL: wss://ws.twelvedata.com/v1/quotes/price
+  tags:
+  - currencies
+  properties:
+  - type: OpenAPI
+    url: openapi/twelvedata-currencies-api-openapi.yml
+- aid: twelvedata:twelvedata-etfs-api
+  name: Twelve Data Etfs API
+  description: The etfs API from Twelve Data — 8 operation(s) for etfs.
+  humanURL: https://twelvedata.com/docs/websocket/ws-real-time-price
+  baseURL: wss://ws.twelvedata.com/v1/quotes/price
+  tags:
+  - etfs
+  properties:
+  - type: OpenAPI
+    url: openapi/twelvedata-etfs-api-openapi.yml
+- aid: twelvedata:twelvedata-market-data-api
+  name: Twelve Data Market Data API
+  description: The market_data API from Twelve Data — 6 operation(s) for market_data.
+  humanURL: https://twelvedata.com/docs/websocket/ws-real-time-price
+  baseURL: wss://ws.twelvedata.com/v1/quotes/price
+  tags:
+  - market_data
+  properties:
+  - type: OpenAPI
+    url: openapi/twelvedata-market-data-api-openapi.yml
+- aid: twelvedata:twelvedata-money-market-funds-api
+  name: Twelve Data Money Market Funds API
+  description: The money_market_funds API from Twelve Data — 2 operation(s) for money_market_funds.
+  humanURL: https://twelvedata.com/docs/websocket/ws-real-time-price
+  baseURL: wss://ws.twelvedata.com/v1/quotes/price
+  tags:
+  - money_market_funds
+  properties:
+  - type: OpenAPI
+    url: openapi/twelvedata-money-market-funds-api-openapi.yml
+- aid: twelvedata:twelvedata-mutual-funds-api
+  name: Twelve Data Mutual Funds API
+  description: The mutual_funds API from Twelve Data — 11 operation(s) for mutual_funds.
+  humanURL: https://twelvedata.com/docs/websocket/ws-real-time-price
+  baseURL: wss://ws.twelvedata.com/v1/quotes/price
+  tags:
+  - mutual_funds
+  properties:
+  - type: OpenAPI
+    url: openapi/twelvedata-mutual-funds-api-openapi.yml
+- aid: twelvedata:twelvedata-regulatory-api
+  name: Twelve Data Regulatory API
+  description: The regulatory API from Twelve Data — 7 operation(s) for regulatory.
+  humanURL: https://twelvedata.com/docs/websocket/ws-real-time-price
+  baseURL: wss://ws.twelvedata.com/v1/quotes/price
+  tags:
+  - regulatory
+  properties:
+  - type: OpenAPI
+    url: openapi/twelvedata-regulatory-api-openapi.yml
+- aid: twelvedata:twelvedata-technical-indicator-api
+  name: Twelve Data Technical Indicator API
+  description: The technical_indicator API from Twelve Data — 102 operation(s) for technical_indicator.
+  humanURL: https://twelvedata.com/docs/websocket/ws-real-time-price
+  baseURL: wss://ws.twelvedata.com/v1/quotes/price
+  tags:
+  - technical_indicator
+  properties:
+  - type: OpenAPI
+    url: openapi/twelvedata-technical-indicator-api-openapi.yml
 common:
 - type: PostmanWorkspace
   url: https://www.postman.com/kinlaneapi/twelve-data/overview

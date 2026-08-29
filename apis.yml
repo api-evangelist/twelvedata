@@ -10,6 +10,18 @@ description: Twelve Data is a financial market data provider offering real-time 
   an apikey and metered as API credits; a free Basic plan grants 800 API credits
   per day. Real-time price streaming is delivered over a WebSocket at
   wss://ws.twelvedata.com/v1/quotes/price.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: paid
   onboarding: self-serve

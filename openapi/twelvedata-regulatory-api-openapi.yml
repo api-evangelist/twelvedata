@@ -1,0 +1,2090 @@
+openapi: 3.2.0
+info:
+  description: "## Overview\n\nWelcome to Twelve Data developer docs — your gateway to comprehensive financial market data through a powerful and easy-to-use API.\nTwelve Data provides access to financial markets across over 50 global countries, covering more than 1 million public instruments, including stocks, forex, ETFs, mutual funds, commodities, and cryptocurrencies.\n\n## Quickstart\n\nTo get started, you'll need to sign up for an API key. Once you have your API key, you can start making requests to the API.\n\n### Step 1: Create Twelve Data account\n\nSign up on the Twelve Data website to create your account [here](https://twelvedata.com/register). This gives you access to the API dashboard and your API key.\n\n### Step 2: Get your API key\n\nAfter signing in, navigate to your [dashboard](https://twelvedata.com/account/api-keys) to find your unique API key. This key is required to authenticate all API and WebSocket requests.\n\n### Step 3: Make your first request\n\nTry a simple API call with cURL to fetch the latest price for Apple (AAPL):\n\n```\ncurl \"https://api.twelvedata.com/price?symbol=AAPL&apikey=your_api_key\"\n```\n\n### Step 4: Make a request from Python or Javascript\n\nUse our client libraries or standard HTTP clients to make API calls programmatically. Here’s an example in [Python](https://github.com/twelvedata/twelvedata-python) and [Node.js](https://github.com/twelvedata/twelvedata-node):\n\n#### Python (using official Twelve Data SDK):\n\n```python\nfrom twelvedata import TDClient\n\n# Initialize client with your API key\ntd = TDClient(apikey=\"your_api_key\")\n\n# Get latest price for Apple\nprice = td.price(symbol=\"AAPL\").as_json()\n\nprint(price)\n```\n\n#### JavaScript (Node.js):\n\n```javascript\nimport { MarketDataApi, CreateConfig } from \"@twelvedata/twelvedata-node\";\n\nconst config = CreateConfig('your_api_key');\nconst api = new MarketDataApi(config);\n\nasync function main() {\n&nbsp;&nbsp;const response = await api.getPrice({\n&nbsp;&nbsp;&nbsp;&nbsp;symbol: \"AAPL\",\n&nbsp;&nbsp;});\n&nbsp;&nbsp;console.log(response.data);\n}\n\nmain().catch(console.error);\n```\n\n### Step 5: Perform correlation analysis between Tesla and Microsoft prices\n\nFetch historical price data for Tesla (TSLA) and Microsoft (MSFT) and calculate the correlation of their closing prices:\n\n```python\nfrom twelvedata import TDClient\nimport pandas as pd\n\n# Initialize client with your API key\ntd = TDClient(apikey=\"your_api_key\")\n\n# Fetch historical price data for Tesla\ntsla_ts = td.time_series(\n&nbsp;&nbsp;&nbsp;&nbsp;symbol=\"TSLA\",\n&nbsp;&nbsp;&nbsp;&nbsp;interval=\"1day\",\n&nbsp;&nbsp;&nbsp;&nbsp;outputsize=100\n).as_pandas()\n\n# Fetch historical price data for Microsoft\nmsft_ts = td.time_series(\n&nbsp;&nbsp;&nbsp;&nbsp;symbol=\"MSFT\",\n&nbsp;&nbsp;&nbsp;&nbsp;interval=\"1day\",\n&nbsp;&nbsp;&nbsp;&nbsp;outputsize=100\n).as_pandas()\n\n# Align data on datetime index\ncombined = pd.concat(\n&nbsp;&nbsp;&nbsp;&nbsp;[tsla_ts['close'].astype(float), msft_ts['close'].astype(float)],\n&nbsp;&nbsp;&nbsp;&nbsp;axis=1,\n&nbsp;&nbsp;&nbsp;&nbsp;keys=[\"TSLA\", \"MSFT\"]\n).dropna()\n\n# Calculate correlation\ncorrelation = combined[\"TSLA\"].corr(combined[\"MSFT\"])\nprint(f\"Correlation of closing prices between TSLA and MSFT: {correlation:.2f}\")\n```\n\n### Authentication\n\nAuthenticate your requests using one of these methods:\n\n#### Query parameter method\n```\nGET https://api.twelvedata.com/endpoint?symbol=AAPL&apikey=your_api_key\n```\n\n#### HTTP header method (recommended)\n```\nAuthorization: apikey your_api_key\n```\n\n##### API key useful information\n<ul>\n<li> Demo API key (<code>apikey=demo</code>) available for demo requests</li>\n<li> Personal API key required for full access</li>\n<li> Premium endpoints and data require higher-tier plans (testable with <a href=\"https://twelvedata.com/exchanges\">trial symbols</a>)</li>\n</ul>\n\n### API endpoints\n\n Service | Base URL |\n---------|----------|\n REST API | `https://api.twelvedata.com` |\n WebSocket | `wss://ws.twelvedata.com` |\n\n### Parameter guidelines\n<ul>\n<li><b>Separator:</b> Use <code>&</code> to separate multiple parameters</li>\n<li><b>Case sensitivity:</b> Parameter names are case-insensitive (<code>symbol=AAPL</code> = <code>symbol=aapl</code>)</li>\n<li><b>Multiple values:</b> Separate with commas where supported</li>\n</ul>\n\n### Response handling\n\n#### Default format\nAll responses return JSON format by default unless otherwise specified.\n\n#### Null values\n<b>Important:</b> Some response fields may contain `null` values when data is unavailable for specific metrics. This is expected behavior, not an error.\n\n##### Best Practices:\n<ul>\n<li>Always implement <code>null</code> value handling in your application</li>\n<li>Use defensive programming techniques for data processing</li>\n<li>Consider fallback values or error handling for critical metrics</li>\n</ul>\n\n#### Error handling\nStructure your code to gracefully handle:\n<ul>\n<li>Network timeouts</li>\n<li>Rate limiting responses</li>\n<li>Invalid parameter errors</li>\n<li>Data unavailability periods</li>\n</ul>\n\n##### Best practices\n<ul>\n<li><b>Rate limits:</b> Adhere to your plan’s rate limits to avoid throttling. Check your dashboard for details.</li>\n<li><b>Error handling:</b> Implement retry logic for transient errors (e.g., <code>429 Too Many Requests</code>).</li>\n<li><b>Caching:</b> Cache responses for frequently accessed data to reduce API calls and improve performance.</li>\n<li><b>Secure storage:</b> Store your API key securely and never expose it in client-side code or public repositories.</li>\n</ul>\n\n## Errors\n\nTwelve Data API employs a standardized error response format, delivering a JSON object with `code`, `message`, and `status` keys for clear and consistent error communication.\n\n### Codes\n\nBelow is a table of possible error codes, their HTTP status, meanings, and resolution steps:\n\n Code | status | Meaning | Resolution |\n --- | --- | --- | --- |\n **400** | Bad Request | Invalid or incorrect parameter(s) provided. | Check the `message` in the response for details. Refer to the API Documenta­tion to correct the input. |\n **401** | Unauthor­ized | Invalid or incorrect API key. | Verify your API key is correct. Sign up for a key <a href=\"https://twelvedata.com/account/api-keys\">here</a>. |\n **403** | Forbidden | API key lacks permissions for the requested resource (upgrade required). | Upgrade your plan <a href=\"https://twelvedata.com/pricing\">here</a>. |\n **404** | Not Found | Requested data could not be found. | Adjust parameters to be less strict as they may be too restrictive. |\n **414** | Parameter Too Long | Input parameter array exceeds the allowed length. | Follow the `message` guidance to adjust the parameter length. |\n **429** | Too Many Requests | API request limit reached for your key. | Wait briefly or upgrade your plan <a href=\"https://twelvedata.com/pricing\">here</a>. |\n **500** | Internal Server Error | Server-side issue occurred; retry later. | Contact support <a href=\"https://twelvedata.com/contact\">here</a> for assistance. |\n\n### Example error response\n\nConsider the following invalid request:\n\n```\nhttps://api.twelvedata.com/time_series?symbol=AAPL&interval=0.99min&apikey=your_api_key\n```\n\nDue to the incorrect `interval` value, the API returns:\n\n```json\n{\n&nbsp;&nbsp;\"code\": 400,\n&nbsp;&nbsp;\"message\": \"Invalid **interval** provided: 0.99min. Supported intervals: 1min, 5min, 15min, 30min, 45min, 1h, 2h, 4h, 8h, 1day, 1week, 1month\",\n&nbsp;&nbsp;\"status\": \"error\"\n}\n```\n\nRefer to the API Documentation for valid parameter values to resolve such errors.\n\n## Libraries\n\nTwelve Data provides a growing ecosystem of libraries and integrations to help you build faster and smarter in your preferred environment. Official libraries are actively maintained by the Twelve Data team, while selected community-built libraries offer additional flexibility.\n\nA full list is available on our [GitHub profile](https://github.com/search?q=twelvedata).\n\n### Official SDKs\n<ul>\n<li><b>Python:</b> <a href=\"https://github.com/twelvedata/twelvedata-python\">twelvedata-python</a></li>\n<li><b>Node.js:</b> <a href=\"https://github.com/twelvedata/twelvedata-node\">twelvedata-node</a></li>\n<li><b>Go:</b> <a href=\"https://github.com/twelvedata/twelvedata-go\">twelvedata-go</a></li>\n<li><b>Java:</b> <a href=\"https://github.com/twelvedata/twelvedata-java\">twelvedata-java</a></li>\n<li><b>R:</b> <a href=\"https://github.com/twelvedata/twelvedata-r-sdk\">twelvedata-r-sdk</a></li>\n<li><b>CLI:</b> <a href=\"https://github.com/twelvedata/twelvedata-cli\">twelvedata-cli</a></li>\n</ul>\n\n### AI integrations\n<ul>\n<li><b>Twelve Data MCP Server:</b> <a href=\"https://github.com/twelvedata/mcp\">Repository</a> — Model Context Protocol (MCP) server that provides seamless integration with AI assistants and language models, enabling direct access to Twelve Data's financial market data within conversational interfaces and AI workflows.</li>\n<li><b>Twelve Data integration for OpenClaw:</b> <a href=\"https://clawhub.ai/twelvedata/twelvedata\">Clawhub skill</a> — Integration for the OpenClaw platform, allowing users to leverage Twelve Data's API within their OpenClaw applications.</li>\n<li><b>Twelve Data NEAR Agent:</b> <a href=\"https://market.near.ai/agents/twelve_data\">NEAR Agent</a> — Access Twelve Data's API directly from NEAR's AI agent platform, enabling users to retrieve financial data and insights within their NEAR AI agent workflows.</li>\n</ul>\n\n### Spreadsheet add-ons\n<ul>\n<li><b>Excel:</b> <a href=\"https://twelvedata.com/excel\">Excel Add-in</a></li>\n<li><b>Google Sheets:</b> <a href=\"https://twelvedata.com/google-sheets\">Google Sheets Add-on</a></li>\n</ul>\n\n### Community libraries\n\nThe community has developed libraries in several popular languages. You can explore more community libraries on [GitHub](https://github.com/search?q=twelvedata).\n<ul>\n<li><b>C#:</b> <a href=\"https://github.com/pseudomarkets/TwelveDataSharp\">TwelveDataSharp</a></li>\n<li><b>JavaScript:</b> <a href=\"https://github.com/evzaboun/twelvedata\">twelvedata</a></li>\n<li><b>PHP:</b> <a href=\"https://github.com/ingelby/twelvedata\">twelvedata</a></li>\n<li><b>Go:</b> <a href=\"https://github.com/soulgarden/twelvedata\">twelvedata</a></li>\n<li><b>TypeScript:</b> <a href=\"https://github.com/Clyde-Goodall/twelve-data-wrapper\">twelve-data-wrapper</a></li>\n</ul>\n\n### Other Twelve Data repositories\n<ul>\n<li><b>searchindex</b> <i>(Go)</i>: <a href=\"https://github.com/twelvedata/searchindex\">Repository</a> — In-memory search index by strings</li>\n<li><b>ws-tools</b> <i>(Python)</i>: <a href=\"https://github.com/twelvedata/ws-tools\">Repository</a> — Utility tools for WebSocket stream handling</li>\n</ul>\n\n### API specification\n<ul>\n<li><b>OpenAPI / Swagger:</b> Access the <a href=\"https://api.twelvedata.com/doc/swagger/openapi.json\">complete API specification</a> in OpenAPI format. You can use this file to automatically generate client libraries in your preferred programming language, explore the API interactively via Swagger tools, or integrate Twelve Data seamlessly into your AI and LLM workflows.</li>\n</ul>"
+  title: Twelve Data Regulatory API
+  version: 0.0.1
+servers:
+- url: https://api.twelvedata.com/
+security:
+- authorizationHeader:
+  - '[]'
+- queryParameter:
+  - '[]'
+tags:
+- name: regulatory
+paths:
+  /direct_holders:
+    get:
+      description: The direct holders endpoint provides detailed information about the number of shares directly held by individuals or entities as recorded in a company's official share registry. This data is essential for understanding the distribution of stock ownership within a company, helping users identify major shareholders and assess shareholder concentration.
+      operationId: GetDirectHolders
+      parameters:
+      - description: 'Symbol ticker of instrument.
+
+          For preferred stocks use dot(.) delimiter.
+
+          E.g. `BRK.A` or `BRK.B` will be correct'
+        in: query
+        name: symbol
+        schema:
+          type: string
+          x-go-name: Symbol
+          x-order: '10'
+          x-required-group: symbol
+        x-go-name: Symbol
+        x-order: '10'
+        x-required-group: symbol
+        example: '7203'
+      - description: Filter by financial instrument global identifier (FIGI). This parameter is available on the <a href="https://twelvedata.com/pricing">Ultra</a> plan (individual) and the <a href="https://twelvedata.com/pricing-business">Enterprise</a> plan (business) and above.
+        in: query
+        name: figi
+        schema:
+          type: string
+          x-go-name: Figi
+          x-order: '20'
+          x-required-group: symbol
+        x-go-name: Figi
+        x-order: '20'
+        x-required-group: symbol
+        example: BBG000B9Y5X2
+      - description: Filter by international securities identification number (ISIN). ISIN access is activating in the <a href="https://twelvedata.com/account/add-ons">Data add-ons</a> section
+        in: query
+        name: isin
+        schema:
+          type: string
+          x-go-name: Isin
+          x-order: '30'
+          x-required-group: symbol
+        x-go-name: Isin
+        x-order: '30'
+        x-required-group: symbol
+        example: US0378331005
+      - description: The CUSIP of an instrument for which data is requested. CUSIP access is activating in the <a href="https://twelvedata.com/account/add-ons">Data add-ons</a> section
+        in: query
+        name: cusip
+        schema:
+          type: string
+          x-go-name: Cusip
+          x-order: '31'
+          x-required-group: symbol
+        x-go-name: Cusip
+        x-order: '31'
+        x-required-group: symbol
+        example: '594918104'
+      - description: Exchange where instrument is traded
+        in: query
+        name: exchange
+        schema:
+          type: string
+          x-go-name: Exchange
+          x-order: '40'
+        x-go-name: Exchange
+        x-order: '40'
+        example: NASDAQ
+      - description: Market Identifier Code (MIC) under ISO 10383 standard
+        in: query
+        name: mic_code
+        schema:
+          type: string
+          x-go-name: MicCode
+          x-order: '50'
+        x-go-name: MicCode
+        x-order: '50'
+        example: XNAS
+      - description: Country where instrument is traded, e.g., `United States` or `US`
+        in: query
+        name: country
+        schema:
+          type: string
+          x-go-name: Country
+          x-order: '60'
+        x-go-name: Country
+        x-order: '60'
+        example: United States
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetDirectHolders_200_response'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBadRequestErrorResponseBody'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnauthorizedErrorResponseBody'
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiForbiddenErrorResponseBody'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiNotFoundErrorResponseBody'
+          description: ''
+        '414':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiParameterTooLongErrorResponseBody'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTooManyRequestsErrorResponseBody'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInternalServerErrorResponseBody'
+          description: ''
+      summary: Direct holders
+      tags:
+      - regulatory
+      x-additional-notes: This API endpoint is available on the Ultra plan (individual) and the Enterprise plan (business) and above. Support for the Tadawul exchange is currently in beta.
+      x-api-credits-cost: '1500'
+      x-api-credits-type: symbol
+      x-badge: New
+      x-group: Regulatory
+      x-order: '50'
+      x-starting-plan: ultra,enterprise
+      x-url-hash: direct-holders
+      x-required:
+        anyOf:
+        - required:
+          - symbol
+          - figi
+          - isin
+          - cusip
+  /edgar_filings/archive:
+    get:
+      description: The EDGAR fillings endpoint provides access to a comprehensive collection of financial documents submitted to the SEC, including real-time and historical forms, filings, and exhibits. Users can retrieve detailed information about company disclosures, financial statements, and regulatory submissions, enabling them to access essential compliance and financial data directly from the SEC's EDGAR system.
+      operationId: GetEdgarFilingsArchive
+      parameters:
+      - description: The ticker symbol of an instrument for which data is requested
+        in: query
+        name: symbol
+        schema:
+          type: string
+          x-go-name: Symbol
+          x-order: '10'
+          x-required-group: symbol
+        x-go-name: Symbol
+        x-order: '10'
+        x-required-group: symbol
+        example: AAPL
+      - description: Filter by financial instrument global identifier (FIGI). This parameter is available on the <a href="https://twelvedata.com/pricing">Ultra</a> plan (individual) and the <a href="https://twelvedata.com/pricing-business">Enterprise</a> plan (business) and above.
+        in: query
+        name: figi
+        schema:
+          type: string
+          x-go-name: Figi
+          x-order: '20'
+          x-required-group: symbol
+        x-go-name: Figi
+        x-order: '20'
+        x-required-group: symbol
+        example: BBG000B9Y5X2
+      - description: Filter by international securities identification number (ISIN). ISIN access is activating in the <a href="https://twelvedata.com/account/add-ons">Data add-ons</a> section
+        in: query
+        name: isin
+        schema:
+          type: string
+          x-go-name: Isin
+          x-order: '30'
+          x-required-group: symbol
+        x-go-name: Isin
+        x-order: '30'
+        x-required-group: symbol
+        example: US0378331005
+      - description: The CUSIP of an instrument for which data is requested. CUSIP access is activating in the <a href="https://twelvedata.com/account/add-ons">Data add-ons</a> section
+        in: query
+        name: cusip
+        schema:
+          type: string
+          x-go-name: Cusip
+          x-order: '31'
+          x-required-group: symbol
+        x-go-name: Cusip
+        x-order: '31'
+        x-required-group: symbol
+        example: '594918104'
+      - description: Filter by exchange name
+        in: query
+        name: exchange
+        schema:
+          type: string
+          x-go-name: Exchange
+          x-order: '40'
+        x-go-name: Exchange
+        x-order: '40'
+        example: NASDAQ
+      - description: Filter by market identifier code (MIC) under ISO 10383 standard
+        in: query
+        name: mic_code
+        schema:
+          type: string
+          x-go-name: MicCode
+          x-order: '50'
+        x-go-name: MicCode
+        x-order: '50'
+        example: XNGS
+      - description: Filter by country name or alpha code, e.g., `United States` or `US`
+        in: query
+        name: country
+        schema:
+          type: string
+          x-go-name: Country
+          x-order: '60'
+        x-go-name: Country
+        x-order: '60'
+        example: United States
+      - description: Filter by form types, example `8-K`, `EX-1.1`
+        in: query
+        name: form_type
+        schema:
+          type: string
+          x-go-name: FormType
+          x-order: '70'
+        x-go-name: FormType
+        x-order: '70'
+        example: 8-K
+      - description: Filter by filled date from
+        in: query
+        name: filled_from
+        schema:
+          type: string
+          x-go-name: FilledFrom
+          x-order: '80'
+        x-go-name: FilledFrom
+        x-order: '80'
+        example: '2024-01-01'
+      - description: Filter by filled date to
+        in: query
+        name: filled_to
+        schema:
+          type: string
+          x-go-name: FilledTo
+          x-order: '90'
+        x-go-name: FilledTo
+        x-order: '90'
+        example: '2024-01-01'
+      - description: Page number
+        in: query
+        name: page
+        schema:
+          default: 1
+          format: int64
+          type: integer
+          x-go-name: Page
+          x-order: '100'
+        x-go-name: Page
+        x-order: '100'
+      - description: Number of records in response
+        in: query
+        name: page_size
+        schema:
+          default: 10
+          format: int64
+          type: integer
+          x-go-name: PageSize
+          x-order: '110'
+        x-go-name: PageSize
+        x-order: '110'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEdgarFilingsArchive_200_response'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBadRequestErrorResponseBody'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnauthorizedErrorResponseBody'
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiForbiddenErrorResponseBody'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiNotFoundErrorResponseBody'
+          description: ''
+        '414':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiParameterTooLongErrorResponseBody'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTooManyRequestsErrorResponseBody'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInternalServerErrorResponseBody'
+          description: ''
+      summary: EDGAR fillings
+      tags:
+      - regulatory
+      x-api-credits-cost: '50'
+      x-api-credits-type: request
+      x-badge: New
+      x-group: Regulatory
+      x-order: '10'
+      x-starting-plan: ultra,enterprise
+      x-url-hash: edgar-filings-archive
+      x-required:
+        anyOf:
+        - required:
+          - symbol
+          - figi
+          - isin
+          - cusip
+  /fund_holders:
+    get:
+      description: The fund holders endpoint provides detailed information about the proportion of a company's stock that is owned by mutual fund holders. It returns data on the number of shares held, the percentage of total shares outstanding, and the names of the mutual funds involved. This endpoint is useful for users looking to understand mutual fund investment in a specific company.
+      operationId: GetFundHolders
+      parameters:
+      - description: 'Symbol ticker of instrument.
+
+          For preferred stocks use dot(.) delimiter.
+
+          E.g. `BRK.A` or `BRK.B` will be correct'
+        in: query
+        name: symbol
+        schema:
+          type: string
+          x-go-name: Symbol
+          x-order: '10'
+          x-required-group: symbol
+        x-go-name: Symbol
+        x-order: '10'
+        x-required-group: symbol
+        example: AAPL
+      - description: Filter by financial instrument global identifier (FIGI). This parameter is available on the <a href="https://twelvedata.com/pricing">Ultra</a> plan (individual) and the <a href="https://twelvedata.com/pricing-business">Enterprise</a> plan (business) and above.
+        in: query
+        name: figi
+        schema:
+          type: string
+          x-go-name: Figi
+          x-order: '20'
+          x-required-group: symbol
+        x-go-name: Figi
+        x-order: '20'
+        x-required-group: symbol
+        example: BBG000B9Y5X2
+      - description: Filter by international securities identification number (ISIN). ISIN access is activating in the <a href="https://twelvedata.com/account/add-ons">Data add-ons</a> section
+        in: query
+        name: isin
+        schema:
+          type: string
+          x-go-name: Isin
+          x-order: '30'
+          x-required-group: symbol
+        x-go-name: Isin
+        x-order: '30'
+        x-required-group: symbol
+        example: US0378331005
+      - description: The CUSIP of an instrument for which data is requested. CUSIP access is activating in the <a href="https://twelvedata.com/account/add-ons">Data add-ons</a> section
+        in: query
+        name: cusip
+        schema:
+          type: string
+          x-go-name: Cusip
+          x-order: '31'
+          x-required-group: symbol
+        x-go-name: Cusip
+        x-order: '31'
+        x-required-group: symbol
+        example: '594918104'
+      - description: Exchange where instrument is traded
+        in: query
+        name: exchange
+        schema:
+          type: string
+          x-go-name: Exchange
+          x-order: '40'
+        x-go-name: Exchange
+        x-order: '40'
+        example: NASDAQ
+      - description: Market Identifier Code (MIC) under ISO 10383 standard
+        in: query
+        name: mic_code
+        schema:
+          type: string
+          x-go-name: MicCode
+          x-order: '50'
+        x-go-name: MicCode
+        x-order: '50'
+        example: XNAS
+      - description: Country where instrument is traded, e.g., `United States` or `US`
+        in: query
+        name: country
+        schema:
+          type: string
+          x-go-name: Country
+          x-order: '60'
+        x-go-name: Country
+        x-order: '60'
+        example: United States
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetFundHolders_200_response'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBadRequestErrorResponseBody'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnauthorizedErrorResponseBody'
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiForbiddenErrorResponseBody'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiNotFoundErrorResponseBody'
+          description: ''
+        '414':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiParameterTooLongErrorResponseBody'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTooManyRequestsErrorResponseBody'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInternalServerErrorResponseBody'
+          description: ''
+      summary: Fund holders
+      tags:
+      - regulatory
+      x-api-credits-cost: '1500'
+      x-api-credits-type: symbol
+      x-group: Regulatory
+      x-order: '40'
+      x-starting-plan: ultra,enterprise
+      x-url-hash: fund-holders
+      x-required:
+        anyOf:
+        - required:
+          - symbol
+          - figi
+          - isin
+          - cusip
+  /insider_transactions:
+    get:
+      description: The insider transaction endpoint provides detailed data on trades executed by company insiders, such as executives and directors. It returns information including the insider's name, their role, the transaction type, the number of shares, the transaction date, and the price per share. This endpoint is useful for tracking insider activity and understanding potential insider sentiment towards a company's stock.
+      operationId: GetInsiderTransactions
+      parameters:
+      - description: 'The ticker symbol of an instrument for which data is requested, e.g., `AAPL`, `TSLA`.
+
+          For preferred stocks use dot(.) delimiter.
+
+          E.g. `BRK.A` or `BRK.B` will be correct'
+        in: query
+        name: symbol
+        schema:
+          type: string
+          x-go-name: Symbol
+          x-order: '10'
+          x-required-group: symbol
+        x-go-name: Symbol
+        x-order: '10'
+        x-required-group: symbol
+        example: AAPL
+      - description: Filter by financial instrument global identifier (FIGI). This parameter is available on the <a href="https://twelvedata.com/pricing">Ultra</a> plan (individual) and the <a href="https://twelvedata.com/pricing-business">Enterprise</a> plan (business) and above.
+        in: query
+        name: figi
+        schema:
+          type: string
+          x-go-name: Figi
+          x-order: '20'
+          x-required-group: symbol
+        x-go-name: Figi
+        x-order: '20'
+        x-required-group: symbol
+        example: BBG000B9Y5X2
+      - description: Filter by international securities identification number (ISIN). ISIN access is activating in the <a href="https://twelvedata.com/account/add-ons">Data add-ons</a> section
+        in: query
+        name: isin
+        schema:
+          type: string
+          x-go-name: Isin
+          x-order: '30'
+          x-required-group: symbol
+        x-go-name: Isin
+        x-order: '30'
+        x-required-group: symbol
+        example: US0378331005
+      - description: The CUSIP of an instrument for which data is requested. CUSIP access is activating in the <a href="https://twelvedata.com/account/add-ons">Data add-ons</a> section
+        in: query
+        name: cusip
+        schema:
+          type: string
+          x-go-name: Cusip
+          x-order: '31'
+          x-required-group: symbol
+        x-go-name: Cusip
+        x-order: '31'
+        x-required-group: symbol
+        example: '594918104'
+      - description: Exchange where instrument is traded, e.g., `Nasdaq`, `NSE`
+        in: query
+        name: exchange
+        schema:
+          type: string
+          x-go-name: Exchange
+          x-order: '40'
+        x-go-name: Exchange
+        x-order: '40'
+        example: NASDAQ
+      - description: Market Identifier Code (MIC) under ISO 10383 standard
+        in: query
+        name: mic_code
+        schema:
+          type: string
+          x-go-name: MicCode
+          x-order: '50'
+        x-go-name: MicCode
+        x-order: '50'
+        example: XNAS
+      - description: Country where instrument is traded, e.g., United States or US.
+        in: query
+        name: country
+        schema:
+          type: string
+          x-go-name: Country
+          x-order: '60'
+        x-go-name: Country
+        x-order: '60'
+        example: United States
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetInsiderTransactions_200_response'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBadRequestErrorResponseBody'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnauthorizedErrorResponseBody'
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiForbiddenErrorResponseBody'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiNotFoundErrorResponseBody'
+          description: ''
+        '414':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiParameterTooLongErrorResponseBody'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTooManyRequestsErrorResponseBody'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInternalServerErrorResponseBody'
+          description: ''
+      summary: Insider transaction
+      tags:
+      - regulatory
+      x-api-credits-cost: '200'
+      x-api-credits-type: symbol
+      x-group: Regulatory
+      x-order: '20'
+      x-starting-plan: pro,venture
+      x-url-hash: insider-transactions
+      x-required:
+        anyOf:
+        - required:
+          - symbol
+          - figi
+          - isin
+          - cusip
+  /institutional_holders:
+    get:
+      description: The institutional holders endpoint provides detailed information on the percentage and amount of a company's stock owned by institutional investors, such as pension funds, insurance companies, and investment firms. This data is essential for understanding the influence and involvement of large entities in a company's ownership structure.
+      operationId: GetInstitutionalHolders
+      parameters:
+      - description: 'Symbol ticker of instrument.
+
+          For preferred stocks use dot(.) delimiter.
+
+          E.g. `BRK.A` or `BRK.B` will be correct'
+        in: query
+        name: symbol
+        schema:
+          type: string
+          x-go-name: Symbol
+          x-order: '10'
+          x-required-group: symbol
+        x-go-name: Symbol
+        x-order: '10'
+        x-required-group: symbol
+        example: AAPL
+      - description: Filter by financial instrument global identifier (FIGI). This parameter is available on the <a href="https://twelvedata.com/pricing">Ultra</a> plan (individual) and the <a href="https://twelvedata.com/pricing-business">Enterprise</a> plan (business) and above.
+        in: query
+        name: figi
+        schema:
+          type: string
+          x-go-name: Figi
+          x-order: '20'
+          x-required-group: symbol
+        x-go-name: Figi
+        x-order: '20'
+        x-required-group: symbol
+        example: BBG000B9Y5X2
+      - description: Filter by international securities identification number (ISIN). ISIN access is activating in the <a href="https://twelvedata.com/account/add-ons">Data add-ons</a> section
+        in: query
+        name: isin
+        schema:
+          type: string
+          x-go-name: Isin
+          x-order: '30'
+          x-required-group: symbol
+        x-go-name: Isin
+        x-order: '30'
+        x-required-group: symbol
+        example: US0378331005
+      - description: The CUSIP of an instrument for which data is requested. CUSIP access is activating in the <a href="https://twelvedata.com/account/add-ons">Data add-ons</a> section
+        in: query
+        name: cusip
+        schema:
+          type: string
+          x-go-name: Cusip
+          x-order: '31'
+          x-required-group: symbol
+        x-go-name: Cusip
+        x-order: '31'
+        x-required-group: symbol
+        example: '594918104'
+      - description: Exchange where instrument is traded
+        in: query
+        name: exchange
+        schema:
+          type: string
+          x-go-name: Exchange
+          x-order: '40'
+        x-go-name: Exchange
+        x-order: '40'
+        example: NASDAQ
+      - description: Market Identifier Code (MIC) under ISO 10383 standard
+        in: query
+        name: mic_code
+        schema:
+          type: string
+          x-go-name: MicCode
+          x-order: '50'
+        x-go-name: MicCode
+        x-order: '50'
+        example: XNAS
+      - description: Country where instrument is traded, e.g., `United States` or `US`
+        in: query
+        name: country
+        schema:
+          type: string
+          x-go-name: Country
+          x-order: '60'
+        x-go-name: Country
+        x-order: '60'
+        example: United States
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetInstitutionalHolders_200_response'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBadRequestErrorResponseBody'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnauthorizedErrorResponseBody'
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiForbiddenErrorResponseBody'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiNotFoundErrorResponseBody'
+          description: ''
+        '414':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiParameterTooLongErrorResponseBody'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTooManyRequestsErrorResponseBody'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInternalServerErrorResponseBody'
+          description: ''
+      summary: Institutional holders
+      tags:
+      - regulatory
+      x-api-credits-cost: '1500'
+      x-api-credits-type: symbol
+      x-group: Regulatory
+      x-order: '30'
+      x-starting-plan: ultra,enterprise
+      x-url-hash: institutional-holders
+      x-required:
+        anyOf:
+        - required:
+          - symbol
+          - figi
+          - isin
+          - cusip
+  /sanctions/{source}:
+    get:
+      description: The sanctions entities endpoint provides a comprehensive list of entities sanctioned by a specified authority, such as OFAC, UK, EU, or AU. Users can retrieve detailed information about individuals, organizations, and other entities subject to sanctions from the chosen source, facilitating compliance and risk management processes.
+      operationId: GetSourceSanctionedEntities
+      parameters:
+      - description: Sanctions source
+        in: path
+        name: source
+        required: true
+        schema:
+          $ref: '#/components/schemas/SourceEnum'
+        x-go-name: Source
+        example: ofac
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSourceSanctionedEntities_200_response'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBadRequestErrorResponseBody'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnauthorizedErrorResponseBody'
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiForbiddenErrorResponseBody'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiNotFoundErrorResponseBody'
+          description: ''
+        '414':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiParameterTooLongErrorResponseBody'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTooManyRequestsErrorResponseBody'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInternalServerErrorResponseBody'
+          description: ''
+      summary: Sanctioned entities
+      tags:
+      - regulatory
+      x-api-credits-cost: '50'
+      x-api-credits-type: request
+      x-badge: New
+      x-group: Regulatory
+      x-order: '70'
+      x-starting-plan: ultra,enterprise
+      x-url-hash: sanctioned-entities
+  /tax_info:
+    get:
+      description: The tax information endpoint provides detailed tax-related data for a specified financial instrument, including applicable tax rates and relevant tax codes. This information is essential for users needing to understand the tax implications associated with trading or investing in specific instruments.
+      operationId: GetTaxInfo
+      parameters:
+      - description: The ticker symbol of an instrument for which data is requested, e.g., `SKYQ`, `AIRE`, `ALM:BME`, `HSI:HKEX`.
+        in: query
+        name: symbol
+        schema:
+          type: string
+          x-go-name: Symbol
+          x-order: '10'
+          x-required-group: symbol
+        x-go-name: Symbol
+        x-order: '10'
+        x-required-group: symbol
+        example: SKYQ
+      - description: Filter by international securities identification number (ISIN). ISIN access is activating in the <a href="https://twelvedata.com/account/add-ons">Data add-ons</a> section
+        in: query
+        name: isin
+        schema:
+          type: string
+          x-go-name: Isin
+          x-order: '30'
+          x-required-group: symbol
+        x-go-name: Isin
+        x-order: '30'
+        x-required-group: symbol
+        example: US5949181045
+      - description: The FIGI of an instrument for which data is requested. This parameter is available on the <a href="https://twelvedata.com/pricing">Ultra</a> plan (individual) and the <a href="https://twelvedata.com/pricing-business">Enterprise</a> plan (business) and above.
+        in: query
+        name: figi
+        schema:
+          type: string
+          x-go-name: Figi
+          x-order: '20'
+          x-required-group: symbol
+        x-go-name: Figi
+        x-order: '20'
+        x-required-group: symbol
+        example: BBG019XJT9D6
+      - description: The CUSIP of an instrument for which data is requested. CUSIP access is activating in the <a href="https://twelvedata.com/account/add-ons">Data add-ons</a> section
+        in: query
+        name: cusip
+        schema:
+          type: string
+          x-go-name: Cusip
+          x-order: '25'
+          x-required-group: symbol
+        x-go-name: Cusip
+        x-order: '25'
+        x-required-group: symbol
+        example: '594918104'
+      - description: The exchange name where the instrument is traded, e.g., `Nasdaq`, `Euronext`
+        in: query
+        name: exchange
+        schema:
+          type: string
+          x-go-name: Exchange
+          x-order: '40'
+        x-go-name: Exchange
+        x-order: '40'
+        example: Nasdaq
+      - description: The Market Identifier Code (MIC) of the exchange where the instrument is traded, e.g., `XNAS`, `XLON`
+        in: query
+        name: mic_code
+        schema:
+          type: string
+          x-go-name: MicCode
+          x-order: '50'
+        x-go-name: MicCode
+        x-order: '50'
+        example: XNAS
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTaxInfo_200_response'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBadRequestErrorResponseBody'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnauthorizedErrorResponseBody'
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiForbiddenErrorResponseBody'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiNotFoundErrorResponseBody'
+          description: ''
+        '414':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiParameterTooLongErrorResponseBody'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTooManyRequestsErrorResponseBody'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInternalServerErrorResponseBody'
+          description: ''
+      summary: Tax information
+      tags:
+      - regulatory
+      x-api-credits-cost: '50'
+      x-api-credits-type: symbol
+      x-group: Regulatory
+      x-order: '60'
+      x-starting-plan: ultra,enterprise
+      x-url-hash: tax-info
+      x-required:
+        anyOf:
+        - required:
+          - symbol
+          - isin
+          - figi
+          - cusip
+components:
+  schemas:
+    FundHolderItem:
+      properties:
+        entity_name:
+          description: Refers to the legal name of the institution
+          examples:
+          - VANGUARD INDEX FUNDS-Vanguard Total Stock Market Index Fund
+          type: string
+          x-go-name: EntityName
+          x-order: 10
+        date_reported:
+          description: Refers to date reported
+          examples:
+          - '2025-09-30'
+          type: string
+          x-go-name: DateReported
+          x-order: 20
+        shares:
+          description: Refers to the number of shares owned
+          examples:
+          - 467135722
+          format: int64
+          type: integer
+          x-go-name: Shares
+          x-order: 30
+        value:
+          description: Total value of shares owned, calculated by multiplying `shares` by the current price
+          examples:
+          - 129695568698
+          format: int64
+          type: integer
+          x-go-name: Value
+          x-order: 40
+        percent_held:
+          description: Represents the percentage of shares outstanding that are owned by the financial institution
+          examples:
+          - 0.031600002
+          format: double
+          type: number
+          x-go-name: PercentHeld
+          x-order: 50
+      required:
+      - entity_name
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetInsiderTransactions_200_response_insider_transactions_inner:
+      properties:
+        full_name:
+          description: Full name of an individual, including first name, middle name, last name, and suffix
+          examples:
+          - ADAMS KATHERINE L
+          type: string
+          x-go-name: FullName
+          x-order: 10
+        position:
+          description: Job position of insider
+          examples:
+          - General Counsel
+          type: string
+          x-go-name: Position
+          x-order: 20
+        date_reported:
+          description: Date the transaction was reported
+          examples:
+          - '2021-05-03'
+          type: string
+          x-go-name: DateReported
+          x-order: 30
+        is_direct:
+          description: '`true` if direct, `false` if indirect'
+          examples:
+          - true
+          type: boolean
+          x-go-name: IsDirect
+          x-order: 40
+        shares:
+          description: As per report the number of shares acquired or disposed of the transaction
+          examples:
+          - 17000
+          format: int64
+          type: integer
+          x-go-name: Shares
+          x-order: 50
+        value:
+          description: Represents the value of transaction, calculated as price multiplied by the volume
+          examples:
+          - 2257631
+          format: int64
+          type: integer
+          x-go-name: Value
+          x-order: 60
+        description:
+          description: Exact price or price range of the transaction if available
+          examples:
+          - Sale at price 132.57 - 133.93 per share.
+          type: string
+          x-go-name: Description
+          x-order: 70
+      required:
+      - date_reported
+      - description
+      - full_name
+      - position
+      type: object
+    ResponseSanctionedEntitiy:
+      properties:
+        symbol:
+          description: The instrument symbol ticker
+          examples:
+          - LOKESHMACH
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        name:
+          description: The instrument name
+          examples:
+          - Lokesh Machines Ltd.
+          type: string
+          x-go-name: Name
+          x-order: 20
+        mic_code:
+          description: Market Identifier Code (MIC) under ISO 10383 standard
+          examples:
+          - NSE
+          type: string
+          x-go-name: MicCode
+          x-order: 30
+        country:
+          description: Country name
+          examples:
+          - India
+          type: string
+          x-go-name: Country
+          x-order: 40
+        sanction:
+          $ref: '#/components/schemas/ResponseSanctionItem'
+      required:
+      - country
+      - mic_code
+      - name
+      - sanction
+      - symbol
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetInsiderTransactions_200_response_meta:
+      description: Metadata about the instrument
+      properties:
+        symbol:
+          description: Ticker symbol of instrument
+          examples:
+          - AAPL
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        name:
+          description: Name of the company
+          examples:
+          - Apple Inc
+          type: string
+          x-go-name: Name
+          x-order: 20
+        currency:
+          description: Currency of the instrument according to the ISO 4217 standard
+          examples:
+          - USD
+          type: string
+          x-go-name: Currency
+          x-order: 30
+        exchange:
+          description: Exchange where instrument is traded
+          examples:
+          - NASDAQ
+          type: string
+          x-go-name: Exchange
+          x-order: 40
+        mic_code:
+          description: Market identifier code (MIC) under ISO 10383 standard
+          examples:
+          - XNAS
+          type: string
+          x-go-name: MicCode
+          x-order: 50
+        exchange_timezone:
+          description: Timezone of the exchange
+          examples:
+          - America/New_York
+          type: string
+          x-go-name: ExchangeTimezone
+          x-order: 60
+      required:
+      - currency
+      - exchange
+      - exchange_timezone
+      - mic_code
+      - name
+      - symbol
+      type: object
+      x-go-name: Meta
+      x-order: 10
+    GetEdgarFilingsArchive_200_response_meta:
+      description: Meta information about the company and listing
+      properties:
+        symbol:
+          description: Ticker of the company
+          examples:
+          - AAPL
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        exchange:
+          description: Exchange name where the company is listed
+          examples:
+          - NASDAQ
+          type: string
+          x-go-name: Exchange
+          x-order: 20
+        mic_code:
+          description: Market Identifier Code (MIC) under ISO 10383 standard
+          examples:
+          - XNGS
+          type: string
+          x-go-name: MicCode
+          x-order: 30
+        type:
+          description: Issue type of the stock
+          examples:
+          - Common Stock
+          type: string
+          x-go-name: Type
+          x-order: 40
+      required:
+      - exchange
+      - mic_code
+      - symbol
+      - type
+      type: object
+      x-go-name: Meta
+      x-order: 10
+    ApiInternalServerErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 500
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Internal server error
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetInstitutionalHolders_200_response:
+      properties:
+        meta:
+          $ref: '#/components/schemas/GetFundHolders_200_response_meta'
+        institutional_holders:
+          description: List of institutional holders for the financial instrument
+          items:
+            $ref: '#/components/schemas/InstitutionalHolderItem'
+          type: array
+          x-go-name: InstitutionalHolders
+          x-order: 20
+      required:
+      - institutional_holders
+      - meta
+      type: object
+    GetFundHolders_200_response:
+      properties:
+        meta:
+          $ref: '#/components/schemas/GetFundHolders_200_response_meta'
+        fund_holders:
+          description: List of fund holders for the financial instrument
+          items:
+            $ref: '#/components/schemas/FundHolderItem'
+          type: array
+          x-go-name: FundHolders
+          x-order: 20
+      required:
+      - fund_holders
+      - meta
+      type: object
+    ApiParameterTooLongErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 414
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Input parameter array exceeds the allowed length
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    DirectHolderItem:
+      properties:
+        entity_name:
+          description: Refers to the legal name of the institution
+          examples:
+          - Public Investment Fund (Investment Company)
+          type: string
+          x-go-name: EntityName
+          x-order: 10
+        date_reported:
+          description: Refers to date reported
+          examples:
+          - '2025-03-13'
+          type: string
+          x-go-name: DateReported
+          x-order: 20
+        shares:
+          description: Refers to the number of shares owned
+          examples:
+          - 53600000
+          format: int64
+          type: integer
+          x-go-name: Shares
+          x-order: 30
+        value:
+          description: Total value of shares owned, calculated by multiplying `shares` by the current price
+          examples:
+          - 43148000000
+          format: int64
+          type: integer
+          x-go-name: Value
+          x-order: 40
+        percent_held:
+          description: Represents the percentage of shares outstanding that are owned by the financial institution
+          examples:
+          - 0
+          format: double
+          type: number
+          x-go-name: PercentHeld
+          x-order: 50
+      required:
+      - entity_name
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiForbiddenErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 403
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - API key lacks permissions for the requested resource
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetTaxInfo_200_response_meta:
+      description: Metadata about the requested instrument
+      properties:
+        symbol:
+          description: The ticker symbol of an instrument for which data was requested
+          examples:
+          - SKYQ
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        name:
+          description: The instrument name
+          examples:
+          - Sky Quarry Inc.
+          type: string
+          x-go-name: Name
+          x-order: 20
+        exchange:
+          description: The exchange name where the instrument is traded
+          examples:
+          - NASDAQ
+          type: string
+          x-go-name: Exchange
+          x-order: 30
+        mic_code:
+          description: The Market Identifier Code (MIC) of the exchange where the instrument is traded
+          examples:
+          - XNCM
+          type: string
+          x-go-name: MicCode
+          x-order: 40
+        country:
+          description: The instrument country name
+          examples:
+          - United States
+          type: string
+          x-go-name: Country
+          x-order: 50
+      required:
+      - country
+      - exchange
+      - mic_code
+      - name
+      - symbol
+      type: object
+      x-go-name: Meta
+      x-order: 10
+    GetInsiderTransactions_200_response:
+      properties:
+        meta:
+          $ref: '#/components/schemas/GetInsiderTransactions_200_response_meta'
+        insider_transactions:
+          description: List of insider transactions
+          items:
+            $ref: '#/components/schemas/GetInsiderTransactions_200_response_insider_transactions_inner'
+          type: array
+          x-go-name: InsiderTransactions
+          x-order: 20
+      required:
+      - insider_transactions
+      - meta
+      type: object
+    EdgarFilingValue:
+      description: Filing value object
+      properties:
+        cik:
+          description: CIK code
+          examples:
+          - 1711463
+          format: int64
+          type: integer
+          x-go-name: Cik
+          x-order: 10
+        filed_at:
+          description: Filing date in UNIX timestamp
+          examples:
+          - 1726617600
+          format: int64
+          type: integer
+          x-go-name: FiledAt
+          x-order: 20
+        files:
+          description: Filing files
+          items:
+            $ref: '#/components/schemas/EdgarFilingFile'
+          type: array
+          x-go-name: Files
+          x-order: 40
+        filing_url:
+          description: Full URL of the filing
+          examples:
+          - https://www.sec.gov/Archives/edgar/data/1711463/0001971857-24-000581-index.htm
+          type: string
+          x-go-name: FilingURL
+          x-order: 50
+        form_type:
+          description: Filing form type
+          examples:
+          - '144'
+          type: string
+          x-go-name: FormType
+          x-order: 55
+        ticker:
+          description: Ticker symbols associated with the filing
+          examples:
+          - - AAPL
+          items:
+            type: string
+          type: array
+          x-go-name: Ticker
+          x-order: 60
+      required:
+      - cik
+      - filed_at
+      - filing_url
+      - form_type
+      - ticker
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    SourceEnum:
+      enum:
+      - ofac
+      - uk
+      - eu
+      - au
+      type: string
+      x-go-name: Source
+    EdgarFilingFile:
+      description: Filing file object
+      properties:
+        name:
+          description: File name
+          examples:
+          - primary_doc.html
+          type: string
+          x-go-name: Name
+          x-order: 10
+        size:
+          description: File size
+          examples:
+          - 2980
+          format: int64
+          type: integer
+          x-go-name: Size
+          x-order: 20
+        type:
+          description: File type
+          examples:
+          - '144'
+          type: string
+          x-go-name: Type
+          x-order: 30
+        url:
+          description: File full url
+          examples:
+          - https://www.sec.gov/Archives/edgar/data/1711463/000197185724000581/primary_doc.xml
+          type: string
+          x-go-name: URL
+          x-order: 40
+      required:
+      - name
+      - type
+      - url
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ResponseSanctionItemList:
+      properties:
+        name:
+          description: The sanction list name
+          examples:
+          - SDN List
+          type: string
+          x-go-name: Name
+          x-order: 10
+        published_at:
+          description: The sanction published date in the current sanctions list
+          examples:
+          - '2024-10-30'
+          type: string
+          x-go-name: PublishedAt
+          x-order: 20
+      required:
+      - name
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetDirectHolders_200_response:
+      properties:
+        meta:
+          $ref: '#/components/schemas/GetDirectHolders_200_response_meta'
+        direct_holders:
+          description: List of direct holders for the financial instrument
+          items:
+            $ref: '#/components/schemas/DirectHolderItem'
+          type: array
+          x-go-name: DirectHolders
+          x-order: 20
+      required:
+      - direct_holders
+      - meta
+      type: object
+    GetSourceSanctionedEntities_200_response:
+      properties:
+        sanctions:
+          description: List of sanctioned entities
+          items:
+            $ref: '#/components/schemas/ResponseSanctionedEntitiy'
+          type: array
+          x-go-name: Sanctions
+          x-order: 10
+        count:
+          description: Total number of sanctioned entities
+          examples:
+          - 143
+          format: int64
+          type: integer
+          x-go-name: Count
+          x-order: 20
+        status:
+          description: Response status
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+          x-order: 30
+      required:
+      - count
+      - sanctions
+      - status
+      type: object
+    GetDirectHolders_200_response_meta:
+      description: Meta information about the financial instrument
+      properties:
+        symbol:
+          description: Ticker symbol of instrument
+          examples:
+          - '7203'
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        name:
+          description: Name of symbol
+          examples:
+          - Elm Co.
+          type: string
+          x-go-name: Name
+          x-order: 20
+        currency:
+          description: Currency of the instrument according to the ISO 4217 standard
+          examples:
+          - SAR
+          type: string
+          x-go-name: Currency
+          x-order: 30
+        exchange:
+          description: Exchange where instrument is traded
+          examples:
+          - Tadawul
+          type: string
+          x-go-name: Exchange
+          x-order: 40
+        mic_code:
+          description: Market identifier code (MIC) under ISO 10383 standard
+          examples:
+          - XSAU
+          type: string
+          x-go-name: MicCode
+          x-order: 50
+        exchange_timezone:
+          description: Timezone of the exchange
+          examples:
+          - Asia/Riyadh
+          type: string
+          x-go-name: ExchangeTimezone
+          x-order: 60
+      required:
+      - currency
+      - exchange
+      - exchange_timezone
+      - mic_code
+      - name
+      - symbol
+      type: object
+      x-go-name: Meta
+      x-order: 10
+    ApiNotFoundErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 404
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - symbol or figi parameter is missing or invalid
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiTooManyRequestsErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 429
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - You have run out of API credits for the current minute. 1000 API credits were used, with the current limit being 987. Wait for the next minute or consider upgrading your plan at https://twelvedata.com/pricing
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    InstitutionalHolderItem:
+      properties:
+        entity_name:
+          description: Refers to the legal name of the institution
+          examples:
+          - Vanguard Group Inc
+          type: string
+          x-go-name: EntityName
+          x-order: 10
+        date_reported:
+          description: Refers to date reported
+          examples:
+          - '2025-09-30'
+          type: string
+          x-go-name: DateReported
+          x-order: 20
+        shares:
+          description: Refers to the number of shares owned
+          examples:
+          - 1399427162
+          format: int64
+          type: integer
+          x-go-name: Shares
+          x-order: 30
+        value:
+          description: Total value of shares owned, calculated by multiplying `shares` by the current price
+          examples:
+          - 388536977757
+          format: int64
+          type: integer
+          x-go-name: Value
+          x-order: 40
+        percent_held:
+          description: Represents the percentage of shares outstanding that are owned by the financial institution
+          examples:
+          - 0.0947
+          format: double
+          type: number
+          x-go-name: PercentHeld
+          x-order: 50
+      required:
+      - entity_name
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetTaxInfo_200_response_data:
+      description: Tax information data containing the tax indicator for the requested instrument
+      properties:
+        tax_indicator:
+          description: The instrument tax indicator, can be `null`, `us_1446f`, `spanish_ftt`, `uk_stamp_duty`, `hk_stamp_duty`, `french_ftt` or `italian_ftt`
+          examples:
+          - us_1446f
+          type: string
+          x-go-name: TaxIndicator
+          x-order: 10
+      required:
+      - tax_indicator
+      type: object
+      x-go-name: Data
+      x-order: 20
+    ApiBadRequestErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 400
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Invalid request
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetFundHolders_200_response_meta:
+      description: Meta information about the financial instrument
+      properties:
+        symbol:
+          description: Ticker symbol of instrument
+          examples:
+          - AAPL
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        name:
+          description: Name of symbol
+          examples:
+          - Apple Inc
+          type: string
+          x-go-name: Name
+          x-order: 20
+        currency:
+          description: Currency of the instrument according to the ISO 4217 standard
+          examples:
+          - USD
+          type: string
+          x-go-name: Currency
+          x-order: 30
+        exchange:
+          description: Exchange where instrument is traded
+          examples:
+          - NASDAQ
+          type: string
+          x-go-name: Exchange
+          x-order: 40
+        mic_code:
+          description: Market identifier code (MIC) under ISO 10383 standard
+          examples:
+          - XNAS
+          type: string
+          x-go-name: MicCode
+          x-order: 50
+        exchange_timezone:
+          description: Timezone of the exchange
+          examples:
+          - America/New_York
+          type: string
+          x-go-name: ExchangeTimezone
+          x-order: 60
+      required:
+      - currency
+      - exchange
+      - exchange_timezone
+      - mic_code
+      - name
+      - symbol
+      type: object
+      x-go-name: Meta
+      x-order: 10
+    GetEdgarFilingsArchive_200_response:
+      properties:
+        meta:
+          $ref: '#/components/schemas/GetEdgarFilingsArchive_200_response_meta'
+        values:
+          description: List of filings
+          items:
+            $ref: '#/components/schemas/EdgarFilingValue'
+          type: array
+          x-go-name: Values
+          x-order: 20
+      required:
+      - meta
+      - values
+      type: object
+    GetTaxInfo_200_response:
+      properties:
+        meta:
+          $ref: '#/components/schemas/GetTaxInfo_200_response_meta'
+        data:
+          $ref: '#/components/schemas/GetTaxInfo_200_response_data'
+        status:
+          description: The status of the request, e.g., `ok`, `error`
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+          x-order: 30
+      required:
+      - data
+      - meta
+      - status
+      type: object
+    ApiUnauthorizedErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 401
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - apikey parameter is incorrect or not specified
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ResponseSanctionItem:
+      properties:
+        source:
+          description: The sanction source
+          examples:
+          - ofac
+          type: string
+          x-go-name: Source
+          x-order: 10
+        program:
+          description: The sanction program
+          examples:
+          - RUSSIA-EO14024
+          type: string
+          x-go-name: Program
+          x-order: 20
+        notes:
+          description: Notes for the sanction
+          examples:
+          - Block
+          type: string
+          x-go-name: Notes
+          x-order: 30
+        lists:
+          description: Sanction lists
+          items:
+            $ref: '#/components/schemas/ResponseSanctionItemList'
+          type: array
+          x-go-name: Lists
+          x-order: 40
+      required:
+      - lists
+      - notes
+      - program
+      - source
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+  securitySchemes:
+    authorizationHeader:
+      description: Enter the token with the `apikey ` prefix, e.g. "apikey abcde12345".
+      in: header
+      name: Authorization
+      type: apiKey
+    queryParameter:
+      in: query
+      name: apikey
+      type: apiKey
+x-group-list:
+- description: Access real-time and historical market prices—time series and exchange rates—for equities, forex, cryptocurrencies, ETFs, and more. These endpoints form the foundation for any trading or data-driven application.
+  name: Market data
+  order: 10
+- children:
+  - description: Asset Catalog endpoints are your starting point. They return the complete inventory of tradeable instruments available through Twelve Data — over 1,000,000 symbols across 50+ countries. You query a catalog first to discover which symbols exist, then pass those symbols to price, fundamental, or indicator endpoints.
+    name: Asset catalogs
+    order: 10
+  - description: Discovery endpoints help you find instruments when you don't already know the exact identifier. The Asset Catalog is the phone book; Discovery is the search engine on top of it.
+    name: Discovery
+    order: 20
+  - description: 'Market endpoints answer operational questions about exchanges themselves: which ones are open right now, what are their trading hours, and how far back does data go for a given instrument?'
+    name: Markets
+    order: 30
+  - description: 'Metadata endpoints return the lookup tables and enumerations that define valid parameter values across the entire API. They answer: what instrument types exist? What intervals are supported? Which countries are covered? What technical indicators can I use?'
+    name: Supporting metadata
+    order: 40
+  description: Lookup static metadata—symbol lists, exchange details, currency information-to filter, validate, and contextualize your core data calls. Ideal for building dropdowns, mappings, and ensuring data consistency.
+  name: Reference data
+  order: 20
+- description: In-depth company and fund financials—income statements, balance sheets, cash flows, profiles, corporate events, and key ratios. Unlock comprehensive datasets for valuation, screening, and fundamental research.
+  name: Fundamentals
+  order: 30
+- name: Currencies
+  order: 35
+- description: 'ETF-focused metadata and analytics: universe lists, family and type groupings, NAV snapshots, performance metrics, risk measures, and current fund composition. Tailored to the unique characteristics and reporting cadence of exchange-traded funds.'
+  name: ETFs
+  order: 40
+- description: 'Mutual-fund-specific listings and snapshots: fund directories, issuer families, fund types, NAV history, dividend records, key ratios, and portfolio holdings. Ideal for long-term performance analysis and portfolio attribution.'
+  name: Mutual funds
+  order: 50
+- description: 'Money-market-fund directories and full-data snapshots: fund listings ranked by fund size, plus screener metrics (fund size, liquidity, weighted average maturity), yields, key facts, and risk indicators. Focused on short-term, low-risk cash-management instruments for liquidity and capital-preservation analysis.'
+  name: Money market funds
+  order: 55
+- children:
+  - description: Plotted directly on the price chart to smooth or envelope price data, highlighting trend direction, support/resistance, and mean-reversion levels (e.g. moving averages, Bollinger Bands, Parabolic SAR, Ichimoku Cloud, Keltner Channels, McGinley Dynamic).
+    name: Overlap studies
+    order: 10
+  - description: Oscillators that measure the speed or strength of price movement, helping detect overbought/oversold conditions, divergences, and shifts in trend momentum (e.g. RSI, MACD, ROC, Stochastics, ADX, CCI, Coppock Curve, TRIX).
+    name: Momentum indicators
+    order: 20
+  - description: Use trading volume to confirm price moves or warn of exhaustion—volume and price in tandem suggest trend strength, while divergences can signal reversals (e.g. OBV, Chaikin AD, Accumulation/Distribution Oscillator).
+    name: Volume indicators
+    order: 30
+  - description: Quantify the range or dispersion of price over time to gauge risk, size stops, or identify breakouts (e.g. ATR, NATR, True Range) and adaptive overlays like SuperTrend.
+    name: Volatility indicators
+    order: 40
+  - description: Convert raw OHLC data into derived series or aggregated values to feed other indicators or reveal different perspectives on price (e.g. typical price, HLC3, weighted close, arithmetic transforms like SUM, AVG, LOG, SQRT).
+    name: Price transform
+    order: 50
+  - description: Detect and follow recurring periodic patterns in price action using Hilbert Transform–based measures of cycle period and phase (e.g. HT_SINE, HT_DCPERIOD, HT_DCPHASE, HT_PHASOR, HT_TRENDMODE).
+    name: Cycle indicators
+    order: 60
+  - description: Scan bars or bar‐groups for predefined candlestick patterns that historically signal continuation or reversal setups (e.g. Doji, Hammer, Engulfing, Three Black Crows, Morning Star, Dark Cloud Cover, etc.).
+    name: Pattern recognition
+    order: 70
+  - description: Compute fundamental statistical metrics on price series—dispersion, regression, correlation, and forecasting components—for standalone analysis or as inputs to other models (e.g. STDDEV, VAR, LINEARREG, CORREL, TSF, BETA).
+    name: Statistic functions
+    order: 80
+  - name: Math transform
+    order: 90
+  description: On-demand calculation of popular indicators (SMA, EMA, RSI, MACD, Bollinger Bands, etc.) over any supported time series. Streamline chart overlays, signal generation, and backtesting without external libraries.
+  name: Technical indicators
+  order: 60
+- description: Forward-looking and consensus analytics—earnings and revenue estimates, EPS trends and revisions, growth projections, analyst recommendations and ratings, price targets, and other consensus metrics. Perfect for incorporating expert forecasts and sentiment into your models and dashboards.
+  name: Analysis
+  order: 70
+- description: 'Compliance and filings data: insider transactions, SEC reports, governance documents, and more. Critical for audit trails, due-diligence workflows, and risk-management integrations.'
+  name: Regulatory
+  order: 80
+- description: High-throughput and management endpoints for power users—submit and monitor batch jobs to pull large datasets asynchronously, track your API usage and quotas programmatically, and access other developer-focused tools for automating and scaling your data workflows.
+  name: Advanced
+  order: 90
+x-original-swagger-version: '2.0'

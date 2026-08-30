@@ -1,0 +1,628 @@
+openapi: 3.2.0
+info:
+  description: "## Overview\n\nWelcome to Twelve Data developer docs — your gateway to comprehensive financial market data through a powerful and easy-to-use API.\nTwelve Data provides access to financial markets across over 50 global countries, covering more than 1 million public instruments, including stocks, forex, ETFs, mutual funds, commodities, and cryptocurrencies.\n\n## Quickstart\n\nTo get started, you'll need to sign up for an API key. Once you have your API key, you can start making requests to the API.\n\n### Step 1: Create Twelve Data account\n\nSign up on the Twelve Data website to create your account [here](https://twelvedata.com/register). This gives you access to the API dashboard and your API key.\n\n### Step 2: Get your API key\n\nAfter signing in, navigate to your [dashboard](https://twelvedata.com/account/api-keys) to find your unique API key. This key is required to authenticate all API and WebSocket requests.\n\n### Step 3: Make your first request\n\nTry a simple API call with cURL to fetch the latest price for Apple (AAPL):\n\n```\ncurl \"https://api.twelvedata.com/price?symbol=AAPL&apikey=your_api_key\"\n```\n\n### Step 4: Make a request from Python or Javascript\n\nUse our client libraries or standard HTTP clients to make API calls programmatically. Here’s an example in [Python](https://github.com/twelvedata/twelvedata-python) and [Node.js](https://github.com/twelvedata/twelvedata-node):\n\n#### Python (using official Twelve Data SDK):\n\n```python\nfrom twelvedata import TDClient\n\n# Initialize client with your API key\ntd = TDClient(apikey=\"your_api_key\")\n\n# Get latest price for Apple\nprice = td.price(symbol=\"AAPL\").as_json()\n\nprint(price)\n```\n\n#### JavaScript (Node.js):\n\n```javascript\nimport { MarketDataApi, CreateConfig } from \"@twelvedata/twelvedata-node\";\n\nconst config = CreateConfig('your_api_key');\nconst api = new MarketDataApi(config);\n\nasync function main() {\n&nbsp;&nbsp;const response = await api.getPrice({\n&nbsp;&nbsp;&nbsp;&nbsp;symbol: \"AAPL\",\n&nbsp;&nbsp;});\n&nbsp;&nbsp;console.log(response.data);\n}\n\nmain().catch(console.error);\n```\n\n### Step 5: Perform correlation analysis between Tesla and Microsoft prices\n\nFetch historical price data for Tesla (TSLA) and Microsoft (MSFT) and calculate the correlation of their closing prices:\n\n```python\nfrom twelvedata import TDClient\nimport pandas as pd\n\n# Initialize client with your API key\ntd = TDClient(apikey=\"your_api_key\")\n\n# Fetch historical price data for Tesla\ntsla_ts = td.time_series(\n&nbsp;&nbsp;&nbsp;&nbsp;symbol=\"TSLA\",\n&nbsp;&nbsp;&nbsp;&nbsp;interval=\"1day\",\n&nbsp;&nbsp;&nbsp;&nbsp;outputsize=100\n).as_pandas()\n\n# Fetch historical price data for Microsoft\nmsft_ts = td.time_series(\n&nbsp;&nbsp;&nbsp;&nbsp;symbol=\"MSFT\",\n&nbsp;&nbsp;&nbsp;&nbsp;interval=\"1day\",\n&nbsp;&nbsp;&nbsp;&nbsp;outputsize=100\n).as_pandas()\n\n# Align data on datetime index\ncombined = pd.concat(\n&nbsp;&nbsp;&nbsp;&nbsp;[tsla_ts['close'].astype(float), msft_ts['close'].astype(float)],\n&nbsp;&nbsp;&nbsp;&nbsp;axis=1,\n&nbsp;&nbsp;&nbsp;&nbsp;keys=[\"TSLA\", \"MSFT\"]\n).dropna()\n\n# Calculate correlation\ncorrelation = combined[\"TSLA\"].corr(combined[\"MSFT\"])\nprint(f\"Correlation of closing prices between TSLA and MSFT: {correlation:.2f}\")\n```\n\n### Authentication\n\nAuthenticate your requests using one of these methods:\n\n#### Query parameter method\n```\nGET https://api.twelvedata.com/endpoint?symbol=AAPL&apikey=your_api_key\n```\n\n#### HTTP header method (recommended)\n```\nAuthorization: apikey your_api_key\n```\n\n##### API key useful information\n<ul>\n<li> Demo API key (<code>apikey=demo</code>) available for demo requests</li>\n<li> Personal API key required for full access</li>\n<li> Premium endpoints and data require higher-tier plans (testable with <a href=\"https://twelvedata.com/exchanges\">trial symbols</a>)</li>\n</ul>\n\n### API endpoints\n\n Service | Base URL |\n---------|----------|\n REST API | `https://api.twelvedata.com` |\n WebSocket | `wss://ws.twelvedata.com` |\n\n### Parameter guidelines\n<ul>\n<li><b>Separator:</b> Use <code>&</code> to separate multiple parameters</li>\n<li><b>Case sensitivity:</b> Parameter names are case-insensitive (<code>symbol=AAPL</code> = <code>symbol=aapl</code>)</li>\n<li><b>Multiple values:</b> Separate with commas where supported</li>\n</ul>\n\n### Response handling\n\n#### Default format\nAll responses return JSON format by default unless otherwise specified.\n\n#### Null values\n<b>Important:</b> Some response fields may contain `null` values when data is unavailable for specific metrics. This is expected behavior, not an error.\n\n##### Best Practices:\n<ul>\n<li>Always implement <code>null</code> value handling in your application</li>\n<li>Use defensive programming techniques for data processing</li>\n<li>Consider fallback values or error handling for critical metrics</li>\n</ul>\n\n#### Error handling\nStructure your code to gracefully handle:\n<ul>\n<li>Network timeouts</li>\n<li>Rate limiting responses</li>\n<li>Invalid parameter errors</li>\n<li>Data unavailability periods</li>\n</ul>\n\n##### Best practices\n<ul>\n<li><b>Rate limits:</b> Adhere to your plan’s rate limits to avoid throttling. Check your dashboard for details.</li>\n<li><b>Error handling:</b> Implement retry logic for transient errors (e.g., <code>429 Too Many Requests</code>).</li>\n<li><b>Caching:</b> Cache responses for frequently accessed data to reduce API calls and improve performance.</li>\n<li><b>Secure storage:</b> Store your API key securely and never expose it in client-side code or public repositories.</li>\n</ul>\n\n## Errors\n\nTwelve Data API employs a standardized error response format, delivering a JSON object with `code`, `message`, and `status` keys for clear and consistent error communication.\n\n### Codes\n\nBelow is a table of possible error codes, their HTTP status, meanings, and resolution steps:\n\n Code | status | Meaning | Resolution |\n --- | --- | --- | --- |\n **400** | Bad Request | Invalid or incorrect parameter(s) provided. | Check the `message` in the response for details. Refer to the API Documenta­tion to correct the input. |\n **401** | Unauthor­ized | Invalid or incorrect API key. | Verify your API key is correct. Sign up for a key <a href=\"https://twelvedata.com/account/api-keys\">here</a>. |\n **403** | Forbidden | API key lacks permissions for the requested resource (upgrade required). | Upgrade your plan <a href=\"https://twelvedata.com/pricing\">here</a>. |\n **404** | Not Found | Requested data could not be found. | Adjust parameters to be less strict as they may be too restrictive. |\n **414** | Parameter Too Long | Input parameter array exceeds the allowed length. | Follow the `message` guidance to adjust the parameter length. |\n **429** | Too Many Requests | API request limit reached for your key. | Wait briefly or upgrade your plan <a href=\"https://twelvedata.com/pricing\">here</a>. |\n **500** | Internal Server Error | Server-side issue occurred; retry later. | Contact support <a href=\"https://twelvedata.com/contact\">here</a> for assistance. |\n\n### Example error response\n\nConsider the following invalid request:\n\n```\nhttps://api.twelvedata.com/time_series?symbol=AAPL&interval=0.99min&apikey=your_api_key\n```\n\nDue to the incorrect `interval` value, the API returns:\n\n```json\n{\n&nbsp;&nbsp;\"code\": 400,\n&nbsp;&nbsp;\"message\": \"Invalid **interval** provided: 0.99min. Supported intervals: 1min, 5min, 15min, 30min, 45min, 1h, 2h, 4h, 8h, 1day, 1week, 1month\",\n&nbsp;&nbsp;\"status\": \"error\"\n}\n```\n\nRefer to the API Documentation for valid parameter values to resolve such errors.\n\n## Libraries\n\nTwelve Data provides a growing ecosystem of libraries and integrations to help you build faster and smarter in your preferred environment. Official libraries are actively maintained by the Twelve Data team, while selected community-built libraries offer additional flexibility.\n\nA full list is available on our [GitHub profile](https://github.com/search?q=twelvedata).\n\n### Official SDKs\n<ul>\n<li><b>Python:</b> <a href=\"https://github.com/twelvedata/twelvedata-python\">twelvedata-python</a></li>\n<li><b>Node.js:</b> <a href=\"https://github.com/twelvedata/twelvedata-node\">twelvedata-node</a></li>\n<li><b>Go:</b> <a href=\"https://github.com/twelvedata/twelvedata-go\">twelvedata-go</a></li>\n<li><b>Java:</b> <a href=\"https://github.com/twelvedata/twelvedata-java\">twelvedata-java</a></li>\n<li><b>R:</b> <a href=\"https://github.com/twelvedata/twelvedata-r-sdk\">twelvedata-r-sdk</a></li>\n<li><b>CLI:</b> <a href=\"https://github.com/twelvedata/twelvedata-cli\">twelvedata-cli</a></li>\n</ul>\n\n### AI integrations\n<ul>\n<li><b>Twelve Data MCP Server:</b> <a href=\"https://github.com/twelvedata/mcp\">Repository</a> — Model Context Protocol (MCP) server that provides seamless integration with AI assistants and language models, enabling direct access to Twelve Data's financial market data within conversational interfaces and AI workflows.</li>\n<li><b>Twelve Data integration for OpenClaw:</b> <a href=\"https://clawhub.ai/twelvedata/twelvedata\">Clawhub skill</a> — Integration for the OpenClaw platform, allowing users to leverage Twelve Data's API within their OpenClaw applications.</li>\n<li><b>Twelve Data NEAR Agent:</b> <a href=\"https://market.near.ai/agents/twelve_data\">NEAR Agent</a> — Access Twelve Data's API directly from NEAR's AI agent platform, enabling users to retrieve financial data and insights within their NEAR AI agent workflows.</li>\n</ul>\n\n### Spreadsheet add-ons\n<ul>\n<li><b>Excel:</b> <a href=\"https://twelvedata.com/excel\">Excel Add-in</a></li>\n<li><b>Google Sheets:</b> <a href=\"https://twelvedata.com/google-sheets\">Google Sheets Add-on</a></li>\n</ul>\n\n### Community libraries\n\nThe community has developed libraries in several popular languages. You can explore more community libraries on [GitHub](https://github.com/search?q=twelvedata).\n<ul>\n<li><b>C#:</b> <a href=\"https://github.com/pseudomarkets/TwelveDataSharp\">TwelveDataSharp</a></li>\n<li><b>JavaScript:</b> <a href=\"https://github.com/evzaboun/twelvedata\">twelvedata</a></li>\n<li><b>PHP:</b> <a href=\"https://github.com/ingelby/twelvedata\">twelvedata</a></li>\n<li><b>Go:</b> <a href=\"https://github.com/soulgarden/twelvedata\">twelvedata</a></li>\n<li><b>TypeScript:</b> <a href=\"https://github.com/Clyde-Goodall/twelve-data-wrapper\">twelve-data-wrapper</a></li>\n</ul>\n\n### Other Twelve Data repositories\n<ul>\n<li><b>searchindex</b> <i>(Go)</i>: <a href=\"https://github.com/twelvedata/searchindex\">Repository</a> — In-memory search index by strings</li>\n<li><b>ws-tools</b> <i>(Python)</i>: <a href=\"https://github.com/twelvedata/ws-tools\">Repository</a> — Utility tools for WebSocket stream handling</li>\n</ul>\n\n### API specification\n<ul>\n<li><b>OpenAPI / Swagger:</b> Access the <a href=\"https://api.twelvedata.com/doc/swagger/openapi.json\">complete API specification</a> in OpenAPI format. You can use this file to automatically generate client libraries in your preferred programming language, explore the API interactively via Swagger tools, or integrate Twelve Data seamlessly into your AI and LLM workflows.</li>\n</ul>"
+  title: Twelve Data Advanced API
+  version: 0.0.1
+servers:
+- url: https://api.twelvedata.com/
+security:
+- authorizationHeader:
+  - '[]'
+- queryParameter:
+  - '[]'
+tags:
+- name: advanced
+paths:
+  /api_usage:
+    get:
+      description: The API Usage endpoint provides detailed information on your current API usage statistics. It returns data such as the number of requests made, remaining requests, and the reset time for your usage limits. This endpoint is essential for monitoring and managing your API consumption to ensure you stay within your allocated limits.
+      operationId: GetApiUsage
+      parameters:
+      - description: Output format
+        in: query
+        name: format
+        schema:
+          $ref: '#/components/schemas/FormatEnum'
+        x-go-name: Format
+        x-order: '10'
+      - description: Specify the delimiter used when downloading the CSV file
+        in: query
+        name: delimiter
+        schema:
+          default: ;
+          type: string
+          x-go-name: Delimiter
+          x-order: '20'
+        x-go-name: Delimiter
+        x-order: '20'
+      - description: 'Timezone at which output datetime will be displayed. Supports:
+
+          <ul>
+
+          <li>1. <code>UTC</code> for datetime at universal UTC standard</li>
+
+          <li>2. Timezone name according to the IANA Time Zone Database. E.g. <code>America/New_York</code>, <code>Asia/Singapore</code>. Full list of timezones can be found <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones" target="blank">here</a>.</li>
+
+          </ul>
+
+          <i>Take note that the IANA Timezone name is case-sensitive</i>'
+        in: query
+        name: timezone
+        schema:
+          default: UTC
+          type: string
+          x-go-name: Timezone
+          x-order: '30'
+        x-go-name: Timezone
+        x-order: '30'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetApiUsage_200_response'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBadRequestErrorResponseBody'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnauthorizedErrorResponseBody'
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiForbiddenErrorResponseBody'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiNotFoundErrorResponseBody'
+          description: ''
+        '414':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiParameterTooLongErrorResponseBody'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTooManyRequestsErrorResponseBody'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInternalServerErrorResponseBody'
+          description: ''
+      summary: API usage
+      tags:
+      - advanced
+      x-api-credits-cost: '1'
+      x-api-credits-type: request
+      x-group: Advanced
+      x-order: '30'
+  /batch:
+    post:
+      description: 'The batch request endpoint allows users to request data for multiple financial instruments, time intervals, and data types simultaneously. This endpoint is useful for efficiently gathering diverse financial data in a single operation, reducing the need for multiple individual requests. Errors in specific requests do not affect the processing of others, and each error is reported separately, enabling easy troubleshooting.
+
+
+        ### Request body
+
+        Only JSON `POST` requests are supported.
+
+        The request content structure consists of key-value items. The key is a unique request ID. The value is requested url.
+
+
+        ### Response
+
+        The response contains key-value data. The key is a unique request ID. The value is returned data.
+
+
+        ### API credits
+
+        <ul>
+
+        <li>The number of concurrent requests is limited by your subscription plan.</li>
+
+        <li>Credits are consumed per requested endpoint, with the total usage equal to the sum of individual requests in the batch.</li>
+
+        <li>If the requested data exceeds your available credits, only partial data will be returned asynchronously until your quota is exhausted.</li>
+
+        <li>If one or more requests in the batch contain errors (e.g., invalid symbols or unsupported intervals), it will not affect the successful processing of other requests. Errors are reported individually within the response, allowing you to identify and correct specific issues without impacting the entire batch.</li>
+
+        </ul>'
+      operationId: advanced
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties:
+                $ref: '#/components/schemas/advanced_request_value'
+              type: object
+          application/xml:
+            schema:
+              additionalProperties:
+                $ref: '#/components/schemas/advanced_request_value'
+              type: object
+        description: Map of requests
+        required: false
+        x-example-key: req_1
+        x-go-name: Body
+        x-order: 10
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/advanced_200_response'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBadRequestErrorResponseBody'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnauthorizedErrorResponseBody'
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiForbiddenErrorResponseBody'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiNotFoundErrorResponseBody'
+          description: ''
+        '414':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiParameterTooLongErrorResponseBody'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTooManyRequestsErrorResponseBody'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInternalServerErrorResponseBody'
+          description: ''
+      summary: Batches
+      tags:
+      - advanced
+      x-badge: Useful
+      x-group: Advanced
+      x-order: 10
+      x-url-hash: batch-requests
+      x-codegen-request-body-name: key
+components:
+  schemas:
+    advanced_200_response:
+      properties:
+        code:
+          description: HTTP status code
+          examples:
+          - 200
+          format: int64
+          type: integer
+          x-go-name: Code
+          x-order: 10
+        status:
+          description: Status of the request
+          examples:
+          - success
+          type: string
+          x-go-name: Status
+          x-order: 20
+        data:
+          additionalProperties:
+            properties: {}
+            type: object
+          description: Response data containing individual request results
+          examples:
+          - req_1:
+              response:
+                meta:
+                  currency: USD
+                  exchange: NASDAQ
+                  exchange_timezone: America/New_York
+                  interval: 1min
+                  mic_code: XNGS
+                  symbol: AAPL
+                  type: Common Stock
+                status: ok
+                values:
+                - close: '248.6'
+                  datetime: '2025-02-21 12:51:00'
+                  high: '248.6'
+                  low: '248.4'
+                  open: '248.5'
+                  volume: '22290'
+                - close: '248.52'
+                  datetime: '2025-02-21 12:50:00'
+                  high: '248.59'
+                  low: '248.43'
+                  open: '248.52'
+                  volume: '64085'
+              status: success
+            req_2:
+              response:
+                rate: 149.25999
+                symbol: USD/JPY
+                timestamp: 1740160260
+              status: success
+            req_3:
+              response:
+                amount: 18209.71933
+                rate: 149.25999
+                symbol: USD/JPY
+                timestamp: 1740160260
+              status: success
+          type: object
+          x-go-name: Data
+          x-order: 30
+      type: object
+    ApiForbiddenErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 403
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - API key lacks permissions for the requested resource
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiBadRequestErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 400
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Invalid request
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiInternalServerErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 500
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Internal server error
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetApiUsage_200_response:
+      properties:
+        timestamp:
+          description: Current timestamp in UTC timezone
+          examples:
+          - '2025-05-07 11:10:12'
+          type: string
+          x-go-name: Timestamp
+          x-order: 10
+        current_usage:
+          description: Number of requests made in last minute
+          examples:
+          - 4003
+          format: int64
+          type: integer
+          x-go-name: CurrentUsage
+          x-order: 20
+        plan_limit:
+          description: Your personal API limit (requests/minute) depending on the plan
+          examples:
+          - 20000
+          format: int64
+          type: integer
+          x-go-name: PlanLimit
+          x-order: 30
+        daily_usage:
+          description: Number of requests made in the current day. Returned only when the plan has a daily limit.
+          examples:
+          - 12500
+          format: int64
+          type: integer
+          x-go-name: DailyUsage
+          x-order: 35
+        plan_daily_limit:
+          description: Your personal API limit (requests/day) depending on the plan. Returned only when the plan has a daily limit.
+          examples:
+          - 100000
+          format: int64
+          type: integer
+          x-go-name: PlanDailyLimit
+          x-order: 36
+        plan_category:
+          description: Plan category name
+          examples:
+          - enterprise
+          type: string
+          x-go-name: PlanCategory
+          x-order: 40
+      required:
+      - current_usage
+      - plan_limit
+      - timestamp
+      type: object
+    ApiNotFoundErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 404
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - symbol or figi parameter is missing or invalid
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiTooManyRequestsErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 429
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - You have run out of API credits for the current minute. 1000 API credits were used, with the current limit being 987. Wait for the next minute or consider upgrading your plan at https://twelvedata.com/pricing
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiUnauthorizedErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 401
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - apikey parameter is incorrect or not specified
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    advanced_request_value:
+      properties:
+        url:
+          description: Requested url
+          examples:
+          - /time_series?symbol=AAPL&interval=1min&apikey=demo&outputsize=2
+          type: string
+          x-go-name: Url
+      type: object
+    FormatEnum:
+      default: JSON
+      enum:
+      - JSON
+      - CSV
+      type: string
+      x-go-name: Format
+      x-order: '90'
+    ApiParameterTooLongErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 414
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Input parameter array exceeds the allowed length
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+  securitySchemes:
+    authorizationHeader:
+      description: Enter the token with the `apikey ` prefix, e.g. "apikey abcde12345".
+      in: header
+      name: Authorization
+      type: apiKey
+    queryParameter:
+      in: query
+      name: apikey
+      type: apiKey
+x-group-list:
+- description: Access real-time and historical market prices—time series and exchange rates—for equities, forex, cryptocurrencies, ETFs, and more. These endpoints form the foundation for any trading or data-driven application.
+  name: Market data
+  order: 10
+- children:
+  - description: Asset Catalog endpoints are your starting point. They return the complete inventory of tradeable instruments available through Twelve Data — over 1,000,000 symbols across 50+ countries. You query a catalog first to discover which symbols exist, then pass those symbols to price, fundamental, or indicator endpoints.
+    name: Asset catalogs
+    order: 10
+  - description: Discovery endpoints help you find instruments when you don't already know the exact identifier. The Asset Catalog is the phone book; Discovery is the search engine on top of it.
+    name: Discovery
+    order: 20
+  - description: 'Market endpoints answer operational questions about exchanges themselves: which ones are open right now, what are their trading hours, and how far back does data go for a given instrument?'
+    name: Markets
+    order: 30
+  - description: 'Metadata endpoints return the lookup tables and enumerations that define valid parameter values across the entire API. They answer: what instrument types exist? What intervals are supported? Which countries are covered? What technical indicators can I use?'
+    name: Supporting metadata
+    order: 40
+  description: Lookup static metadata—symbol lists, exchange details, currency information-to filter, validate, and contextualize your core data calls. Ideal for building dropdowns, mappings, and ensuring data consistency.
+  name: Reference data
+  order: 20
+- description: In-depth company and fund financials—income statements, balance sheets, cash flows, profiles, corporate events, and key ratios. Unlock comprehensive datasets for valuation, screening, and fundamental research.
+  name: Fundamentals
+  order: 30
+- name: Currencies
+  order: 35
+- description: 'ETF-focused metadata and analytics: universe lists, family and type groupings, NAV snapshots, performance metrics, risk measures, and current fund composition. Tailored to the unique characteristics and reporting cadence of exchange-traded funds.'
+  name: ETFs
+  order: 40
+- description: 'Mutual-fund-specific listings and snapshots: fund directories, issuer families, fund types, NAV history, dividend records, key ratios, and portfolio holdings. Ideal for long-term performance analysis and portfolio attribution.'
+  name: Mutual funds
+  order: 50
+- description: 'Money-market-fund directories and full-data snapshots: fund listings ranked by fund size, plus screener metrics (fund size, liquidity, weighted average maturity), yields, key facts, and risk indicators. Focused on short-term, low-risk cash-management instruments for liquidity and capital-preservation analysis.'
+  name: Money market funds
+  order: 55
+- children:
+  - description: Plotted directly on the price chart to smooth or envelope price data, highlighting trend direction, support/resistance, and mean-reversion levels (e.g. moving averages, Bollinger Bands, Parabolic SAR, Ichimoku Cloud, Keltner Channels, McGinley Dynamic).
+    name: Overlap studies
+    order: 10
+  - description: Oscillators that measure the speed or strength of price movement, helping detect overbought/oversold conditions, divergences, and shifts in trend momentum (e.g. RSI, MACD, ROC, Stochastics, ADX, CCI, Coppock Curve, TRIX).
+    name: Momentum indicators
+    order: 20
+  - description: Use trading volume to confirm price moves or warn of exhaustion—volume and price in tandem suggest trend strength, while divergences can signal reversals (e.g. OBV, Chaikin AD, Accumulation/Distribution Oscillator).
+    name: Volume indicators
+    order: 30
+  - description: Quantify the range or dispersion of price over time to gauge risk, size stops, or identify breakouts (e.g. ATR, NATR, True Range) and adaptive overlays like SuperTrend.
+    name: Volatility indicators
+    order: 40
+  - description: Convert raw OHLC data into derived series or aggregated values to feed other indicators or reveal different perspectives on price (e.g. typical price, HLC3, weighted close, arithmetic transforms like SUM, AVG, LOG, SQRT).
+    name: Price transform
+    order: 50
+  - description: Detect and follow recurring periodic patterns in price action using Hilbert Transform–based measures of cycle period and phase (e.g. HT_SINE, HT_DCPERIOD, HT_DCPHASE, HT_PHASOR, HT_TRENDMODE).
+    name: Cycle indicators
+    order: 60
+  - description: Scan bars or bar‐groups for predefined candlestick patterns that historically signal continuation or reversal setups (e.g. Doji, Hammer, Engulfing, Three Black Crows, Morning Star, Dark Cloud Cover, etc.).
+    name: Pattern recognition
+    order: 70
+  - description: Compute fundamental statistical metrics on price series—dispersion, regression, correlation, and forecasting components—for standalone analysis or as inputs to other models (e.g. STDDEV, VAR, LINEARREG, CORREL, TSF, BETA).
+    name: Statistic functions
+    order: 80
+  - name: Math transform
+    order: 90
+  description: On-demand calculation of popular indicators (SMA, EMA, RSI, MACD, Bollinger Bands, etc.) over any supported time series. Streamline chart overlays, signal generation, and backtesting without external libraries.
+  name: Technical indicators
+  order: 60
+- description: Forward-looking and consensus analytics—earnings and revenue estimates, EPS trends and revisions, growth projections, analyst recommendations and ratings, price targets, and other consensus metrics. Perfect for incorporating expert forecasts and sentiment into your models and dashboards.
+  name: Analysis
+  order: 70
+- description: 'Compliance and filings data: insider transactions, SEC reports, governance documents, and more. Critical for audit trails, due-diligence workflows, and risk-management integrations.'
+  name: Regulatory
+  order: 80
+- description: High-throughput and management endpoints for power users—submit and monitor batch jobs to pull large datasets asynchronously, track your API usage and quotas programmatically, and access other developer-focused tools for automating and scaling your data workflows.
+  name: Advanced
+  order: 90
+x-original-swagger-version: '2.0'

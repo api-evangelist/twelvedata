@@ -1,0 +1,2404 @@
+openapi: 3.2.0
+info:
+  description: "## Overview\n\nWelcome to Twelve Data developer docs — your gateway to comprehensive financial market data through a powerful and easy-to-use API.\nTwelve Data provides access to financial markets across over 50 global countries, covering more than 1 million public instruments, including stocks, forex, ETFs, mutual funds, commodities, and cryptocurrencies.\n\n## Quickstart\n\nTo get started, you'll need to sign up for an API key. Once you have your API key, you can start making requests to the API.\n\n### Step 1: Create Twelve Data account\n\nSign up on the Twelve Data website to create your account [here](https://twelvedata.com/register). This gives you access to the API dashboard and your API key.\n\n### Step 2: Get your API key\n\nAfter signing in, navigate to your [dashboard](https://twelvedata.com/account/api-keys) to find your unique API key. This key is required to authenticate all API and WebSocket requests.\n\n### Step 3: Make your first request\n\nTry a simple API call with cURL to fetch the latest price for Apple (AAPL):\n\n```\ncurl \"https://api.twelvedata.com/price?symbol=AAPL&apikey=your_api_key\"\n```\n\n### Step 4: Make a request from Python or Javascript\n\nUse our client libraries or standard HTTP clients to make API calls programmatically. Here’s an example in [Python](https://github.com/twelvedata/twelvedata-python) and [Node.js](https://github.com/twelvedata/twelvedata-node):\n\n#### Python (using official Twelve Data SDK):\n\n```python\nfrom twelvedata import TDClient\n\n# Initialize client with your API key\ntd = TDClient(apikey=\"your_api_key\")\n\n# Get latest price for Apple\nprice = td.price(symbol=\"AAPL\").as_json()\n\nprint(price)\n```\n\n#### JavaScript (Node.js):\n\n```javascript\nimport { MarketDataApi, CreateConfig } from \"@twelvedata/twelvedata-node\";\n\nconst config = CreateConfig('your_api_key');\nconst api = new MarketDataApi(config);\n\nasync function main() {\n&nbsp;&nbsp;const response = await api.getPrice({\n&nbsp;&nbsp;&nbsp;&nbsp;symbol: \"AAPL\",\n&nbsp;&nbsp;});\n&nbsp;&nbsp;console.log(response.data);\n}\n\nmain().catch(console.error);\n```\n\n### Step 5: Perform correlation analysis between Tesla and Microsoft prices\n\nFetch historical price data for Tesla (TSLA) and Microsoft (MSFT) and calculate the correlation of their closing prices:\n\n```python\nfrom twelvedata import TDClient\nimport pandas as pd\n\n# Initialize client with your API key\ntd = TDClient(apikey=\"your_api_key\")\n\n# Fetch historical price data for Tesla\ntsla_ts = td.time_series(\n&nbsp;&nbsp;&nbsp;&nbsp;symbol=\"TSLA\",\n&nbsp;&nbsp;&nbsp;&nbsp;interval=\"1day\",\n&nbsp;&nbsp;&nbsp;&nbsp;outputsize=100\n).as_pandas()\n\n# Fetch historical price data for Microsoft\nmsft_ts = td.time_series(\n&nbsp;&nbsp;&nbsp;&nbsp;symbol=\"MSFT\",\n&nbsp;&nbsp;&nbsp;&nbsp;interval=\"1day\",\n&nbsp;&nbsp;&nbsp;&nbsp;outputsize=100\n).as_pandas()\n\n# Align data on datetime index\ncombined = pd.concat(\n&nbsp;&nbsp;&nbsp;&nbsp;[tsla_ts['close'].astype(float), msft_ts['close'].astype(float)],\n&nbsp;&nbsp;&nbsp;&nbsp;axis=1,\n&nbsp;&nbsp;&nbsp;&nbsp;keys=[\"TSLA\", \"MSFT\"]\n).dropna()\n\n# Calculate correlation\ncorrelation = combined[\"TSLA\"].corr(combined[\"MSFT\"])\nprint(f\"Correlation of closing prices between TSLA and MSFT: {correlation:.2f}\")\n```\n\n### Authentication\n\nAuthenticate your requests using one of these methods:\n\n#### Query parameter method\n```\nGET https://api.twelvedata.com/endpoint?symbol=AAPL&apikey=your_api_key\n```\n\n#### HTTP header method (recommended)\n```\nAuthorization: apikey your_api_key\n```\n\n##### API key useful information\n<ul>\n<li> Demo API key (<code>apikey=demo</code>) available for demo requests</li>\n<li> Personal API key required for full access</li>\n<li> Premium endpoints and data require higher-tier plans (testable with <a href=\"https://twelvedata.com/exchanges\">trial symbols</a>)</li>\n</ul>\n\n### API endpoints\n\n Service | Base URL |\n---------|----------|\n REST API | `https://api.twelvedata.com` |\n WebSocket | `wss://ws.twelvedata.com` |\n\n### Parameter guidelines\n<ul>\n<li><b>Separator:</b> Use <code>&</code> to separate multiple parameters</li>\n<li><b>Case sensitivity:</b> Parameter names are case-insensitive (<code>symbol=AAPL</code> = <code>symbol=aapl</code>)</li>\n<li><b>Multiple values:</b> Separate with commas where supported</li>\n</ul>\n\n### Response handling\n\n#### Default format\nAll responses return JSON format by default unless otherwise specified.\n\n#### Null values\n<b>Important:</b> Some response fields may contain `null` values when data is unavailable for specific metrics. This is expected behavior, not an error.\n\n##### Best Practices:\n<ul>\n<li>Always implement <code>null</code> value handling in your application</li>\n<li>Use defensive programming techniques for data processing</li>\n<li>Consider fallback values or error handling for critical metrics</li>\n</ul>\n\n#### Error handling\nStructure your code to gracefully handle:\n<ul>\n<li>Network timeouts</li>\n<li>Rate limiting responses</li>\n<li>Invalid parameter errors</li>\n<li>Data unavailability periods</li>\n</ul>\n\n##### Best practices\n<ul>\n<li><b>Rate limits:</b> Adhere to your plan’s rate limits to avoid throttling. Check your dashboard for details.</li>\n<li><b>Error handling:</b> Implement retry logic for transient errors (e.g., <code>429 Too Many Requests</code>).</li>\n<li><b>Caching:</b> Cache responses for frequently accessed data to reduce API calls and improve performance.</li>\n<li><b>Secure storage:</b> Store your API key securely and never expose it in client-side code or public repositories.</li>\n</ul>\n\n## Errors\n\nTwelve Data API employs a standardized error response format, delivering a JSON object with `code`, `message`, and `status` keys for clear and consistent error communication.\n\n### Codes\n\nBelow is a table of possible error codes, their HTTP status, meanings, and resolution steps:\n\n Code | status | Meaning | Resolution |\n --- | --- | --- | --- |\n **400** | Bad Request | Invalid or incorrect parameter(s) provided. | Check the `message` in the response for details. Refer to the API Documenta­tion to correct the input. |\n **401** | Unauthor­ized | Invalid or incorrect API key. | Verify your API key is correct. Sign up for a key <a href=\"https://twelvedata.com/account/api-keys\">here</a>. |\n **403** | Forbidden | API key lacks permissions for the requested resource (upgrade required). | Upgrade your plan <a href=\"https://twelvedata.com/pricing\">here</a>. |\n **404** | Not Found | Requested data could not be found. | Adjust parameters to be less strict as they may be too restrictive. |\n **414** | Parameter Too Long | Input parameter array exceeds the allowed length. | Follow the `message` guidance to adjust the parameter length. |\n **429** | Too Many Requests | API request limit reached for your key. | Wait briefly or upgrade your plan <a href=\"https://twelvedata.com/pricing\">here</a>. |\n **500** | Internal Server Error | Server-side issue occurred; retry later. | Contact support <a href=\"https://twelvedata.com/contact\">here</a> for assistance. |\n\n### Example error response\n\nConsider the following invalid request:\n\n```\nhttps://api.twelvedata.com/time_series?symbol=AAPL&interval=0.99min&apikey=your_api_key\n```\n\nDue to the incorrect `interval` value, the API returns:\n\n```json\n{\n&nbsp;&nbsp;\"code\": 400,\n&nbsp;&nbsp;\"message\": \"Invalid **interval** provided: 0.99min. Supported intervals: 1min, 5min, 15min, 30min, 45min, 1h, 2h, 4h, 8h, 1day, 1week, 1month\",\n&nbsp;&nbsp;\"status\": \"error\"\n}\n```\n\nRefer to the API Documentation for valid parameter values to resolve such errors.\n\n## Libraries\n\nTwelve Data provides a growing ecosystem of libraries and integrations to help you build faster and smarter in your preferred environment. Official libraries are actively maintained by the Twelve Data team, while selected community-built libraries offer additional flexibility.\n\nA full list is available on our [GitHub profile](https://github.com/search?q=twelvedata).\n\n### Official SDKs\n<ul>\n<li><b>Python:</b> <a href=\"https://github.com/twelvedata/twelvedata-python\">twelvedata-python</a></li>\n<li><b>Node.js:</b> <a href=\"https://github.com/twelvedata/twelvedata-node\">twelvedata-node</a></li>\n<li><b>Go:</b> <a href=\"https://github.com/twelvedata/twelvedata-go\">twelvedata-go</a></li>\n<li><b>Java:</b> <a href=\"https://github.com/twelvedata/twelvedata-java\">twelvedata-java</a></li>\n<li><b>R:</b> <a href=\"https://github.com/twelvedata/twelvedata-r-sdk\">twelvedata-r-sdk</a></li>\n<li><b>CLI:</b> <a href=\"https://github.com/twelvedata/twelvedata-cli\">twelvedata-cli</a></li>\n</ul>\n\n### AI integrations\n<ul>\n<li><b>Twelve Data MCP Server:</b> <a href=\"https://github.com/twelvedata/mcp\">Repository</a> — Model Context Protocol (MCP) server that provides seamless integration with AI assistants and language models, enabling direct access to Twelve Data's financial market data within conversational interfaces and AI workflows.</li>\n<li><b>Twelve Data integration for OpenClaw:</b> <a href=\"https://clawhub.ai/twelvedata/twelvedata\">Clawhub skill</a> — Integration for the OpenClaw platform, allowing users to leverage Twelve Data's API within their OpenClaw applications.</li>\n<li><b>Twelve Data NEAR Agent:</b> <a href=\"https://market.near.ai/agents/twelve_data\">NEAR Agent</a> — Access Twelve Data's API directly from NEAR's AI agent platform, enabling users to retrieve financial data and insights within their NEAR AI agent workflows.</li>\n</ul>\n\n### Spreadsheet add-ons\n<ul>\n<li><b>Excel:</b> <a href=\"https://twelvedata.com/excel\">Excel Add-in</a></li>\n<li><b>Google Sheets:</b> <a href=\"https://twelvedata.com/google-sheets\">Google Sheets Add-on</a></li>\n</ul>\n\n### Community libraries\n\nThe community has developed libraries in several popular languages. You can explore more community libraries on [GitHub](https://github.com/search?q=twelvedata).\n<ul>\n<li><b>C#:</b> <a href=\"https://github.com/pseudomarkets/TwelveDataSharp\">TwelveDataSharp</a></li>\n<li><b>JavaScript:</b> <a href=\"https://github.com/evzaboun/twelvedata\">twelvedata</a></li>\n<li><b>PHP:</b> <a href=\"https://github.com/ingelby/twelvedata\">twelvedata</a></li>\n<li><b>Go:</b> <a href=\"https://github.com/soulgarden/twelvedata\">twelvedata</a></li>\n<li><b>TypeScript:</b> <a href=\"https://github.com/Clyde-Goodall/twelve-data-wrapper\">twelve-data-wrapper</a></li>\n</ul>\n\n### Other Twelve Data repositories\n<ul>\n<li><b>searchindex</b> <i>(Go)</i>: <a href=\"https://github.com/twelvedata/searchindex\">Repository</a> — In-memory search index by strings</li>\n<li><b>ws-tools</b> <i>(Python)</i>: <a href=\"https://github.com/twelvedata/ws-tools\">Repository</a> — Utility tools for WebSocket stream handling</li>\n</ul>\n\n### API specification\n<ul>\n<li><b>OpenAPI / Swagger:</b> Access the <a href=\"https://api.twelvedata.com/doc/swagger/openapi.json\">complete API specification</a> in OpenAPI format. You can use this file to automatically generate client libraries in your preferred programming language, explore the API interactively via Swagger tools, or integrate Twelve Data seamlessly into your AI and LLM workflows.</li>\n</ul>"
+  title: Twelve Data Market Data API
+  version: 0.0.1
+servers:
+- url: https://api.twelvedata.com/
+security:
+- authorizationHeader:
+  - '[]'
+- queryParameter:
+  - '[]'
+tags:
+- name: market_data
+paths:
+  /eod:
+    get:
+      description: The End of Day (EOD) Prices endpoint provides the closing price and other relevant metadata for a financial instrument at the end of a trading day. This endpoint is useful for retrieving daily historical data for stocks, ETFs, or other securities, allowing users to track performance over time and compare daily market movements.
+      operationId: GetEod
+      parameters:
+      - description: Symbol ticker of the instrument
+        in: query
+        name: symbol
+        schema:
+          type: string
+          x-go-name: Symbol
+          x-order: '10'
+          x-required-group: symbol
+        x-go-name: Symbol
+        x-order: '10'
+        x-required-group: symbol
+        example: AAPL
+      - description: Filter by financial instrument global identifier (FIGI). This parameter is available on the <a href="https://twelvedata.com/pricing">Ultra</a> plan (individual) and the <a href="https://twelvedata.com/pricing-business">Enterprise</a> plan (business) and above.
+        in: query
+        name: figi
+        schema:
+          type: string
+          x-go-name: Figi
+          x-order: '20'
+          x-required-group: symbol
+        x-go-name: Figi
+        x-order: '20'
+        x-required-group: symbol
+        example: BBG000BHTMY7
+      - description: Filter by international securities identification number (ISIN). ISIN access is activating in the <a href="https://twelvedata.com/account/add-ons">Data add-ons</a> section
+        in: query
+        name: isin
+        schema:
+          type: string
+          x-go-name: Isin
+          x-order: '25'
+          x-required-group: symbol
+        x-go-name: Isin
+        x-order: '25'
+        x-required-group: symbol
+        example: US0378331005
+      - description: The CUSIP of an instrument for which data is requested. CUSIP access is activating in the <a href="https://twelvedata.com/account/add-ons">Data add-ons</a> section
+        in: query
+        name: cusip
+        schema:
+          type: string
+          x-go-name: Cusip
+          x-order: '26'
+          x-required-group: symbol
+        x-go-name: Cusip
+        x-order: '26'
+        x-required-group: symbol
+        example: '594918104'
+      - description: Exchange where instrument is traded
+        in: query
+        name: exchange
+        schema:
+          type: string
+          x-go-name: Exchange
+          x-order: '30'
+        x-go-name: Exchange
+        x-order: '30'
+        example: NASDAQ
+      - description: Market Identifier Code (MIC) under ISO 10383 standard
+        in: query
+        name: mic_code
+        schema:
+          type: string
+          x-go-name: MicCode
+          x-order: '40'
+        x-go-name: MicCode
+        x-order: '40'
+        example: XNAS
+      - description: Country where instrument is traded, e.g., `United States` or `US`
+        in: query
+        name: country
+        schema:
+          type: string
+          x-go-name: Country
+          x-order: '50'
+        x-go-name: Country
+        x-order: '50'
+        example: United States
+      - description: The asset class to which the instrument belongs
+        in: query
+        name: type
+        schema:
+          $ref: '#/components/schemas/TypeEnum'
+        x-go-name: Type
+        x-order: '60'
+        example: ETF
+      - description: If not null, then return data from a specific date
+        in: query
+        name: date
+        schema:
+          type: string
+          x-go-name: Date
+          x-order: '70'
+        x-go-name: Date
+        x-order: '70'
+        example: '2006-01-02'
+      - description: 'Parameter is optional. Only for the `Pro` plan (individual) and `Venture` plan (business) and above.
+
+          Available at the `1min`, `5min`, `15min`, and `30min` intervals for US equities.
+
+          Open, high, low, close values are supplied without volume'
+        in: query
+        name: prepost
+        schema:
+          default: false
+          type: boolean
+          x-go-name: Prepost
+          x-order: '80'
+        x-go-name: Prepost
+        x-order: '80'
+      - description: 'Specifies the number of decimal places for floating values
+
+          Should be in range [0,11] inclusive'
+        in: query
+        name: dp
+        schema:
+          default: 5
+          format: int64
+          type: integer
+          x-go-name: DecimalPlaces
+          x-order: '90'
+        x-go-name: DecimalPlaces
+        x-order: '90'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEod_200_response'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBadRequestErrorResponseBody'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnauthorizedErrorResponseBody'
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiForbiddenErrorResponseBody'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiNotFoundErrorResponseBody'
+          description: ''
+        '414':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiParameterTooLongErrorResponseBody'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTooManyRequestsErrorResponseBody'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInternalServerErrorResponseBody'
+          description: ''
+      summary: End of day price
+      tags:
+      - market_data
+      x-api-credits-cost: '1'
+      x-api-credits-type: symbol
+      x-group: Market data
+      x-order: '70'
+      x-required:
+        anyOf:
+        - required:
+          - symbol
+          - figi
+          - isin
+          - cusip
+  /market_movers/{market}:
+    get:
+      description: The market movers endpoint provides a ranked list of the top-gaining and losing assets for the current trading day. It returns detailed data on the highest percentage price increases and decreases since the previous day's close. This endpoint supports international equities, forex, and cryptocurrencies, enabling users to quickly identify significant market movements across various asset classes.
+      operationId: GetMarketMovers
+      parameters:
+      - description: Market type
+        in: path
+        name: market
+        required: true
+        schema:
+          $ref: '#/components/schemas/MarketEnum'
+        x-go-name: Market
+        x-order: '5'
+        example: stocks
+      - description: Specifies direction of the snapshot gainers or losers
+        in: query
+        name: direction
+        schema:
+          $ref: '#/components/schemas/DirectionEnum'
+        x-go-name: Direction
+        x-order: '10'
+      - description: 'Specifies the size of the snapshot.
+
+          Can be in a range from `1` to `50`'
+        in: query
+        name: outputsize
+        schema:
+          default: 30
+          format: int64
+          maximum: 50
+          minimum: 1
+          type: integer
+          x-go-name: OutputSize
+          x-order: '20'
+        x-go-name: OutputSize
+        x-order: '20'
+      - description: 'Country of the snapshot, applicable to non-currencies only.
+
+          Takes country name or alpha code'
+        in: query
+        name: country
+        schema:
+          default: USA
+          type: string
+          x-go-name: Country
+          x-order: '30'
+        x-go-name: Country
+        x-order: '30'
+      - description: Takes values with price grater than specified value
+        in: query
+        name: price_greater_than
+        schema:
+          type: string
+          x-go-name: PriceGreaterThan
+          x-order: '40'
+        x-go-name: PriceGreaterThan
+        x-order: '40'
+        example: '175.5'
+      - description: 'Specifies the number of decimal places for floating values.
+
+          Should be in range [0,11] inclusive'
+        in: query
+        name: dp
+        schema:
+          default: '5'
+          maximum: 11
+          minimum: 0
+          type: string
+          x-go-name: DecimalPlaces
+          x-order: '50'
+        x-go-name: DecimalPlaces
+        x-order: '50'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarketMoversResponseBody'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBadRequestErrorResponseBody'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnauthorizedErrorResponseBody'
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiForbiddenErrorResponseBody'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiNotFoundErrorResponseBody'
+          description: ''
+        '414':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiParameterTooLongErrorResponseBody'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTooManyRequestsErrorResponseBody'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInternalServerErrorResponseBody'
+          description: ''
+      summary: Market movers
+      tags:
+      - market_data
+      x-api-credits-cost: '100'
+      x-api-credits-type: request
+      x-group: Market data
+      x-order: '80'
+      x-starting-plan: pro,venture
+  /price:
+    get:
+      description: The latest price endpoint provides the latest market price for a specified financial instrument. It returns a single data point representing the current (or the most recently available) trading price.
+      operationId: GetPrice
+      parameters:
+      - description: Symbol ticker of the instrument
+        in: query
+        name: symbol
+        schema:
+          type: string
+          x-go-name: Symbol
+          x-order: '10'
+          x-required-group: symbol
+        x-go-name: Symbol
+        x-order: '10'
+        x-required-group: symbol
+        example: AAPL
+      - description: Filter by financial instrument global identifier (FIGI). This parameter is available on the <a href="https://twelvedata.com/pricing">Ultra</a> plan (individual) and the <a href="https://twelvedata.com/pricing-business">Enterprise</a> plan (business) and above.
+        in: query
+        name: figi
+        schema:
+          type: string
+          x-go-name: Figi
+          x-order: '20'
+          x-required-group: symbol
+        x-go-name: Figi
+        x-order: '20'
+        x-required-group: symbol
+        example: BBG000BHTMY7
+      - description: Filter by international securities identification number (ISIN). ISIN access is activating in the <a href="https://twelvedata.com/account/add-ons">Data add-ons</a> section
+        in: query
+        name: isin
+        schema:
+          type: string
+          x-go-name: Isin
+          x-order: '25'
+          x-required-group: symbol
+        x-go-name: Isin
+        x-order: '25'
+        x-required-group: symbol
+        example: US0378331005
+      - description: The CUSIP of an instrument for which data is requested. CUSIP access is activating in the <a href="https://twelvedata.com/account/add-ons">Data add-ons</a> section
+        in: query
+        name: cusip
+        schema:
+          type: string
+          x-go-name: Cusip
+          x-order: '26'
+          x-required-group: symbol
+        x-go-name: Cusip
+        x-order: '26'
+        x-required-group: symbol
+        example: '594918104'
+      - description: Exchange where instrument is traded
+        in: query
+        name: exchange
+        schema:
+          type: string
+          x-go-name: Exchange
+          x-order: '30'
+        x-go-name: Exchange
+        x-order: '30'
+        example: NASDAQ
+      - description: Market Identifier Code (MIC) under ISO 10383 standard
+        in: query
+        name: mic_code
+        schema:
+          type: string
+          x-go-name: MicCode
+          x-order: '40'
+        x-go-name: MicCode
+        x-order: '40'
+        example: XNAS
+      - description: Country where instrument is traded, e.g., `United States` or `US`
+        in: query
+        name: country
+        schema:
+          type: string
+          x-go-name: Country
+          x-order: '50'
+        x-go-name: Country
+        x-order: '50'
+        example: United States
+      - description: The asset class to which the instrument belongs
+        in: query
+        name: type
+        schema:
+          $ref: '#/components/schemas/TypeEnum'
+        x-go-name: Type
+        x-order: '60'
+        example: ETF
+      - description: Value can be JSON or CSV
+        in: query
+        name: format
+        schema:
+          $ref: '#/components/schemas/FormatEnum'
+        x-go-name: Format
+        x-order: '70'
+      - description: Specify the delimiter used when downloading the CSV file
+        in: query
+        name: delimiter
+        schema:
+          default: ;
+          type: string
+          x-go-name: Delimiter
+          x-order: '80'
+        x-go-name: Delimiter
+        x-order: '80'
+      - description: 'Parameter is optional. Only for Pro or Venture, and above plans.
+
+          Available at the `1min`, `5min`, `15min`, and `30min` intervals for US equities.
+
+          Open, high, low, close values are supplied without volume.'
+        in: query
+        name: prepost
+        schema:
+          default: false
+          type: boolean
+          x-go-name: Prepost
+          x-order: '100'
+        x-go-name: Prepost
+        x-order: '100'
+      - description: 'Specifies the number of decimal places for floating values.
+
+          Should be in range [0,11] inclusive'
+        in: query
+        name: dp
+        schema:
+          default: 5
+          format: int64
+          type: integer
+          x-go-name: DecimalPlaces
+          x-order: '110'
+        x-go-name: DecimalPlaces
+        x-order: '110'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPrice_200_response'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBadRequestErrorResponseBody'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnauthorizedErrorResponseBody'
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiForbiddenErrorResponseBody'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiNotFoundErrorResponseBody'
+          description: ''
+        '414':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiParameterTooLongErrorResponseBody'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTooManyRequestsErrorResponseBody'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInternalServerErrorResponseBody'
+          description: ''
+      summary: Latest price
+      tags:
+      - market_data
+      x-api-credits-cost: '1'
+      x-api-credits-type: symbol
+      x-badge: High demand
+      x-group: Market data
+      x-order: '60'
+      x-url-hash: real-time-price
+      x-required:
+        anyOf:
+        - required:
+          - symbol
+          - figi
+          - isin
+          - cusip
+  /quote:
+    get:
+      description: The quote endpoint provides real-time data for a selected financial instrument, returning essential information such as the latest price, open, high, low, close, volume, and price change. This endpoint is ideal for users needing up-to-date market data to track price movements and trading activity for specific stocks, ETFs, or other securities.
+      operationId: GetQuote
+      parameters:
+      - description: Symbol ticker of the instrument
+        in: query
+        name: symbol
+        schema:
+          type: string
+          x-go-name: Symbol
+          x-order: '10'
+          x-required-group: symbol
+        x-go-name: Symbol
+        x-order: '10'
+        x-required-group: symbol
+        example: AAPL
+      - description: Filter by financial instrument global identifier (FIGI). This parameter is available on the <a href="https://twelvedata.com/pricing">Ultra</a> plan (individual) and the <a href="https://twelvedata.com/pricing-business">Enterprise</a> plan (business) and above.
+        in: query
+        name: figi
+        schema:
+          type: string
+          x-go-name: Figi
+          x-order: '20'
+          x-required-group: symbol
+        x-go-name: Figi
+        x-order: '20'
+        x-required-group: symbol
+        example: BBG000BHTMY7
+      - description: Filter by international securities identification number (ISIN). ISIN access is activating in the <a href="https://twelvedata.com/account/add-ons">Data add-ons</a> section
+        in: query
+        name: isin
+        schema:
+          type: string
+          x-go-name: Isin
+          x-order: '25'
+          x-required-group: symbol
+        x-go-name: Isin
+        x-order: '25'
+        x-required-group: symbol
+        example: US0378331005
+      - description: The CUSIP of an instrument for which data is requested. CUSIP access is activating in the <a href="https://twelvedata.com/account/add-ons">Data add-ons</a> section
+        in: query
+        name: cusip
+        schema:
+          type: string
+          x-go-name: Cusip
+          x-order: '26'
+          x-required-group: symbol
+        x-go-name: Cusip
+        x-order: '26'
+        x-required-group: symbol
+        example: '594918104'
+      - description: Interval of the quote
+        in: query
+        name: interval
+        schema:
+          $ref: '#/components/schemas/IntervalEnum'
+        x-go-name: Interval
+        x-order: '30'
+      - description: Exchange where instrument is traded
+        in: query
+        name: exchange
+        schema:
+          type: string
+          x-go-name: Exchange
+          x-order: '40'
+        x-go-name: Exchange
+        x-order: '40'
+        example: NASDAQ
+      - description: Market Identifier Code (MIC) under ISO 10383 standard
+        in: query
+        name: mic_code
+        schema:
+          type: string
+          x-go-name: MicCode
+          x-order: '50'
+        x-go-name: MicCode
+        x-order: '50'
+        example: XNAS
+      - description: Country where instrument is traded, e.g., `United States` or `US`
+        in: query
+        name: country
+        schema:
+          type: string
+          x-go-name: Country
+          x-order: '60'
+        x-go-name: Country
+        x-order: '60'
+        example: United States
+      - description: Number of periods for Average Volume
+        in: query
+        name: volume_time_period
+        schema:
+          default: 9
+          format: int64
+          type: integer
+          x-go-name: AverageVolumeTimePeriod
+          x-order: '70'
+        x-go-name: AverageVolumeTimePeriod
+        x-order: '70'
+      - description: The asset class to which the instrument belongs
+        in: query
+        name: type
+        schema:
+          $ref: '#/components/schemas/TypeEnum'
+        x-go-name: Type
+        x-order: '80'
+        example: ETF
+      - description: 'Value can be JSON or CSV
+
+          Default JSON'
+        in: query
+        name: format
+        schema:
+          $ref: '#/components/schemas/FormatEnum'
+        x-go-name: Format
+        x-order: '90'
+      - description: Specify the delimiter used when downloading the CSV file
+        in: query
+        name: delimiter
+        schema:
+          default: ;
+          type: string
+          x-go-name: Delimiter
+          x-order: '100'
+        x-go-name: Delimiter
+        x-order: '100'
+      - description: 'Parameter is optional. Only for the `Pro` plan (individual) and `Venture` plan (business) and above.
+
+          Available at the `1min`, `5min`, `15min`, and `30min` intervals for US equities.
+
+          Open, high, low, close values are supplied without volume.'
+        in: query
+        name: prepost
+        schema:
+          default: false
+          type: boolean
+          x-go-name: Prepost
+          x-order: '120'
+        x-go-name: Prepost
+        x-order: '120'
+      - description: If true, then return data for closed day
+        in: query
+        name: eod
+        schema:
+          default: false
+          type: boolean
+          x-go-name: Eod
+          x-order: '130'
+        x-go-name: Eod
+        x-order: '130'
+      - description: Number of hours for calculate rolling change at period. By default set to 24, it can be in range [1, 168].
+        in: query
+        name: rolling_period
+        schema:
+          default: 24
+          format: int64
+          type: integer
+          x-go-name: RollingPeriod
+          x-order: '140'
+        x-go-name: RollingPeriod
+        x-order: '140'
+      - description: 'Specifies the number of decimal places for floating values
+
+          Should be in range [0,11] inclusive'
+        in: query
+        name: dp
+        schema:
+          default: 5
+          format: int64
+          type: integer
+          x-go-name: DecimalPlaces
+          x-order: '150'
+        x-go-name: DecimalPlaces
+        x-order: '150'
+      - description: 'Timezone at which output datetime will be displayed. Supports:
+
+          <ul>
+
+          <li>1. <code>Exchange</code> for local exchange time</li>
+
+          <li>2. <code>UTC</code> for datetime at universal UTC standard</li>
+
+          <li>3. Timezone name according to the IANA Time Zone Database. E.g. <code>America/New_York</code>, <code>Asia/Singapore</code>. Full list of timezones can be found <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones" target="blank">here</a>.</li>
+
+          </ul>
+
+          <p>Interval Limitation: The timezone parameter is only applicable for intraday intervals (less than 1 day). For intervals of 1day, 1week, or 1month, the timezone parameter is ignored, and data is strictly returned in the Exchange local time.</p>
+
+          <i>Take note that the IANA Timezone name is case-sensitive</i>'
+        in: query
+        name: timezone
+        schema:
+          default: Exchange
+          type: string
+          x-go-name: Timezone
+          x-order: '160'
+        x-go-name: Timezone
+        x-order: '160'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetQuote_200_response'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBadRequestErrorResponseBody'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnauthorizedErrorResponseBody'
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiForbiddenErrorResponseBody'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiNotFoundErrorResponseBody'
+          description: ''
+        '414':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiParameterTooLongErrorResponseBody'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTooManyRequestsErrorResponseBody'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInternalServerErrorResponseBody'
+          description: ''
+      summary: Quote
+      tags:
+      - market_data
+      x-api-credits-cost: '1'
+      x-api-credits-type: symbol
+      x-badge: High demand
+      x-group: Market data
+      x-order: '50'
+      x-required:
+        anyOf:
+        - required:
+          - symbol
+          - figi
+          - isin
+          - cusip
+  /time_series:
+    get:
+      description: 'The time series endpoint provides detailed historical data for a specified financial instrument. It returns two main components: metadata, which includes essential information about the instrument, and a time series dataset. The time series consists of chronological entries with Open, High, Low, and Close prices, and for applicable instruments, it also includes trading volume. This endpoint is ideal for retrieving comprehensive historical price data for analysis or visualization purposes.'
+      operationId: GetTimeSeries
+      parameters:
+      - description: Symbol ticker of the instrument. E.g. `AAPL`, `EUR/USD`, `ETH/BTC`, ...
+        in: query
+        name: symbol
+        schema:
+          type: string
+          x-go-name: Symbol
+          x-order: '10'
+          x-required-group: symbol
+        x-go-name: Symbol
+        x-order: '10'
+        x-required-group: symbol
+        example: AAPL
+      - description: Filter by international securities identification number (ISIN). ISIN access is activating in the <a href="https://twelvedata.com/account/add-ons">Data add-ons</a> section
+        in: query
+        name: isin
+        schema:
+          type: string
+          x-go-name: Isin
+          x-order: '25'
+          x-required-group: symbol
+        x-go-name: Isin
+        x-order: '25'
+        x-required-group: symbol
+        example: US0378331005
+      - description: The FIGI of an instrument for which data is requested. This parameter is available on the <a href="https://twelvedata.com/pricing">Ultra</a> plan (individual) and the <a href="https://twelvedata.com/pricing-business">Enterprise</a> plan (business) and above.
+        in: query
+        name: figi
+        schema:
+          type: string
+          x-go-name: Figi
+          x-order: '20'
+          x-required-group: symbol
+        x-go-name: Figi
+        x-order: '20'
+        x-required-group: symbol
+        example: BBG000B9Y5X2
+      - description: The CUSIP of an instrument for which data is requested. CUSIP access is activating in the <a href="https://twelvedata.com/account/add-ons">Data add-ons</a> section
+        in: query
+        name: cusip
+        schema:
+          type: string
+          x-go-name: Cusip
+          x-order: '26'
+          x-required-group: symbol
+        x-go-name: Cusip
+        x-order: '26'
+        x-required-group: symbol
+        example: '594918104'
+      - description: Interval between two consecutive points in time series
+        in: query
+        name: interval
+        required: true
+        schema:
+          $ref: '#/components/schemas/IntervalEnum'
+        x-go-name: Interval
+        x-order: '30'
+        example: 1min
+      - description: Number of data points to retrieve. Supports values in the range from `1` to `5000`. Default `30` when no date parameters are set, otherwise set to maximum
+        in: query
+        name: outputsize
+        schema:
+          default: 30
+          format: int64
+          type: integer
+          x-go-name: PageSize
+          x-order: '80'
+        x-go-name: PageSize
+        x-order: '80'
+      - description: Exchange where instrument is traded
+        in: query
+        name: exchange
+        schema:
+          type: string
+          x-go-name: Exchange
+          x-order: '40'
+        x-go-name: Exchange
+        x-order: '40'
+        example: NASDAQ
+      - description: Market Identifier Code (MIC) under ISO 10383 standard
+        in: query
+        name: mic_code
+        schema:
+          type: string
+          x-go-name: MicCode
+          x-order: '50'
+        x-go-name: MicCode
+        x-order: '50'
+        example: XNAS
+      - description: The country where the instrument is traded, e.g., `United States` or `US`
+        in: query
+        name: country
+        schema:
+          type: string
+          x-go-name: Country
+          x-order: '60'
+        x-go-name: Country
+        x-order: '60'
+        example: United States
+      - description: The asset class to which the instrument belongs
+        in: query
+        name: type
+        schema:
+          $ref: '#/components/schemas/TypeEnum'
+        x-go-name: Type
+        x-order: '70'
+        example: Common Stock
+      - description: 'Timezone at which output datetime will be displayed. Supports:
+
+          <ul>
+
+          <li>1. <code>Exchange</code> for local exchange time</li>
+
+          <li>2. <code>UTC</code> for datetime at universal UTC standard</li>
+
+          <li>3. Timezone name according to the IANA Time Zone Database. E.g. <code>America/New_York</code>, <code>Asia/Singapore</code>. Full list of timezones can be found <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones" target="blank">here</a></li>
+
+          </ul>
+
+          <p>Interval Limitation: The timezone parameter is only applicable for intraday intervals (less than 1 day). For intervals of 1day, 1week, or 1month, the timezone parameter is ignored, and data is strictly returned in the Exchange local time.</p>
+
+          <i>Take note that the IANA Timezone name is case-sensitive</i>'
+        in: query
+        name: timezone
+        schema:
+          default: Exchange
+          type: string
+          x-go-name: Timezone
+          x-order: '135'
+        x-go-name: Timezone
+        x-order: '135'
+      - description: 'Can be used separately and together with `end_date`. Format `2006-01-02` or `2006-01-02T15:04:05`
+
+
+          Default location:
+
+          <ul>
+
+          <li>Forex and Cryptocurrencies - <code>UTC</code></li>
+
+          <li>Stocks - where exchange is located (e.g. for AAPL it will be <code>America/New_York</code>)</li>
+
+          </ul>
+
+          Both parameters take into account if <code>timezone</code> parameter is provided.<br/>
+
+          If <code>timezone</code> is given then, <code>start_date</code> and <code>end_date</code> will be used in the specified location
+
+
+          Examples:
+
+          <ul>
+
+          <li>1. <code>&symbol=AAPL&start_date=2019-08-09T15:50:00&…</code><br/>
+
+          Returns all records starting from 2019-08-09T15:50:00 New York time up to current date</li>
+
+          <li>2. <code>&symbol=EUR/USD&timezone=Asia/Singapore&start_date=2019-08-09T15:50:00&…</code><br/>
+
+          Returns all records starting from 2019-08-09T15:50:00 Singapore time up to current date</li>
+
+          <li>3. <code>&symbol=ETH/BTC&timezone=Europe/Zurich&start_date=2019-08-09T15:50:00&end_date=2019-08-09T15:55:00&...</code><br/>
+
+          Returns all records starting from 2019-08-09T15:50:00 Zurich time up to 2019-08-09T15:55:00</li>
+
+          </ul>'
+        in: query
+        name: start_date
+        schema:
+          type: string
+          x-go-name: StartDate
+          x-order: '150'
+        x-go-name: StartDate
+        x-order: '150'
+        example: '2024-08-22T15:04:05'
+      - description: The ending date and time for data selection, see `start_date` description for details.
+        in: query
+        name: end_date
+        schema:
+          type: string
+          x-go-name: EndDate
+          x-order: '160'
+        x-go-name: EndDate
+        x-order: '160'
+        example: '2024-08-22T16:04:05'
+      - description: Specifies the exact date to get the data for. Could be the exact date, e.g. `2021-10-27`, or in human language `today` or `yesterday`
+        in: query
+        name: date
+        schema:
+          type: string
+          x-go-name: Date
+          x-order: '140'
+        x-go-name: Date
+        x-order: '140'
+        example: '2021-10-27'
+      - description: Sorting order of the output
+        in: query
+        name: order
+        schema:
+          $ref: '#/components/schemas/OrderEnum'
+        x-go-name: Order
+        x-order: '130'
+      - description: 'Returns quotes that include pre-market and post-market data. Only for the `Pro` plan (individual) and `Venture` plan (business) and above.
+
+          Available at the `1min`, `5min`, `15min`, and `30min` intervals for US equities.
+
+          Open, high, low, close values are supplied without volume'
+        in: query
+        name: prepost
+        schema:
+          default: false
+          type: boolean
+          x-go-name: Prepost
+          x-order: '110'
+        x-go-name: Prepost
+        x-order: '110'
+      - description: The format of the response data
+        in: query
+        name: format
+        schema:
+          $ref: '#/components/schemas/FormatEnum'
+        x-go-name: Format
+        x-order: '90'
+      - description: The separator used in the CSV response data
+        in: query
+        name: delimiter
+        schema:
+          default: ;
+          type: string
+          x-go-name: Delimiter
+          x-order: '100'
+        x-go-name: Delimiter
+        x-order: '100'
+      - description: 'Specifies the number of decimal places for floating values.
+
+          Should be in range [0, 11] inclusive.
+
+          By default, the number of decimal places is automatically determined based on the values provided'
+        in: query
+        name: dp
+        schema:
+          default: -1
+          format: int64
+          type: integer
+          x-go-name: DecimalPlaces
+          x-order: '120'
+        x-go-name: DecimalPlaces
+        x-order: '120'
+      - description: A boolean parameter to include the previous closing price in the time_series data. If true, adds previous bar close price value to the current object
+        in: query
+        name: previous_close
+        schema:
+          default: false
+          type: boolean
+          x-go-name: PreviousPrice
+          x-order: '170'
+        x-go-name: PreviousPrice
+        x-order: '170'
+      - description: Adjusting mode for prices
+        in: query
+        name: adjust
+        schema:
+          $ref: '#/components/schemas/AdjustEnum'
+        x-go-name: Adjust
+        x-order: '180'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTimeSeries_200_response'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBadRequestErrorResponseBody'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnauthorizedErrorResponseBody'
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiForbiddenErrorResponseBody'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiNotFoundErrorResponseBody'
+          description: ''
+        '414':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiParameterTooLongErrorResponseBody'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTooManyRequestsErrorResponseBody'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInternalServerErrorResponseBody'
+          description: ''
+      summary: Time series
+      tags:
+      - market_data
+      x-api-credits-cost: '1'
+      x-api-credits-type: symbol
+      x-badge: High demand
+      x-group: Market data
+      x-order: '10'
+      x-required:
+        anyOf:
+        - required:
+          - symbol
+          - isin
+          - figi
+          - cusip
+  /time_series/cross:
+    get:
+      description: The Time Series Cross endpoint calculates and returns historical cross-rate data for exotic forex pairs, cryptocurrencies, or stocks (e.g., Apple Inc. price in Indian Rupees) on the fly. It provides metadata about the requested symbol and a time series array with Open, High, Low, and Close prices, sorted descending by time, enabling analysis of price history and market trends.
+      operationId: GetTimeSeriesCross
+      parameters:
+      - description: Base currency symbol
+        in: query
+        name: base
+        required: true
+        schema:
+          type: string
+          x-go-name: Base
+        x-go-name: Base
+        example: JPY
+      - description: Base instrument type according to the `/instrument_type` endpoint
+        in: query
+        name: base_type
+        schema:
+          type: string
+          x-go-name: BaseType
+        x-go-name: BaseType
+        example: Physical Currency
+      - description: Base exchange
+        in: query
+        name: base_exchange
+        schema:
+          type: string
+          x-go-name: BaseExchange
+        x-go-name: BaseExchange
+        example: Binance
+      - description: Base MIC code
+        in: query
+        name: base_mic_code
+        schema:
+          type: string
+          x-go-name: BaseMicCode
+        x-go-name: BaseMicCode
+        example: XNGS
+      - description: Quote currency symbol
+        in: query
+        name: quote
+        required: true
+        schema:
+          type: string
+          x-go-name: Quote
+        x-go-name: Quote
+        example: BTC
+      - description: Quote instrument type according to the `/instrument_type` endpoint
+        in: query
+        name: quote_type
+        schema:
+          type: string
+          x-go-name: QuoteType
+        x-go-name: QuoteType
+        example: Digital Currency
+      - description: Quote exchange
+        in: query
+        name: quote_exchange
+        schema:
+          type: string
+          x-go-name: QuoteExchange
+        x-go-name: QuoteExchange
+        example: Coinbase
+      - description: Quote MIC code
+        in: query
+        name: quote_mic_code
+        schema:
+          type: string
+          x-go-name: QuoteMicCode
+        x-go-name: QuoteMicCode
+        example: XNYS
+      - description: Interval between two consecutive points in time series
+        in: query
+        name: interval
+        required: true
+        schema:
+          $ref: '#/components/schemas/IntervalEnum'
+        x-go-name: Interval
+        example: 1min
+      - description: Number of data points to retrieve. Supports values in the range from `1` to `5000`. Default `30` when no date parameters are set, otherwise set to maximum
+        in: query
+        name: outputsize
+        schema:
+          format: int64
+          type: integer
+          x-go-name: OutputSize
+        x-go-name: OutputSize
+        example: 30
+      - description: Format of the response data
+        in: query
+        name: format
+        schema:
+          $ref: '#/components/schemas/FormatEnum'
+        x-go-name: Format
+        example: JSON
+      - description: Delimiter used in CSV file
+        in: query
+        name: delimiter
+        schema:
+          default: ;
+          type: string
+          x-go-name: Delimiter
+        x-go-name: Delimiter
+        example: ;
+      - description: 'Only for the `Pro` plan (individual) and `Venture` plan (business) and above.
+
+          Available at the `1min`, `5min`, `15min`, and `30min` intervals for US equities.
+
+          Open, high, low, close values are supplied without volume.'
+        in: query
+        name: prepost
+        schema:
+          default: false
+          type: boolean
+          x-go-name: PrePost
+        x-go-name: PrePost
+      - description: Start date for the time series data
+        in: query
+        name: start_date
+        schema:
+          type: string
+          x-go-name: StartDate
+        x-go-name: StartDate
+        example: '2025-01-01'
+      - description: End date for the time series data
+        in: query
+        name: end_date
+        schema:
+          type: string
+          x-go-name: EndDate
+        x-go-name: EndDate
+        example: '2025-01-31'
+      - description: Specifies if there should be an adjustment
+        in: query
+        name: adjust
+        schema:
+          default: true
+          type: boolean
+          x-go-name: Adjust
+        x-go-name: Adjust
+      - description: 'Specifies the number of decimal places for floating values.
+
+          Should be in range [0, 11] inclusive.'
+        in: query
+        name: dp
+        schema:
+          default: 5
+          format: int64
+          type: integer
+          x-go-name: Dp
+        x-go-name: Dp
+        example: 5
+      - description: 'Timezone at which output datetime will be displayed. Supports:
+
+          <ul>
+
+          <li>1. <code>Exchange</code> for local exchange time</li>
+
+          <li>2. <code>UTC</code> for datetime at universal UTC standard</li>
+
+          <li>3. Timezone name according to the IANA Time Zone Database. E.g. <code>America/New_York</code>, <code>Asia/Singapore</code>. Full list of timezones can be found <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones" target="blank">here</a>.</li>
+
+          </ul>
+
+          <i>Take note that the IANA Timezone name is case-sensitive</i>'
+        in: query
+        name: timezone
+        schema:
+          type: string
+          x-go-name: Timezone
+        x-go-name: Timezone
+        example: UTC
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTimeSeriesCross_200_response'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBadRequestErrorResponseBody'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnauthorizedErrorResponseBody'
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiForbiddenErrorResponseBody'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiNotFoundErrorResponseBody'
+          description: ''
+        '414':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiParameterTooLongErrorResponseBody'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTooManyRequestsErrorResponseBody'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInternalServerErrorResponseBody'
+          description: ''
+      summary: Time series cross
+      tags:
+      - market_data
+      x-api-credits-cost: '5'
+      x-api-credits-type: symbol
+      x-group: Market data
+      x-order: '20'
+components:
+  schemas:
+    GetTimeSeries_200_response_meta:
+      description: Json object with request general information
+      properties:
+        symbol:
+          description: The ticker symbol of an instrument for which data was requested.
+          examples:
+          - AAPL
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        interval:
+          description: The time gap between consecutive data points.
+          examples:
+          - 1min
+          type: string
+          x-go-name: Interval
+          x-order: 20
+        currency:
+          description: The currency of a traded instrument.
+          examples:
+          - USD
+          type: string
+          x-go-name: Currency
+          x-order: 30
+        exchange_timezone:
+          description: The timezone of the exchange where the instrument is traded.
+          examples:
+          - America/New_York
+          type: string
+          x-go-name: ExchangeTimezone
+          x-order: 60
+        exchange:
+          description: The exchange name where the instrument is traded.
+          examples:
+          - NASDAQ
+          type: string
+          x-go-name: Exchange
+          x-order: 70
+        mic_code:
+          description: The Market Identifier Code (MIC) of the exchange where the instrument is traded.
+          examples:
+          - XNAS
+          type: string
+          x-go-name: MicCode
+          x-order: 80
+        type:
+          description: The asset class to which the instrument belongs.
+          examples:
+          - Common Stock
+          type: string
+          x-go-name: Type
+          x-order: 90
+      required:
+      - interval
+      - symbol
+      - type
+      type: object
+      x-go-name: Meta
+      x-order: 10
+    GetTimeSeriesCross_200_response:
+      properties:
+        meta:
+          $ref: '#/components/schemas/CrossMeta'
+        values:
+          description: Array of time series data points
+          items:
+            $ref: '#/components/schemas/TimeSeriesCrossItem'
+          type: array
+          x-go-name: Values
+      required:
+      - meta
+      - values
+      type: object
+    MarketMoversResponseBody:
+      properties:
+        values:
+          description: Market movers list
+          items:
+            $ref: '#/components/schemas/MarketMoversResponseValue'
+          type: array
+          x-go-name: Values
+          x-order: 10
+        status:
+          description: Response status
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+          x-order: 20
+      required:
+      - status
+      - values
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetQuote_200_response_fifty_two_week:
+      description: Collection of 52-week metrics
+      properties:
+        low:
+          description: 52-week low price
+          examples:
+          - '103.10000'
+          type: string
+          x-go-name: Low
+          x-order: 10
+        high:
+          description: 52-week high price
+          examples:
+          - '157.25999'
+          type: string
+          x-go-name: High
+          x-order: 20
+        low_change:
+          description: Current price - 52-week low
+          examples:
+          - '45.75001'
+          type: string
+          x-go-name: LowChange
+          x-order: 30
+        high_change:
+          description: Current price - 52-week high
+          examples:
+          - '-8.40999'
+          type: string
+          x-go-name: HighChange
+          x-order: 40
+        low_change_percent:
+          description: Percentage change from 52-week low
+          examples:
+          - '44.37440'
+          type: string
+          x-go-name: LowChangePercent
+          x-order: 50
+        high_change_percent:
+          description: Percentage change from 52-week high
+          examples:
+          - '-5.34782'
+          type: string
+          x-go-name: HighChangePercent
+          x-order: 60
+        range:
+          description: Range between 52-week low and high
+          examples:
+          - 103.099998 - 157.259995
+          type: string
+          x-go-name: Range
+          x-order: 70
+      type: object
+      x-go-name: FiftyTwoWeek
+      x-order: 220
+    TypeEnum:
+      enum:
+      - American Depositary Receipt
+      - Bond
+      - Bond Fund
+      - Closed-end Fund
+      - Common Stock
+      - Depositary Receipt
+      - Digital Currency
+      - ETF
+      - Exchange-Traded Note
+      - Global Depositary Receipt
+      - Limited Partnership
+      - Mutual Fund
+      - Physical Currency
+      - Preferred Stock
+      - REIT
+      - Right
+      - Structured Product
+      - Trust
+      - Unit
+      - Warrant
+      type: string
+      x-go-name: Type
+      x-order: '70'
+    TimeSeriesItem:
+      properties:
+        datetime:
+          description: Datetime at local exchange time referring to when the bar with specified interval was opened.
+          examples:
+          - '2021-09-16 15:59:00'
+          type: string
+          x-go-name: Time
+          x-order: 10
+        open:
+          description: Price at the opening of current bar
+          examples:
+          - '148.73500'
+          type: string
+          x-go-name: Open
+          x-order: 20
+        high:
+          description: Highest price which occurred during the current bar.
+          examples:
+          - '148.86000'
+          type: string
+          x-go-name: High
+          x-order: 30
+        low:
+          description: Lowest price which occurred during the current bar.
+          examples:
+          - '148.73000'
+          type: string
+          x-go-name: Low
+          x-order: 40
+        close:
+          description: Close price at the end of the bar.
+          examples:
+          - '148.85001'
+          type: string
+          x-go-name: Close
+          x-order: 50
+        volume:
+          description: Trading volume which occurred during the current bar
+          examples:
+          - '624277'
+          type: string
+          x-go-name: Volume
+          x-order: 60
+      required:
+      - close
+      - datetime
+      - high
+      - low
+      - open
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiInternalServerErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 500
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Internal server error
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetTimeSeries_200_response:
+      properties:
+        meta:
+          $ref: '#/components/schemas/GetTimeSeries_200_response_meta'
+        values:
+          description: List of time series data points
+          items:
+            $ref: '#/components/schemas/TimeSeriesItem'
+          type: array
+          x-go-name: Data
+          x-order: 20
+        status:
+          description: Response status
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+          x-order: 30
+      required:
+      - meta
+      - status
+      - values
+      type: object
+    ApiParameterTooLongErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 414
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Input parameter array exceeds the allowed length
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiForbiddenErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 403
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - API key lacks permissions for the requested resource
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    MarketEnum:
+      enum:
+      - stocks
+      - etf
+      - mutual_funds
+      - forex
+      - crypto
+      type: string
+      x-go-name: Market
+      x-order: '5'
+    TimeSeriesCrossItem:
+      description: TimeSeriesCrossItem represents a single data point in the time series
+      properties:
+        datetime:
+          description: Datetime at local exchange time referring to when the bar with specified interval was opened
+          examples:
+          - '2025-02-28 14:30:00'
+          type: string
+          x-go-name: Time
+          x-order: 10
+        open:
+          description: Price at the opening of the current bar
+          examples:
+          - '0.0000081115665'
+          type: string
+          x-go-name: Open
+          x-order: 20
+        high:
+          description: Highest price which occurred during the current bar
+          examples:
+          - '0.0000081273069'
+          type: string
+          x-go-name: High
+          x-order: 30
+        low:
+          description: Lowest price which occurred during the current bar
+          examples:
+          - '0.0000081088287'
+          type: string
+          x-go-name: Low
+          x-order: 40
+        close:
+          description: Close price at the end of the bar
+          examples:
+          - '0.0000081268066'
+          type: string
+          x-go-name: Close
+          x-order: 50
+      required:
+      - close
+      - datetime
+      - high
+      - low
+      - open
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetPrice_200_response:
+      properties:
+        price:
+          description: Real-time or the latest available price
+          examples:
+          - '200.99001'
+          type: string
+          x-go-name: Price
+      required:
+      - price
+      type: object
+    GetQuote_200_response:
+      properties:
+        symbol:
+          description: Symbol passed
+          examples:
+          - AAPL
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        name:
+          description: Name of the instrument
+          examples:
+          - Apple Inc
+          type: string
+          x-go-name: Name
+          x-order: 20
+        exchange:
+          description: Exchange where instrument is traded
+          examples:
+          - NASDAQ
+          type: string
+          x-go-name: Exchange
+          x-order: 30
+        mic_code:
+          description: Market identifier code (MIC) under ISO 10383 standard. Available for stocks, ETFs, mutual funds, bonds
+          examples:
+          - XNAS
+          type: string
+          x-go-name: MicCode
+          x-order: 40
+        currency:
+          description: Currency in which the equity is denominated. Available for stocks, ETFs, mutual funds, bonds
+          examples:
+          - USD
+          type: string
+          x-go-name: Currency
+          x-order: 50
+        datetime:
+          description: Datetime in defined timezone referring to when the bar with specified interval was opened
+          examples:
+          - '2021-09-16'
+          type: string
+          x-go-name: Datetime
+          x-order: 60
+        timestamp:
+          description: Unix timestamp representing the opening candle of the specified interval
+          examples:
+          - 1631772000
+          format: int64
+          type: integer
+          x-go-name: Timestamp
+          x-order: 70
+        last_quote_at:
+          description: Unix timestamp of last minute candle
+          examples:
+          - 1631772000
+          format: int64
+          type: integer
+          x-go-name: LastQuoteAt
+          x-order: 80
+        open:
+          description: Price at the opening of current bar
+          examples:
+          - '148.44000'
+          type: string
+          x-go-name: Open
+          x-order: 90
+        high:
+          description: Highest price which occurred during the current bar
+          examples:
+          - '148.96840'
+          type: string
+          x-go-name: High
+          x-order: 100
+        low:
+          description: Lowest price which occurred during the current bar
+          examples:
+          - '147.22099'
+          type: string
+          x-go-name: Low
+          x-order: 110
+        close:
+          description: Close price at the end of the bar
+          examples:
+          - '148.85001'
+          type: string
+          x-go-name: Close
+          x-order: 120
+        volume:
+          description: Trading volume during the bar. Available not for all instrument types
+          examples:
+          - '67903927'
+          type: string
+          x-go-name: Volume
+          x-order: 130
+        previous_close:
+          description: Close price at the end of the previous bar
+          examples:
+          - '149.09000'
+          type: string
+          x-go-name: PreviousClose
+          x-order: 140
+        change:
+          description: Close - previous_close
+          examples:
+          - '-0.23999'
+          type: string
+          x-go-name: Change
+          x-order: 150
+        percent_change:
+          description: (Close - previous_close) / previous_close * 100
+          examples:
+          - '-0.16097'
+          type: string
+          x-go-name: PercentChange
+          x-order: 160
+        average_volume:
+          description: Average volume of the specified period. Available not for all instrument types
+          examples:
+          - '83571571'
+          type: string
+          x-go-name: AverageVolume
+          x-order: 170
+        rolling_1d_change:
+          description: Percent change in price between the current and the backward one, where period is 1 day. Available for crypto
+          examples:
+          - '123.123'
+          type: string
+          x-go-name: RollingOneDayChange
+          x-order: 180
+        rolling_7d_change:
+          description: Percent change in price between the current and the backward one, where period is 7 days. Available for crypto
+          examples:
+          - '123.123'
+          type: string
+          x-go-name: RollingSevenDayChange
+          x-order: 190
+        rolling_change:
+          description: Percent change in price between the current and the backward one, where period specified in request param rolling_period. Available for crypto
+          examples:
+          - '123.123'
+          type: string
+          x-go-name: RollingPeriodChange
+          x-order: 200
+        is_market_open:
+          description: True if market is open; false if closed
+          examples:
+          - false
+          type: boolean
+          x-go-name: IsMarketOpen
+          x-order: 210
+        fifty_two_week:
+          $ref: '#/components/schemas/GetQuote_200_response_fifty_two_week'
+        extended_change:
+          description: Diff between the regular close price and the latest extended price. Displayed only if prepost is true
+          examples:
+          - '0.09'
+          type: string
+          x-go-name: ExtendedChange
+          x-order: 230
+        extended_percent_change:
+          description: Percent change in price between the regular close price and the latest extended price. Displayed only if prepost is true
+          examples:
+          - '0.05'
+          type: string
+          x-go-name: ExtendedPercentChange
+          x-order: 240
+        extended_price:
+          description: Latest extended price. Displayed only if prepost is true
+          examples:
+          - '125.22'
+          type: string
+          x-go-name: ExtendedPrice
+          x-order: 250
+        extended_timestamp:
+          description: Unix timestamp of the last extended price. Displayed only if prepost is true
+          examples:
+          - 1649845281
+          format: int64
+          type: integer
+          x-go-name: ExtendedTimestamp
+          x-order: 260
+      required:
+      - change
+      - close
+      - datetime
+      - fifty_two_week
+      - high
+      - is_market_open
+      - low
+      - name
+      - open
+      - percent_change
+      - previous_close
+      - symbol
+      - timestamp
+      type: object
+    OrderEnum:
+      default: desc
+      enum:
+      - asc
+      - desc
+      type: string
+      x-go-name: Order
+      x-order: '130'
+    IntervalEnum:
+      enum:
+      - 1min
+      - 5min
+      - 15min
+      - 30min
+      - 45min
+      - 1h
+      - 2h
+      - 4h
+      - 8h
+      - 1day
+      - 1week
+      - 1month
+      type: string
+      x-go-name: Interval
+      x-order: '30'
+    FormatEnum:
+      default: JSON
+      enum:
+      - JSON
+      - CSV
+      type: string
+      x-go-name: Format
+      x-order: '90'
+    AdjustEnum:
+      default: splits
+      enum:
+      - all
+      - splits
+      - dividends
+      - none
+      type: string
+      x-go-name: Adjust
+      x-order: '180'
+    CrossMeta:
+      description: Json object with request general information
+      properties:
+        base_instrument:
+          description: Base instrument symbol
+          examples:
+          - JPY/USD
+          type: string
+          x-go-name: BaseInstrument
+          x-order: 10
+        base_currency:
+          description: Base currency
+          type: string
+          x-go-name: BaseCurrency
+          x-order: 20
+        base_exchange:
+          description: Base exchange
+          examples:
+          - PHYSICAL CURRENCY
+          type: string
+          x-go-name: BaseExchange
+          x-order: 30
+        interval:
+          description: Interval between two consecutive points in time series
+          examples:
+          - 1min
+          type: string
+          x-go-name: Interval
+          x-order: 40
+        quote_instrument:
+          description: Quote instrument symbol
+          examples:
+          - BTC/USD
+          type: string
+          x-go-name: QuoteInstrument
+          x-order: 50
+        quote_currency:
+          description: Quote currency
+          type: string
+          x-go-name: QuoteCurrency
+          x-order: 60
+        quote_exchange:
+          description: Quote exchange
+          examples:
+          - Coinbase Pro
+          type: string
+          x-go-name: QuoteExchange
+          x-order: 70
+      required:
+      - base_currency
+      - base_exchange
+      - base_instrument
+      - interval
+      - quote_currency
+      - quote_exchange
+      - quote_instrument
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiNotFoundErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 404
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - symbol or figi parameter is missing or invalid
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    DirectionEnum:
+      default: gainers
+      enum:
+      - gainers
+      - losers
+      type: string
+      x-go-name: Direction
+      x-order: '10'
+    ApiTooManyRequestsErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 429
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - You have run out of API credits for the current minute. 1000 API credits were used, with the current limit being 987. Wait for the next minute or consider upgrading your plan at https://twelvedata.com/pricing
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiBadRequestErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 400
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Invalid request
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    MarketMoversResponseValue:
+      properties:
+        symbol:
+          description: The exchange symbol ticker
+          examples:
+          - BSET
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        name:
+          description: The official name of the instrument
+          examples:
+          - Bassett Furniture Industries Inc
+          type: string
+          x-go-name: Name
+          x-order: 20
+        exchange:
+          description: Exchange where instrument is traded
+          examples:
+          - NASDAQ
+          type: string
+          x-go-name: Exchange
+          x-order: 30
+        mic_code:
+          description: Market identifier code (MIC) under ISO 10383 standard
+          examples:
+          - XNAS
+          type: string
+          x-go-name: MicCode
+          x-order: 40
+        datetime:
+          description: The last updated datetime timestamp
+          examples:
+          - '2023-10-01 12:00:00Z'
+          type: string
+          x-go-name: Datetime
+          x-order: 50
+        last:
+          description: The latest available price for the symbol today
+          examples:
+          - 17.25
+          format: double
+          type: number
+          x-go-name: Last
+          x-order: 60
+        high:
+          description: The highest price for the symbol today
+          examples:
+          - 18
+          format: double
+          type: number
+          x-go-name: High
+          x-order: 70
+        low:
+          description: The lowest price for the symbol today
+          examples:
+          - 16.5
+          format: double
+          type: number
+          x-go-name: Low
+          x-order: 80
+        volume:
+          description: The trading volume of the symbol today
+          examples:
+          - 108297
+          format: int64
+          type: integer
+          x-go-name: Volume
+          x-order: 90
+        change:
+          description: The value of the change since the previous day
+          examples:
+          - 3.31
+          format: double
+          type: number
+          x-go-name: Change
+          x-order: 100
+        percent_change:
+          description: The percentage change since the previous day
+          examples:
+          - 23.74462
+          format: double
+          type: number
+          x-go-name: PercentChange
+          x-order: 110
+      required:
+      - change
+      - datetime
+      - high
+      - last
+      - low
+      - name
+      - percent_change
+      - symbol
+      - volume
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiUnauthorizedErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 401
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - apikey parameter is incorrect or not specified
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetEod_200_response:
+      properties:
+        symbol:
+          description: Symbol passed
+          examples:
+          - AAPL
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        exchange:
+          description: Exchange where instrument is traded
+          examples:
+          - NASDAQ
+          type: string
+          x-go-name: Exchange
+          x-order: 20
+        mic_code:
+          description: Market identifier code (MIC) under ISO 10383 standard
+          examples:
+          - XNAS
+          type: string
+          x-go-name: MicCode
+          x-order: 30
+        currency:
+          description: Currency in which instrument is denominated
+          examples:
+          - USD
+          type: string
+          x-go-name: Currency
+          x-order: 40
+        datetime:
+          description: Datetime in defined timezone referring to when the bar with specified interval was opened
+          examples:
+          - '2021-09-16'
+          type: string
+          x-go-name: Datetime
+          x-order: 50
+        close:
+          description: The most recent end of day close price
+          examples:
+          - '148.79'
+          type: string
+          x-go-name: Close
+          x-order: 60
+      required:
+      - close
+      - datetime
+      - exchange
+      - symbol
+      type: object
+  securitySchemes:
+    authorizationHeader:
+      description: Enter the token with the `apikey ` prefix, e.g. "apikey abcde12345".
+      in: header
+      name: Authorization
+      type: apiKey
+    queryParameter:
+      in: query
+      name: apikey
+      type: apiKey
+x-group-list:
+- description: Access real-time and historical market prices—time series and exchange rates—for equities, forex, cryptocurrencies, ETFs, and more. These endpoints form the foundation for any trading or data-driven application.
+  name: Market data
+  order: 10
+- children:
+  - description: Asset Catalog endpoints are your starting point. They return the complete inventory of tradeable instruments available through Twelve Data — over 1,000,000 symbols across 50+ countries. You query a catalog first to discover which symbols exist, then pass those symbols to price, fundamental, or indicator endpoints.
+    name: Asset catalogs
+    order: 10
+  - description: Discovery endpoints help you find instruments when you don't already know the exact identifier. The Asset Catalog is the phone book; Discovery is the search engine on top of it.
+    name: Discovery
+    order: 20
+  - description: 'Market endpoints answer operational questions about exchanges themselves: which ones are open right now, what are their trading hours, and how far back does data go for a given instrument?'
+    name: Markets
+    order: 30
+  - description: 'Metadata endpoints return the lookup tables and enumerations that define valid parameter values across the entire API. They answer: what instrument types exist? What intervals are supported? Which countries are covered? What technical indicators can I use?'
+    name: Supporting metadata
+    order: 40
+  description: Lookup static metadata—symbol lists, exchange details, currency information-to filter, validate, and contextualize your core data calls. Ideal for building dropdowns, mappings, and ensuring data consistency.
+  name: Reference data
+  order: 20
+- description: In-depth company and fund financials—income statements, balance sheets, cash flows, profiles, corporate events, and key ratios. Unlock comprehensive datasets for valuation, screening, and fundamental research.
+  name: Fundamentals
+  order: 30
+- name: Currencies
+  order: 35
+- description: 'ETF-focused metadata and analytics: universe lists, family and type groupings, NAV snapshots, performance metrics, risk measures, and current fund composition. Tailored to the unique characteristics and reporting cadence of exchange-traded funds.'
+  name: ETFs
+  order: 40
+- description: 'Mutual-fund-specific listings and snapshots: fund directories, issuer families, fund types, NAV history, dividend records, key ratios, and portfolio holdings. Ideal for long-term performance analysis and portfolio attribution.'
+  name: Mutual funds
+  order: 50
+- description: 'Money-market-fund directories and full-data snapshots: fund listings ranked by fund size, plus screener metrics (fund size, liquidity, weighted average maturity), yields, key facts, and risk indicators. Focused on short-term, low-risk cash-management instruments for liquidity and capital-preservation analysis.'
+  name: Money market funds
+  order: 55
+- children:
+  - description: Plotted directly on the price chart to smooth or envelope price data, highlighting trend direction, support/resistance, and mean-reversion levels (e.g. moving averages, Bollinger Bands, Parabolic SAR, Ichimoku Cloud, Keltner Channels, McGinley Dynamic).
+    name: Overlap studies
+    order: 10
+  - description: Oscillators that measure the speed or strength of price movement, helping detect overbought/oversold conditions, divergences, and shifts in trend momentum (e.g. RSI, MACD, ROC, Stochastics, ADX, CCI, Coppock Curve, TRIX).
+    name: Momentum indicators
+    order: 20
+  - description: Use trading volume to confirm price moves or warn of exhaustion—volume and price in tandem suggest trend strength, while divergences can signal reversals (e.g. OBV, Chaikin AD, Accumulation/Distribution Oscillator).
+    name: Volume indicators
+    order: 30
+  - description: Quantify the range or dispersion of price over time to gauge risk, size stops, or identify breakouts (e.g. ATR, NATR, True Range) and adaptive overlays like SuperTrend.
+    name: Volatility indicators
+    order: 40
+  - description: Convert raw OHLC data into derived series or aggregated values to feed other indicators or reveal different perspectives on price (e.g. typical price, HLC3, weighted close, arithmetic transforms like SUM, AVG, LOG, SQRT).
+    name: Price transform
+    order: 50
+  - description: Detect and follow recurring periodic patterns in price action using Hilbert Transform–based measures of cycle period and phase (e.g. HT_SINE, HT_DCPERIOD, HT_DCPHASE, HT_PHASOR, HT_TRENDMODE).
+    name: Cycle indicators
+    order: 60
+  - description: Scan bars or bar‐groups for predefined candlestick patterns that historically signal continuation or reversal setups (e.g. Doji, Hammer, Engulfing, Three Black Crows, Morning Star, Dark Cloud Cover, etc.).
+    name: Pattern recognition
+    order: 70
+  - description: Compute fundamental statistical metrics on price series—dispersion, regression, correlation, and forecasting components—for standalone analysis or as inputs to other models (e.g. STDDEV, VAR, LINEARREG, CORREL, TSF, BETA).
+    name: Statistic functions
+    order: 80
+  - name: Math transform
+    order: 90
+  description: On-demand calculation of popular indicators (SMA, EMA, RSI, MACD, Bollinger Bands, etc.) over any supported time series. Streamline chart overlays, signal generation, and backtesting without external libraries.
+  name: Technical indicators
+  order: 60
+- description: Forward-looking and consensus analytics—earnings and revenue estimates, EPS trends and revisions, growth projections, analyst recommendations and ratings, price targets, and other consensus metrics. Perfect for incorporating expert forecasts and sentiment into your models and dashboards.
+  name: Analysis
+  order: 70
+- description: 'Compliance and filings data: insider transactions, SEC reports, governance documents, and more. Critical for audit trails, due-diligence workflows, and risk-management integrations.'
+  name: Regulatory
+  order: 80
+- description: High-throughput and management endpoints for power users—submit and monitor batch jobs to pull large datasets asynchronously, track your API usage and quotas programmatically, and access other developer-focused tools for automating and scaling your data workflows.
+  name: Advanced
+  order: 90
+x-original-swagger-version: '2.0'

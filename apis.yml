@@ -205,6 +205,8 @@ apis:
   humanURL: https://twelvedata.com/docs/websocket/ws-real-time-price
   baseURL: wss://ws.twelvedata.com/v1/quotes/price
   tags:
+  - Advanced
+  tags_raw:
   - advanced
   properties:
   - type: OpenAPI
@@ -215,6 +217,8 @@ apis:
   humanURL: https://twelvedata.com/docs/websocket/ws-real-time-price
   baseURL: wss://ws.twelvedata.com/v1/quotes/price
   tags:
+  - Analysis
+  tags_raw:
   - analysis
   properties:
   - type: OpenAPI
@@ -225,6 +229,8 @@ apis:
   humanURL: https://twelvedata.com/docs/websocket/ws-real-time-price
   baseURL: wss://ws.twelvedata.com/v1/quotes/price
   tags:
+  - Currency
+  tags_raw:
   - currencies
   properties:
   - type: OpenAPI
@@ -235,6 +241,8 @@ apis:
   humanURL: https://twelvedata.com/docs/websocket/ws-real-time-price
   baseURL: wss://ws.twelvedata.com/v1/quotes/price
   tags:
+  - ETFs
+  tags_raw:
   - etfs
   properties:
   - type: OpenAPI
@@ -245,6 +253,8 @@ apis:
   humanURL: https://twelvedata.com/docs/websocket/ws-real-time-price
   baseURL: wss://ws.twelvedata.com/v1/quotes/price
   tags:
+  - Market Data
+  tags_raw:
   - market_data
   properties:
   - type: OpenAPI
@@ -255,6 +265,8 @@ apis:
   humanURL: https://twelvedata.com/docs/websocket/ws-real-time-price
   baseURL: wss://ws.twelvedata.com/v1/quotes/price
   tags:
+  - Money Market Funds
+  tags_raw:
   - money_market_funds
   properties:
   - type: OpenAPI
@@ -265,6 +277,8 @@ apis:
   humanURL: https://twelvedata.com/docs/websocket/ws-real-time-price
   baseURL: wss://ws.twelvedata.com/v1/quotes/price
   tags:
+  - Mutual Funds
+  tags_raw:
   - mutual_funds
   properties:
   - type: OpenAPI
@@ -275,6 +289,8 @@ apis:
   humanURL: https://twelvedata.com/docs/websocket/ws-real-time-price
   baseURL: wss://ws.twelvedata.com/v1/quotes/price
   tags:
+  - Regulatory
+  tags_raw:
   - regulatory
   properties:
   - type: OpenAPI
@@ -284,7 +300,8 @@ apis:
   description: The technical_indicator API from Twelve Data — 102 operation(s) for technical_indicator.
   humanURL: https://twelvedata.com/docs/websocket/ws-real-time-price
   baseURL: wss://ws.twelvedata.com/v1/quotes/price
-  tags:
+  tags: []
+  tags_raw:
   - technical_indicator
   properties:
   - type: OpenAPI

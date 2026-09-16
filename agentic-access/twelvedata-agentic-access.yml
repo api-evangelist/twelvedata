@@ -1,20 +1,28 @@
-generated: '2026-07-15'
+generated: '2026-09-16'
 method: generated
-source: openapi/twelvedata-openapi.yml
+source: openapi/twelvedata-advanced-api-openapi.yml, openapi/twelvedata-analysis-api-openapi.yml,
+  openapi/twelvedata-core-data-api-openapi.yml, openapi/twelvedata-currencies-api-openapi.yml,
+  openapi/twelvedata-etfs-api-openapi.yml, openapi/twelvedata-fundamentals-api-openapi.yml,
+  openapi/twelvedata-market-data-api-openapi.yml, openapi/twelvedata-money-market-funds-api-openapi.yml,
+  openapi/twelvedata-mutual-funds-api-openapi.yml, openapi/twelvedata-reference-data-api-openapi.yml,
+  openapi/twelvedata-regulatory-api-openapi.yml, openapi/twelvedata-technical-indicator-api-openapi.yml,
+  openapi/twelvedata-technical-indicators-api-openapi.yml, openapi/twelvedata-time-series-api-openapi.yml
 description: Recommended x-agentic-access execution contracts, classified heuristically from
   the OpenAPI. A governance starting point for exposing this API to AI agents — review and bind
   audience per deployment. See research/curity/agentic-governance/.
 summary:
-  operations: 26
+  operations: 199
   by_action_class:
-    connected: 26
+    connected: 198
+    acting: 1
   by_consequence:
-    read: 26
+    read: 198
+    write: 1
   human_in_the_loop_required: 0
 operations:
-- path: /time_series
+- path: /api_usage
   method: get
-  operationId: getTimeSeries
+  operationId: GetApiUsage
   x-agentic-access:
     action-class: connected
     consequence: read
@@ -22,9 +30,29 @@ operations:
     token:
       max-ttl: 3600
     audit: none
-- path: /time_series/cross
+    scope:
+    - '[]'
+- path: /batch
+  method: post
+  operationId: advanced
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+    scope:
+    - '[]'
+- path: /analyst_ratings/light
   method: get
-  operationId: getTimeSeriesCross
+  operationId: GetAnalystRatingsLight
   x-agentic-access:
     action-class: connected
     consequence: read
@@ -32,6 +60,104 @@ operations:
     token:
       max-ttl: 3600
     audit: none
+    scope:
+    - '[]'
+- path: /analyst_ratings/us_equities
+  method: get
+  operationId: GetAnalystRatingsUsEquities
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /earnings_estimate
+  method: get
+  operationId: GetEarningsEstimate
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /eps_revisions
+  method: get
+  operationId: GetEpsRevisions
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /eps_trend
+  method: get
+  operationId: GetEpsTrend
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /growth_estimates
+  method: get
+  operationId: GetGrowthEstimates
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /price_target
+  method: get
+  operationId: GetPriceTarget
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /recommendations
+  method: get
+  operationId: GetRecommendations
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /revenue_estimate
+  method: get
+  operationId: GetRevenueEstimate
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
 - path: /eod
   method: get
   operationId: getEndOfDay
@@ -82,6 +208,2128 @@ operations:
     token:
       max-ttl: 3600
     audit: none
+- path: /currency_conversion
+  method: get
+  operationId: GetCurrencyConversion
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /exchange_rate
+  method: get
+  operationId: GetExchangeRate
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /etfs/family
+  method: get
+  operationId: GetETFsFamily
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /etfs/list
+  method: get
+  operationId: GetETFsList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /etfs/type
+  method: get
+  operationId: GetETFsType
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /etfs/world
+  method: get
+  operationId: GetETFsWorld
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /etfs/world/composition
+  method: get
+  operationId: GetETFsWorldComposition
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /etfs/world/performance
+  method: get
+  operationId: GetETFsWorldPerformance
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /etfs/world/risk
+  method: get
+  operationId: GetETFsWorldRisk
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /etfs/world/summary
+  method: get
+  operationId: GetETFsWorldSummary
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /balance_sheet
+  method: get
+  operationId: GetBalanceSheet
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /balance_sheet/consolidated
+  method: get
+  operationId: GetBalanceSheetConsolidated
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cash_flow
+  method: get
+  operationId: GetCashFlow
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cash_flow/consolidated
+  method: get
+  operationId: GetCashFlowConsolidated
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /dividends
+  method: get
+  operationId: GetDividends
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /dividends_calendar
+  method: get
+  operationId: GetDividendsCalendar
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /earnings
+  method: get
+  operationId: GetEarnings
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /earnings_calendar
+  method: get
+  operationId: GetEarningsCalendar
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /income_statement
+  method: get
+  operationId: GetIncomeStatement
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /income_statement/consolidated
+  method: get
+  operationId: GetIncomeStatementConsolidated
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /ipo_calendar
+  method: get
+  operationId: GetIpoCalendar
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /key_executives
+  method: get
+  operationId: GetKeyExecutives
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /last_change/{endpoint}
+  method: get
+  operationId: GetLastChanges
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /logo
+  method: get
+  operationId: GetLogo
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /market_cap
+  method: get
+  operationId: GetMarketCap
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /press_releases
+  method: get
+  operationId: PressReleasesListParameters
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /profile
+  method: get
+  operationId: GetProfile
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /splits
+  method: get
+  operationId: GetSplits
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /splits_calendar
+  method: get
+  operationId: GetSplitsCalendar
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /statistics
+  method: get
+  operationId: GetStatistics
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /eod
+  method: get
+  operationId: GetEod
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /market_movers/{market}
+  method: get
+  operationId: GetMarketMovers
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /price
+  method: get
+  operationId: GetPrice
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /quote
+  method: get
+  operationId: GetQuote
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /time_series
+  method: get
+  operationId: GetTimeSeries
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /time_series/cross
+  method: get
+  operationId: GetTimeSeriesCross
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /money_market_funds/list
+  method: get
+  operationId: GetMoneyMarketFundsList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /money_market_funds/world
+  method: get
+  operationId: GetMoneyMarketFundsWorld
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /mutual_funds/family
+  method: get
+  operationId: GetMutualFundsFamily
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /mutual_funds/list
+  method: get
+  operationId: GetMutualFundsList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /mutual_funds/type
+  method: get
+  operationId: GetMutualFundsType
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /mutual_funds/world
+  method: get
+  operationId: GetMutualFundsWorld
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /mutual_funds/world/composition
+  method: get
+  operationId: GetMutualFundsWorldComposition
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /mutual_funds/world/performance
+  method: get
+  operationId: GetMutualFundsWorldPerformance
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /mutual_funds/world/purchase_info
+  method: get
+  operationId: GetMutualFundsWorldPurchaseInfo
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /mutual_funds/world/ratings
+  method: get
+  operationId: GetMutualFundsWorldRatings
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /mutual_funds/world/risk
+  method: get
+  operationId: GetMutualFundsWorldRisk
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /mutual_funds/world/summary
+  method: get
+  operationId: GetMutualFundsWorldSummary
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /mutual_funds/world/sustainability
+  method: get
+  operationId: GetMutualFundsWorldSustainability
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /bonds
+  method: get
+  operationId: GetBonds
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /commodities
+  method: get
+  operationId: GetCommodities
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /countries
+  method: get
+  operationId: GetCountries
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cross_listings
+  method: get
+  operationId: GetCrossListings
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cryptocurrencies
+  method: get
+  operationId: GetCryptocurrencies
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cryptocurrency_exchanges
+  method: get
+  operationId: GetCryptocurrencyExchanges
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /earliest_timestamp
+  method: get
+  operationId: GetEarliestTimestamp
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /etfs
+  method: get
+  operationId: GetEtf
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /exchange_schedule
+  method: get
+  operationId: GetExchangeSchedule
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /exchanges
+  method: get
+  operationId: GetExchanges
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /forex_pairs
+  method: get
+  operationId: GetForexPairs
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /funds
+  method: get
+  operationId: GetFunds
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /instrument_type
+  method: get
+  operationId: GetInstrumentType
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /intervals
+  method: get
+  operationId: GetIntervals
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /market_state
+  method: get
+  operationId: GetMarketState
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /stocks
+  method: get
+  operationId: GetStocks
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /symbol_search
+  method: get
+  operationId: GetSymbolSearch
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /technical_indicators
+  method: get
+  operationId: GetTechnicalIndicators
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - '[]'
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /indices
+  method: get
+  operationId: listIndices
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /direct_holders
+  method: get
+  operationId: GetDirectHolders
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /edgar_filings/archive
+  method: get
+  operationId: GetEdgarFilingsArchive
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /fund_holders
+  method: get
+  operationId: GetFundHolders
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /insider_transactions
+  method: get
+  operationId: GetInsiderTransactions
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /institutional_holders
+  method: get
+  operationId: GetInstitutionalHolders
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /sanctions/{source}
+  method: get
+  operationId: GetSourceSanctionedEntities
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /tax_info
+  method: get
+  operationId: GetTaxInfo
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /ad
+  method: get
+  operationId: GetTimeSeriesAd
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /add
+  method: get
+  operationId: GetTimeSeriesAdd
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /adosc
+  method: get
+  operationId: GetTimeSeriesAdOsc
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /adx
+  method: get
+  operationId: GetTimeSeriesAdx
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /adxr
+  method: get
+  operationId: GetTimeSeriesAdxr
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /apo
+  method: get
+  operationId: GetTimeSeriesApo
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /aroon
+  method: get
+  operationId: GetTimeSeriesAroon
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /aroonosc
+  method: get
+  operationId: GetTimeSeriesAroonOsc
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /atr
+  method: get
+  operationId: GetTimeSeriesAtr
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /avg
+  method: get
+  operationId: GetTimeSeriesAvg
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /avgprice
+  method: get
+  operationId: GetTimeSeriesAvgPrice
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /bbands
+  method: get
+  operationId: GetTimeSeriesBBands
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /beta
+  method: get
+  operationId: GetTimeSeriesBeta
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /bop
+  method: get
+  operationId: GetTimeSeriesBop
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /cci
+  method: get
+  operationId: GetTimeSeriesCci
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /ceil
+  method: get
+  operationId: GetTimeSeriesCeil
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /cmo
+  method: get
+  operationId: GetTimeSeriesCmo
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /coppock
+  method: get
+  operationId: GetTimeSeriesCoppock
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /correl
+  method: get
+  operationId: GetTimeSeriesCorrel
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /crsi
+  method: get
+  operationId: GetTimeSeriesCrsi
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /dema
+  method: get
+  operationId: GetTimeSeriesDema
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /div
+  method: get
+  operationId: GetTimeSeriesDiv
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /dpo
+  method: get
+  operationId: GetTimeSeriesDpo
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /dx
+  method: get
+  operationId: GetTimeSeriesDx
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /ema
+  method: get
+  operationId: GetTimeSeriesEma
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /exp
+  method: get
+  operationId: GetTimeSeriesExp
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /floor
+  method: get
+  operationId: GetTimeSeriesFloor
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /heikinashicandles
+  method: get
+  operationId: GetTimeSeriesHeikinashiCandles
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /hlc3
+  method: get
+  operationId: GetTimeSeriesHlc3
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /ht_dcperiod
+  method: get
+  operationId: GetTimeSeriesHtDcPeriod
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /ht_dcphase
+  method: get
+  operationId: GetTimeSeriesHtDcPhase
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /ht_phasor
+  method: get
+  operationId: GetTimeSeriesHtPhasor
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /ht_sine
+  method: get
+  operationId: GetTimeSeriesHtSine
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /ht_trendline
+  method: get
+  operationId: GetTimeSeriesHtTrendline
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /ht_trendmode
+  method: get
+  operationId: GetTimeSeriesHtTrendMode
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /ichimoku
+  method: get
+  operationId: GetTimeSeriesIchimoku
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /kama
+  method: get
+  operationId: GetTimeSeriesKama
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /keltner
+  method: get
+  operationId: GetTimeSeriesKeltner
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /kst
+  method: get
+  operationId: GetTimeSeriesKst
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /linearreg
+  method: get
+  operationId: GetTimeSeriesLinearReg
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /linearregangle
+  method: get
+  operationId: GetTimeSeriesLinearRegAngle
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /linearregintercept
+  method: get
+  operationId: GetTimeSeriesLinearRegIntercept
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /linearregslope
+  method: get
+  operationId: GetTimeSeriesLinearRegSlope
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /ln
+  method: get
+  operationId: GetTimeSeriesLn
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /log10
+  method: get
+  operationId: GetTimeSeriesLog10
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /ma
+  method: get
+  operationId: GetTimeSeriesMa
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /macd
+  method: get
+  operationId: GetTimeSeriesMacd
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /macd_slope
+  method: get
+  operationId: GetTimeSeriesMacdSlope
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /macdext
+  method: get
+  operationId: GetTimeSeriesMacdExt
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /mama
+  method: get
+  operationId: GetTimeSeriesMama
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /max
+  method: get
+  operationId: GetTimeSeriesMax
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /maxindex
+  method: get
+  operationId: GetTimeSeriesMaxIndex
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /mcginley_dynamic
+  method: get
+  operationId: GetTimeSeriesMcGinleyDynamic
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /medprice
+  method: get
+  operationId: GetTimeSeriesMedPrice
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /mfi
+  method: get
+  operationId: GetTimeSeriesMfi
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /midpoint
+  method: get
+  operationId: GetTimeSeriesMidPoint
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /midprice
+  method: get
+  operationId: GetTimeSeriesMidPrice
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /min
+  method: get
+  operationId: GetTimeSeriesMin
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /minindex
+  method: get
+  operationId: GetTimeSeriesMinIndex
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /minmax
+  method: get
+  operationId: GetTimeSeriesMinMax
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /minmaxindex
+  method: get
+  operationId: GetTimeSeriesMinMaxIndex
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /minus_di
+  method: get
+  operationId: GetTimeSeriesMinusDI
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /minus_dm
+  method: get
+  operationId: GetTimeSeriesMinusDM
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /mom
+  method: get
+  operationId: GetTimeSeriesMom
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /mult
+  method: get
+  operationId: GetTimeSeriesMult
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /natr
+  method: get
+  operationId: GetTimeSeriesNatr
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /obv
+  method: get
+  operationId: GetTimeSeriesObv
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /percent_b
+  method: get
+  operationId: GetTimeSeriesPercent_B
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /pivot_points_hl
+  method: get
+  operationId: GetTimeSeriesPivotPointsHL
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /plus_di
+  method: get
+  operationId: GetTimeSeriesPlusDI
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /plus_dm
+  method: get
+  operationId: GetTimeSeriesPlusDM
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /ppo
+  method: get
+  operationId: GetTimeSeriesPpo
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /roc
+  method: get
+  operationId: GetTimeSeriesRoc
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /rocp
+  method: get
+  operationId: GetTimeSeriesRocp
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /rocr
+  method: get
+  operationId: GetTimeSeriesRocr
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /rocr100
+  method: get
+  operationId: GetTimeSeriesRocr100
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /rsi
+  method: get
+  operationId: GetTimeSeriesRsi
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /rvol
+  method: get
+  operationId: GetTimeSeriesRvol
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /sar
+  method: get
+  operationId: GetTimeSeriesSar
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /sarext
+  method: get
+  operationId: GetTimeSeriesSarExt
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /sma
+  method: get
+  operationId: GetTimeSeriesSma
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /sqrt
+  method: get
+  operationId: GetTimeSeriesSqrt
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /stddev
+  method: get
+  operationId: GetTimeSeriesStdDev
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /stoch
+  method: get
+  operationId: GetTimeSeriesStoch
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /stochf
+  method: get
+  operationId: GetTimeSeriesStochF
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /stochrsi
+  method: get
+  operationId: GetTimeSeriesStochRsi
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /sub
+  method: get
+  operationId: GetTimeSeriesSub
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /sum
+  method: get
+  operationId: GetTimeSeriesSum
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /supertrend
+  method: get
+  operationId: GetTimeSeriesSuperTrend
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /supertrend_heikinashicandles
+  method: get
+  operationId: GetTimeSeriesSuperTrendHeikinAshiCandles
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /t3ma
+  method: get
+  operationId: GetTimeSeriesT3ma
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /tema
+  method: get
+  operationId: GetTimeSeriesTema
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /trange
+  method: get
+  operationId: GetTimeSeriesTRange
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /trima
+  method: get
+  operationId: GetTimeSeriesTrima
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /tsf
+  method: get
+  operationId: GetTimeSeriesTsf
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /typprice
+  method: get
+  operationId: GetTimeSeriesTypPrice
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /ultosc
+  method: get
+  operationId: GetTimeSeriesUltOsc
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /var
+  method: get
+  operationId: GetTimeSeriesVar
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /vwap
+  method: get
+  operationId: GetTimeSeriesVwap
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /wclprice
+  method: get
+  operationId: GetTimeSeriesWclPrice
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /willr
+  method: get
+  operationId: GetTimeSeriesWillR
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
+- path: /wma
+  method: get
+  operationId: GetTimeSeriesWma
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    scope:
+    - '[]'
 - path: /rsi
   method: get
   operationId: getRSI
@@ -122,9 +2370,9 @@ operations:
     token:
       max-ttl: 3600
     audit: none
-- path: /stocks
+- path: /time_series
   method: get
-  operationId: listStocks
+  operationId: getTimeSeries
   x-agentic-access:
     action-class: connected
     consequence: read
@@ -132,139 +2380,9 @@ operations:
     token:
       max-ttl: 3600
     audit: none
-- path: /forex_pairs
+- path: /time_series/cross
   method: get
-  operationId: listForexPairs
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /cryptocurrencies
-  method: get
-  operationId: listCryptocurrencies
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /etfs
-  method: get
-  operationId: listEtfs
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /indices
-  method: get
-  operationId: listIndices
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /exchanges
-  method: get
-  operationId: listExchanges
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /symbol_search
-  method: get
-  operationId: symbolSearch
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /earliest_timestamp
-  method: get
-  operationId: getEarliestTimestamp
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /profile
-  method: get
-  operationId: getProfile
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /dividends
-  method: get
-  operationId: getDividends
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /earnings
-  method: get
-  operationId: getEarnings
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /income_statement
-  method: get
-  operationId: getIncomeStatement
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /balance_sheet
-  method: get
-  operationId: getBalanceSheet
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /cash_flow
-  method: get
-  operationId: getCashFlow
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /statistics
-  method: get
-  operationId: getStatistics
+  operationId: getTimeSeriesCross
   x-agentic-access:
     action-class: connected
     consequence: read

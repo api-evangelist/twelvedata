@@ -237,18 +237,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/twelvedata-currencies-api-openapi.yml
-- aid: twelvedata:twelvedata-etfs-api
-  name: Twelve Data Etfs API
-  description: The etfs API from Twelve Data — 8 operation(s) for etfs.
-  humanURL: https://twelvedata.com/docs/websocket/ws-real-time-price
-  baseURL: wss://ws.twelvedata.com/v1/quotes/price
-  tags:
-  - ETFs
-  tags_raw:
-  - etfs
-  properties:
-  - type: OpenAPI
-    url: openapi/twelvedata-etfs-api-openapi.yml
 - aid: twelvedata:twelvedata-market-data-api
   name: Twelve Data Market Data API
   description: The market_data API from Twelve Data — 6 operation(s) for market_data.
@@ -308,6 +296,16 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/twelvedata-technical-indicator-api-openapi.yml
+- aid: twelvedata:twelvedata-et-fs-api
+  name: Twelve Data ET Fs API
+  description: The ET Fs API from Twelve Data — 8 operation(s) for et fs.
+  humanURL: https://twelvedata.com/docs/websocket/ws-real-time-price
+  baseURL: wss://ws.twelvedata.com/v1/quotes/price
+  tags:
+  - ET Fs
+  properties:
+  - type: OpenAPI
+    url: openapi/twelvedata-et-fs-api-openapi.yml
 common:
 - type: PostmanWorkspace
   url: https://www.postman.com/kinlaneapi/twelve-data/overview

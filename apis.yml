@@ -296,16 +296,16 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/twelvedata-technical-indicator-api-openapi.yml
-- aid: twelvedata:twelvedata-et-fs-api
-  name: Twelve Data ET Fs API
-  description: The ET Fs API from Twelve Data — 8 operation(s) for et fs.
+- aid: twelvedata:twelvedata-etfs-api
+  name: Twelve Data Etfs API
+  description: The etfs API from Twelve Data — 8 operation(s) for etfs.
   humanURL: https://twelvedata.com/docs/websocket/ws-real-time-price
   baseURL: wss://ws.twelvedata.com/v1/quotes/price
   tags:
-  - ET Fs
+  - etfs
   properties:
   - type: OpenAPI
-    url: openapi/twelvedata-et-fs-api-openapi.yml
+    url: openapi/twelvedata-etfs-api-openapi.yml
 common:
 - type: PostmanWorkspace
   url: https://www.postman.com/kinlaneapi/twelve-data/overview

@@ -302,6 +302,8 @@ apis:
   humanURL: https://twelvedata.com/docs/websocket/ws-real-time-price
   baseURL: wss://ws.twelvedata.com/v1/quotes/price
   tags:
+  - ETFs
+  tags_raw:
   - etfs
   properties:
   - type: OpenAPI

@@ -1,82 +1,2188 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Twelve Data REST Core Data Reference Data API
-  description: 'REST API for Twelve Data financial market data covering stocks, forex, cryptocurrencies, ETFs, indices, commodities, and funds. Provides historical and real-time time series (OHLCV), quotes and prices, 100+ technical indicators, reference / catalog data, and company fundamentals. All requests are authenticated with an apikey supplied either as a query parameter (?apikey=) or via the `Authorization: apikey <KEY>` header. Every endpoint consumes a data-weight number of API credits; the per-minute credit quota resets each minute.'
-  termsOfService: https://twelvedata.com/terms
-  contact:
-    name: Twelve Data Support
-    url: https://support.twelvedata.com
+  title: Twelvedata Reference Data API
   version: '1.0'
+  description: 'Operations tagged reference_data across 2 of this provider''s published API definitions: twelvedata-openapi-original.json, twelvedata-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
+- url: https://api.twelvedata.com/
 - url: https://api.twelvedata.com
   description: Twelve Data REST base URL
-security:
-- apikeyQuery: []
-- apikeyHeader: []
 tags:
 - name: Reference Data
-  description: Catalogs of instruments, exchanges, and supporting metadata.
 paths:
-  /stocks:
+  /bonds:
     get:
-      operationId: listStocks
-      tags:
-      - Reference Data
-      summary: List stocks
-      description: Returns the daily-updated catalog of available stock symbols across exchanges.
+      description: The fixed income endpoint provides a daily updated list of available bonds. It returns an array containing detailed information about each bond, including identifiers, names, and other relevant attributes.
+      operationId: GetBonds
       parameters:
-      - name: symbol
+      - description: The ticker symbol of an instrument for which data is requested
         in: query
+        name: symbol
         schema:
           type: string
-      - name: exchange
+          x-go-name: Symbol
+        x-go-name: Symbol
+        example: US2Y
+      - description: Filter by exchange name
         in: query
+        name: exchange
         schema:
           type: string
-      - name: country
+          x-go-name: Exchange
+        x-go-name: Exchange
+        example: NYSE
+      - description: Filter by country name or alpha code, e.g., `United States` or `US`
         in: query
+        name: country
         schema:
           type: string
-      - $ref: '#/components/parameters/apikeyParam'
+          x-go-name: Country
+        x-go-name: Country
+        example: United States
+      - description: The format of the response data
+        in: query
+        name: format
+        schema:
+          $ref: '#/components/schemas/FormatEnum'
+        x-go-name: Format
+      - description: The separator used in the CSV response data
+        in: query
+        name: delimiter
+        schema:
+          default: ;
+          type: string
+          x-go-name: Delimiter
+        x-go-name: Delimiter
+      - description: Adds info on which plan symbol is available
+        in: query
+        name: show_plan
+        schema:
+          default: false
+          type: boolean
+          x-go-name: ShowPlan
+        x-go-name: ShowPlan
+      - description: Page number of the results to fetch
+        in: query
+        name: page
+        schema:
+          default: 1
+          format: int64
+          type: integer
+          x-go-name: Page
+        x-go-name: Page
+      - description: Determines the number of data points returned in the output
+        in: query
+        name: outputsize
+        schema:
+          default: 5000
+          format: int64
+          type: integer
+          x-go-name: PageSize
+        x-go-name: PageSize
       responses:
         '200':
-          description: Stock catalog payload.
-  /forex_pairs:
-    get:
-      operationId: listForexPairs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetBonds_200_response'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBadRequestErrorResponseBody'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnauthorizedErrorResponseBody'
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiForbiddenErrorResponseBody'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiNotFoundErrorResponseBody'
+          description: ''
+        '414':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiParameterTooLongErrorResponseBody'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTooManyRequestsErrorResponseBody'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInternalServerErrorResponseBody'
+          description: ''
+      summary: Fixed income
       tags:
       - Reference Data
-      summary: List forex pairs
-      description: Returns the catalog of available foreign-exchange currency pairs.
+      x-api-credits-cost: '1'
+      x-api-credits-type: request
+      x-group: Reference data/Asset catalogs
+      x-order: '70'
+      x-url-hash: bonds-list
+      security:
+      - authorizationHeader:
+        - '[]'
+      - queryParameter:
+        - '[]'
+    servers:
+    - url: https://api.twelvedata.com/
+  /commodities:
+    get:
+      description: The commodities endpoint provides a daily updated list of available commodity pairs, across precious metals, livestock, softs, grains, etc.
+      operationId: GetCommodities
       parameters:
-      - $ref: '#/components/parameters/apikeyParam'
+      - description: The ticker symbol of an instrument for which data is requested
+        in: query
+        name: symbol
+        schema:
+          type: string
+          x-go-name: Symbol
+          x-order: '10'
+        x-go-name: Symbol
+        x-order: '10'
+        example: XAU/USD
+      - description: Filter by category of commodity
+        in: query
+        name: category
+        schema:
+          type: string
+          x-go-name: Category
+          x-order: '20'
+        x-go-name: Category
+        x-order: '20'
+        example: Precious Metal
+      - description: The format of the response data
+        in: query
+        name: format
+        schema:
+          $ref: '#/components/schemas/FormatEnum'
+        x-go-name: Format
+        x-order: '30'
+      - description: The separator used in the CSV response data
+        in: query
+        name: delimiter
+        schema:
+          default: ;
+          type: string
+          x-go-name: Delimiter
+          x-order: '40'
+        x-go-name: Delimiter
+        x-order: '40'
+      - description: Page number of the results to fetch
+        in: query
+        name: page
+        schema:
+          default: 1
+          format: int64
+          type: integer
+          x-go-name: Page
+          x-order: '50'
+        x-go-name: Page
+        x-order: '50'
+      - description: Determines the number of data points returned in the output
+        in: query
+        name: outputsize
+        schema:
+          format: int64
+          type: integer
+          x-go-name: PageSize
+          x-order: '60'
+        x-go-name: PageSize
+        x-order: '60'
       responses:
         '200':
-          description: Forex pair catalog payload.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCommodities_200_response'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBadRequestErrorResponseBody'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnauthorizedErrorResponseBody'
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiForbiddenErrorResponseBody'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiNotFoundErrorResponseBody'
+          description: ''
+        '414':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiParameterTooLongErrorResponseBody'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTooManyRequestsErrorResponseBody'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInternalServerErrorResponseBody'
+          description: ''
+      summary: Commodities
+      tags:
+      - Reference Data
+      x-api-credits-cost: '1'
+      x-api-credits-type: request
+      x-group: Reference data/Asset catalogs
+      x-order: '60'
+      x-url-hash: commodities-list
+      security:
+      - authorizationHeader:
+        - '[]'
+      - queryParameter:
+        - '[]'
+    servers:
+    - url: https://api.twelvedata.com/
+  /countries:
+    get:
+      description: The countries endpoint provides a comprehensive list of countries, including their ISO codes, official names, capitals, and currencies. This data is essential for applications requiring accurate country information for tasks such as localization, currency conversion, or geographic analysis.
+      operationId: GetCountries
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCountries_200_response'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBadRequestErrorResponseBody'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnauthorizedErrorResponseBody'
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiForbiddenErrorResponseBody'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiNotFoundErrorResponseBody'
+          description: ''
+        '414':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiParameterTooLongErrorResponseBody'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTooManyRequestsErrorResponseBody'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInternalServerErrorResponseBody'
+          description: ''
+      summary: Countries
+      tags:
+      - Reference Data
+      x-api-credits-cost: '1'
+      x-api-credits-type: request
+      x-group: Reference data/Supporting metadata
+      x-order: '10'
+      x-url-hash: countries
+      security:
+      - authorizationHeader:
+        - '[]'
+      - queryParameter:
+        - '[]'
+    servers:
+    - url: https://api.twelvedata.com/
+  /cross_listings:
+    get:
+      description: The cross_listings endpoint provides a daily updated list of cross-listed symbols for a specified financial instrument. Cross-listed symbols represent the same security available on multiple exchanges. This endpoint is useful for identifying all the exchanges where a particular security is traded, allowing users to access comprehensive trading information across different markets.
+      operationId: GetCrossListings
+      parameters:
+      - description: The ticker symbol of an instrument for which data is requested
+        in: query
+        name: symbol
+        required: true
+        schema:
+          type: string
+          x-go-name: Symbol
+          x-order: '10'
+        x-go-name: Symbol
+        x-order: '10'
+        example: AAPL
+      - description: Exchange where instrument is traded
+        in: query
+        name: exchange
+        schema:
+          type: string
+          x-go-name: Exchange
+          x-order: '20'
+        x-go-name: Exchange
+        x-order: '20'
+        example: NASDAQ
+      - description: Market identifier code (MIC) under ISO 10383 standard
+        in: query
+        name: mic_code
+        schema:
+          type: string
+          x-go-name: MicCode
+          x-order: '30'
+        x-go-name: MicCode
+        x-order: '30'
+        example: XNGS
+      - description: Country to which stock exchange belongs to
+        in: query
+        name: country
+        schema:
+          type: string
+          x-go-name: Country
+          x-order: '40'
+        x-go-name: Country
+        x-order: '40'
+        example: United States
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCrossListings_200_response'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBadRequestErrorResponseBody'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnauthorizedErrorResponseBody'
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiForbiddenErrorResponseBody'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiNotFoundErrorResponseBody'
+          description: ''
+        '414':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiParameterTooLongErrorResponseBody'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTooManyRequestsErrorResponseBody'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInternalServerErrorResponseBody'
+          description: ''
+      summary: Cross listings
+      tags:
+      - Reference Data
+      x-api-credits-cost: '40'
+      x-api-credits-type: request
+      x-group: Reference data/Discovery
+      x-order: '20'
+      x-starting-plan: grow,venture
+      x-url-hash: cross-listings
+      security:
+      - authorizationHeader:
+        - '[]'
+      - queryParameter:
+        - '[]'
+    servers:
+    - url: https://api.twelvedata.com/
   /cryptocurrencies:
     get:
-      operationId: listCryptocurrencies
-      tags:
-      - Reference Data
-      summary: List cryptocurrencies
-      description: Returns the catalog of available cryptocurrency pairs across exchanges.
+      description: The cryptocurrencies endpoint provides a daily updated list of all available cryptos. It returns an array containing detailed information about each cryptocurrency, including its symbol, name, and other relevant identifiers. This endpoint is useful for retrieving a comprehensive catalog of cryptocurrencies for applications that require up-to-date market listings or need to display available crypto assets to users.
+      operationId: GetCryptocurrencies
       parameters:
-      - $ref: '#/components/parameters/apikeyParam'
+      - description: The ticker symbol of an instrument for which data is requested
+        in: query
+        name: symbol
+        schema:
+          type: string
+          x-go-name: Symbol
+        x-go-name: Symbol
+        example: BTC/USD
+      - description: Filter by exchange name. E.g. `Binance`, `Coinbase`, etc.
+        in: query
+        name: exchange
+        schema:
+          type: string
+          x-go-name: Exchange
+        x-go-name: Exchange
+        example: Binance
+      - description: Filter by currency base
+        in: query
+        name: currency_base
+        schema:
+          type: string
+          x-go-name: CurrencyBase
+        x-go-name: CurrencyBase
+        example: BTC
+      - description: Filter by currency quote
+        in: query
+        name: currency_quote
+        schema:
+          type: string
+          x-go-name: CurrencyQuote
+        x-go-name: CurrencyQuote
+        example: USD
+      - description: The format of the response data
+        in: query
+        name: format
+        schema:
+          $ref: '#/components/schemas/FormatEnum'
+        x-go-name: Format
+      - description: The separator used in the CSV response data
+        in: query
+        name: delimiter
+        schema:
+          default: ;
+          type: string
+          x-go-name: Delimiter
+        x-go-name: Delimiter
+      - description: Page number of the results to fetch
+        in: query
+        name: page
+        schema:
+          default: 1
+          format: int64
+          type: integer
+          x-go-name: Page
+        x-go-name: Page
+      - description: Determines the number of data points returned in the output
+        in: query
+        name: outputsize
+        schema:
+          format: int64
+          type: integer
+          x-go-name: PageSize
+        x-go-name: PageSize
       responses:
         '200':
-          description: Cryptocurrency catalog payload.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCryptocurrencies_200_response'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBadRequestErrorResponseBody'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnauthorizedErrorResponseBody'
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiForbiddenErrorResponseBody'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiNotFoundErrorResponseBody'
+          description: ''
+        '414':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiParameterTooLongErrorResponseBody'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTooManyRequestsErrorResponseBody'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInternalServerErrorResponseBody'
+          description: ''
+      summary: Cryptocurrency pairs
+      tags:
+      - Reference Data
+      x-api-credits-cost: '1'
+      x-api-credits-type: request
+      x-group: Reference data/Asset catalogs
+      x-order: '30'
+      x-url-hash: cryptocurrencies-list
+      security:
+      - authorizationHeader:
+        - '[]'
+      - queryParameter:
+        - '[]'
+    servers:
+    - url: https://api.twelvedata.com/
+  /cryptocurrency_exchanges:
+    get:
+      description: The cryptocurrency exchanges endpoint provides a daily updated list of available cryptocurrency exchanges. It returns an array containing details about each exchange, such as exchange names and identifiers.
+      operationId: GetCryptocurrencyExchanges
+      parameters:
+      - description: The format of the response data
+        in: query
+        name: format
+        schema:
+          $ref: '#/components/schemas/FormatEnum'
+        x-go-name: Format
+        x-order: '10'
+      - description: Specify the delimiter used when downloading the CSV file
+        in: query
+        name: delimiter
+        schema:
+          default: ;
+          type: string
+          x-go-name: Delimiter
+          x-order: '20'
+        x-go-name: Delimiter
+        x-order: '20'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCryptocurrencyExchanges_200_response'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBadRequestErrorResponseBody'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnauthorizedErrorResponseBody'
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiForbiddenErrorResponseBody'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiNotFoundErrorResponseBody'
+          description: ''
+        '414':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiParameterTooLongErrorResponseBody'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTooManyRequestsErrorResponseBody'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInternalServerErrorResponseBody'
+          description: ''
+      summary: Cryptocurrency exchanges
+      tags:
+      - Reference Data
+      x-api-credits-cost: '1'
+      x-api-credits-type: request
+      x-group: Reference data/Markets
+      x-order: '30'
+      security:
+      - authorizationHeader:
+        - '[]'
+      - queryParameter:
+        - '[]'
+    servers:
+    - url: https://api.twelvedata.com/
+  /earliest_timestamp:
+    get:
+      description: The earliest_timestamp endpoint provides the earliest available date and time for a specified financial instrument at a given data interval. This endpoint is useful for determining the starting point of historical data availability for various assets, such as stocks or currencies, allowing users to understand the time range covered by the data.
+      operationId: GetEarliestTimestamp
+      parameters:
+      - description: Symbol ticker of the instrument.
+        in: query
+        name: symbol
+        schema:
+          type: string
+          x-go-name: Symbol
+          x-order: '10'
+          x-required-group: symbol
+        x-go-name: Symbol
+        x-order: '10'
+        x-required-group: symbol
+        example: AAPL
+      - description: Filter by financial instrument global identifier (FIGI). This parameter is available on the <a href="https://twelvedata.com/pricing">Ultra</a> plan (individual) and the <a href="https://twelvedata.com/pricing-business">Enterprise</a> plan (business) and above.
+        in: query
+        name: figi
+        schema:
+          type: string
+          x-go-name: Figi
+          x-order: '20'
+          x-required-group: symbol
+        x-go-name: Figi
+        x-order: '20'
+        x-required-group: symbol
+        example: BBG000B9XRY4
+      - description: Filter by international securities identification number (ISIN). ISIN access is activating in the <a href="https://twelvedata.com/account/add-ons">Data add-ons</a> section
+        in: query
+        name: isin
+        schema:
+          type: string
+          x-go-name: Isin
+          x-order: '25'
+          x-required-group: symbol
+        x-go-name: Isin
+        x-order: '25'
+        x-required-group: symbol
+        example: US0378331005
+      - description: The CUSIP of an instrument for which data is requested. CUSIP access is activating in the <a href="https://twelvedata.com/account/add-ons">Data add-ons</a> section
+        in: query
+        name: cusip
+        schema:
+          type: string
+          x-go-name: Cusip
+          x-order: '26'
+          x-required-group: symbol
+        x-go-name: Cusip
+        x-order: '26'
+        x-required-group: symbol
+        example: '594918104'
+      - description: Interval between two consecutive points in time series.
+        in: query
+        name: interval
+        required: true
+        schema:
+          $ref: '#/components/schemas/IntervalEnum'
+        x-go-name: Interval
+        x-order: '30'
+        example: 1day
+      - description: Exchange where instrument is traded.
+        in: query
+        name: exchange
+        schema:
+          type: string
+          x-go-name: Exchange
+          x-order: '40'
+        x-go-name: Exchange
+        x-order: '40'
+        example: Nasdaq
+      - description: Market Identifier Code (MIC) under ISO 10383 standard.
+        in: query
+        name: mic_code
+        schema:
+          type: string
+          x-go-name: MicCode
+          x-order: '50'
+        x-go-name: MicCode
+        x-order: '50'
+        example: XNAS
+      - description: 'Timezone at which output datetime will be displayed. Supports:
+
+          <ul>
+
+          <li>1. <code>Exchange</code> for local exchange time</li>
+
+          <li>2. <code>UTC</code> for datetime at universal UTC standard</li>
+
+          <li>3. Timezone name according to the IANA Time Zone Database. E.g. <code>America/New_York</code>, <code>Asia/Singapore</code>. Full list of timezones can be found <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones" target="blank">here</a>.</li>
+
+          </ul>
+
+          <p>Interval Limitation: The timezone parameter is only applicable for intraday intervals (less than 1 day). For intervals of 1day, 1week, or 1month, the timezone parameter is ignored, and data is strictly returned in the Exchange local time.</p>
+
+          <i>Take note that the IANA Timezone name is case-sensitive</i>'
+        in: query
+        name: timezone
+        schema:
+          default: Exchange
+          type: string
+          x-go-name: Timezone
+        x-go-name: Timezone
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEarliestTimestamp_200_response'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBadRequestErrorResponseBody'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnauthorizedErrorResponseBody'
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiForbiddenErrorResponseBody'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiNotFoundErrorResponseBody'
+          description: ''
+        '414':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiParameterTooLongErrorResponseBody'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTooManyRequestsErrorResponseBody'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInternalServerErrorResponseBody'
+          description: ''
+      summary: Earliest timestamp
+      tags:
+      - Reference Data
+      x-api-credits-cost: '1'
+      x-api-credits-type: request
+      x-group: Reference data/Discovery
+      x-order: '30'
+      x-required:
+        anyOf:
+        - required:
+          - symbol
+          - figi
+          - isin
+          - cusip
+      security:
+      - authorizationHeader:
+        - '[]'
+      - queryParameter:
+        - '[]'
+    servers:
+    - url: https://api.twelvedata.com/
   /etfs:
     get:
-      operationId: listEtfs
-      tags:
-      - Reference Data
-      summary: List ETFs
-      description: Returns the catalog of available exchange-traded fund symbols.
+      description: The ETFs endpoint provides a daily updated list of all available Exchange-Traded Funds. It returns an array containing detailed information about each ETF, including its symbol, name, and other relevant identifiers. This endpoint is useful for retrieving a comprehensive catalog of ETFs for portfolio management, investment tracking, or financial analysis.
+      operationId: GetEtf
       parameters:
-      - $ref: '#/components/parameters/apikeyParam'
+      - description: The ticker symbol of an instrument for which data is requested
+        in: query
+        name: symbol
+        schema:
+          type: string
+          x-go-name: Symbol
+        x-go-name: Symbol
+        example: SPY
+      - description: Filter by financial instrument global identifier (FIGI). This parameter is available on the <a href="https://twelvedata.com/pricing">Ultra</a> plan (individual) and the <a href="https://twelvedata.com/pricing-business">Enterprise</a> plan (business) and above.
+        in: query
+        name: figi
+        schema:
+          type: string
+          x-go-name: Figi
+        x-go-name: Figi
+        example: BBG000BDTF76
+      - description: Filter by international securities identification number (ISIN). ISIN access is activating in the <a href="https://twelvedata.com/account/add-ons">Data add-ons</a> section
+        in: query
+        name: isin
+        schema:
+          type: string
+          x-go-name: Isin
+        x-go-name: Isin
+        example: US0378331005
+      - description: The CUSIP of an instrument for which data is requested. CUSIP access is activating in the <a href="https://twelvedata.com/account/add-ons">Data add-ons</a> section
+        in: query
+        name: cusip
+        schema:
+          type: string
+          x-go-name: Cusip
+        x-go-name: Cusip
+        example: '594918104'
+      - description: The CIK of an instrument for which data is requested
+        in: query
+        name: cik
+        schema:
+          type: string
+          x-go-name: Cik
+        x-go-name: Cik
+        example: '95953'
+      - description: Filter by exchange name
+        in: query
+        name: exchange
+        schema:
+          type: string
+          x-go-name: Exchange
+        x-go-name: Exchange
+        example: NYSE
+      - description: Filter by market identifier code (MIC) under ISO 10383 standard
+        in: query
+        name: mic_code
+        schema:
+          type: string
+          x-go-name: MicCode
+        x-go-name: MicCode
+        example: XNYS
+      - description: Filter by country name or alpha code, e.g., `United States` or `US`
+        in: query
+        name: country
+        schema:
+          type: string
+          x-go-name: Country
+        x-go-name: Country
+        example: United States
+      - description: The format of the response data
+        in: query
+        name: format
+        schema:
+          $ref: '#/components/schemas/FormatEnum'
+        x-go-name: Format
+      - description: The separator used in the CSV response data
+        in: query
+        name: delimiter
+        schema:
+          default: ;
+          type: string
+          x-go-name: Delimiter
+        x-go-name: Delimiter
+      - description: Adds info on which plan symbol is available
+        in: query
+        name: show_plan
+        schema:
+          default: false
+          type: boolean
+          x-go-name: ShowPlan
+        x-go-name: ShowPlan
+      - description: Include delisted identifiers
+        in: query
+        name: include_delisted
+        schema:
+          default: false
+          type: boolean
+          x-go-name: IncludeDelisted
+        x-go-name: IncludeDelisted
+      - description: Page number of the results to fetch
+        in: query
+        name: page
+        schema:
+          default: 1
+          format: int64
+          type: integer
+          x-go-name: Page
+        x-go-name: Page
+      - description: Determines the number of data points returned in the output
+        in: query
+        name: outputsize
+        schema:
+          format: int64
+          type: integer
+          x-go-name: PageSize
+        x-go-name: PageSize
       responses:
         '200':
-          description: ETF catalog payload.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEtf_200_response'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBadRequestErrorResponseBody'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnauthorizedErrorResponseBody'
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiForbiddenErrorResponseBody'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiNotFoundErrorResponseBody'
+          description: ''
+        '414':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiParameterTooLongErrorResponseBody'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTooManyRequestsErrorResponseBody'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInternalServerErrorResponseBody'
+          description: ''
+      summary: ETFs
+      tags:
+      - Reference Data
+      x-api-credits-cost: '1'
+      x-api-credits-type: request
+      x-group: Reference data/Asset catalogs
+      x-order: '40'
+      x-url-hash: etf-list
+      security:
+      - authorizationHeader:
+        - '[]'
+      - queryParameter:
+        - '[]'
+    servers:
+    - url: https://api.twelvedata.com/
+  /exchange_schedule:
+    get:
+      description: The exchanges schedule endpoint provides detailed information about various stock exchanges, including their trading hours and operational days. This data is essential for users who need to know when specific exchanges are open for trading, allowing them to plan their activities around the availability of these markets.
+      operationId: GetExchangeSchedule
+      parameters:
+      - description: Filter by exchange name
+        in: query
+        name: mic_name
+        schema:
+          type: string
+          x-go-name: MicName
+          x-order: '20'
+        x-go-name: MicName
+        x-order: '20'
+        example: NASDAQ
+      - description: Filter by market identifier code (MIC) under ISO 10383 standard
+        in: query
+        name: mic_code
+        schema:
+          type: string
+          x-go-name: MicCode
+          x-order: '30'
+        x-go-name: MicCode
+        x-order: '30'
+        example: XNGS
+      - description: Filter by country name or alpha code, e.g., `United States` or `US`
+        in: query
+        name: country
+        schema:
+          type: string
+          x-go-name: Country
+          x-order: '40'
+        x-go-name: Country
+        x-order: '40'
+        example: United States
+      - description: '<p>
+
+          If a date is provided, the API returns the schedule for the specified date; otherwise, it returns the default (common) schedule.
+
+          </p>
+
+          The date can be specified in one of the following formats:
+
+          <ul>
+
+          <li>An exact date (e.g., <code>2021-10-27</code>)</li>
+
+          <li>A human-readable keyword: <code>today</code> or <code>yesterday</code></li>
+
+          <li>A full datetime string in UTC (e.g., <code>2025-04-11T20:00:00</code>) to retrieve the schedule corresponding to the day in the specified time.</li>
+
+          </ul>
+
+          When using a datetime value, the resulting schedule will correspond to the local calendar day at the specified time.
+
+          For example, <code>2025-04-11T20:00:00 UTC</code> corresponds to:
+
+          <ul>
+
+          <li><code>2025-04-11</code> in the <code>America/New_York</code> timezone</li>
+
+          <li><code>2025-04-12</code> in the <code>Australia/Sydney</code> timezone</li>
+
+          </ul>'
+        in: query
+        name: date
+        schema:
+          type: string
+          x-go-name: Date
+          x-order: '10'
+        x-go-name: Date
+        x-order: '10'
+        example: '2021-10-27'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetExchangeSchedule_200_response'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBadRequestErrorResponseBody'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnauthorizedErrorResponseBody'
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiForbiddenErrorResponseBody'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiNotFoundErrorResponseBody'
+          description: ''
+        '414':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiParameterTooLongErrorResponseBody'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTooManyRequestsErrorResponseBody'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInternalServerErrorResponseBody'
+          description: ''
+      summary: Exchanges schedule
+      tags:
+      - Reference Data
+      x-api-credits-cost: '100'
+      x-api-credits-type: request
+      x-group: Reference data/Markets
+      x-order: '20'
+      x-starting-plan: ultra,enterprise
+      x-url-hash: exchange-schedule
+      security:
+      - authorizationHeader:
+        - '[]'
+      - queryParameter:
+        - '[]'
+    servers:
+    - url: https://api.twelvedata.com/
+  /exchanges:
+    get:
+      description: The exchanges endpoint provides a comprehensive list of all available equity exchanges. It returns an array containing detailed information about each exchange, such as exchange code, name, country, and timezone. This data is updated daily.
+      operationId: GetExchanges
+      parameters:
+      - description: The asset class to which the instrument belongs
+        in: query
+        name: type
+        schema:
+          $ref: '#/components/schemas/TypeEnum'
+        x-go-name: Type
+        x-order: '10'
+        example: ETF
+      - description: Filter by exchange name
+        in: query
+        name: name
+        schema:
+          type: string
+          x-go-name: Name
+          x-order: '20'
+        x-go-name: Name
+        x-order: '20'
+        example: NASDAQ
+      - description: Filter by market identifier code (MIC) under ISO 10383 standard
+        in: query
+        name: code
+        schema:
+          type: string
+          x-go-name: Code
+          x-order: '30'
+        x-go-name: Code
+        x-order: '30'
+        example: XBUE
+      - description: Filter by country name or alpha code, e.g., `United States` or `US`
+        in: query
+        name: country
+        schema:
+          type: string
+          x-go-name: Country
+          x-order: '40'
+        x-go-name: Country
+        x-order: '40'
+        example: United States
+      - description: The format of the response data
+        in: query
+        name: format
+        schema:
+          $ref: '#/components/schemas/FormatEnum'
+        x-go-name: Format
+        x-order: '50'
+      - description: The separator used in the CSV response data
+        in: query
+        name: delimiter
+        schema:
+          default: ;
+          type: string
+          x-go-name: Delimiter
+          x-order: '60'
+        x-go-name: Delimiter
+        x-order: '60'
+      - description: Adds info on which plan symbol is available
+        in: query
+        name: show_plan
+        schema:
+          default: false
+          type: boolean
+          x-go-name: ShowPlan
+          x-order: '70'
+        x-go-name: ShowPlan
+        x-order: '70'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetExchanges_200_response'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBadRequestErrorResponseBody'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnauthorizedErrorResponseBody'
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiForbiddenErrorResponseBody'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiNotFoundErrorResponseBody'
+          description: ''
+        '414':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiParameterTooLongErrorResponseBody'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTooManyRequestsErrorResponseBody'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInternalServerErrorResponseBody'
+          description: ''
+      summary: Exchanges
+      tags:
+      - Reference Data
+      x-api-credits-cost: '1'
+      x-api-credits-type: request
+      x-badge: High demand
+      x-group: Reference data/Markets
+      x-order: '10'
+      security:
+      - authorizationHeader:
+        - '[]'
+      - queryParameter:
+        - '[]'
+    servers:
+    - url: https://api.twelvedata.com/
+  /forex_pairs:
+    get:
+      description: The forex pairs endpoint provides a comprehensive list of all available foreign exchange currency pairs. It returns an array of forex pairs, which is updated daily.
+      operationId: GetForexPairs
+      parameters:
+      - description: The ticker symbol of an instrument for which data is requested
+        in: query
+        name: symbol
+        schema:
+          type: string
+          x-go-name: Symbol
+        x-go-name: Symbol
+        example: EUR/USD
+      - description: Filter by currency base
+        in: query
+        name: currency_base
+        schema:
+          type: string
+          x-go-name: CurrencyBase
+        x-go-name: CurrencyBase
+        example: EUR
+      - description: Filter by currency quote
+        in: query
+        name: currency_quote
+        schema:
+          type: string
+          x-go-name: CurrencyQuote
+        x-go-name: CurrencyQuote
+        example: USD
+      - description: The format of the response data
+        in: query
+        name: format
+        schema:
+          $ref: '#/components/schemas/FormatEnum'
+        x-go-name: Format
+      - description: The separator used in the CSV response data
+        in: query
+        name: delimiter
+        schema:
+          default: ;
+          type: string
+          x-go-name: Delimiter
+        x-go-name: Delimiter
+      - description: Page number of the results to fetch
+        in: query
+        name: page
+        schema:
+          default: 1
+          format: int64
+          type: integer
+          x-go-name: Page
+        x-go-name: Page
+      - description: Determines the number of data points returned in the output
+        in: query
+        name: outputsize
+        schema:
+          format: int64
+          type: integer
+          x-go-name: PageSize
+        x-go-name: PageSize
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetForexPairs_200_response'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBadRequestErrorResponseBody'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnauthorizedErrorResponseBody'
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiForbiddenErrorResponseBody'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiNotFoundErrorResponseBody'
+          description: ''
+        '414':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiParameterTooLongErrorResponseBody'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTooManyRequestsErrorResponseBody'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInternalServerErrorResponseBody'
+          description: ''
+      summary: Forex pairs
+      tags:
+      - Reference Data
+      x-api-credits-cost: '1'
+      x-api-credits-type: request
+      x-group: Reference data/Asset catalogs
+      x-order: '20'
+      x-url-hash: forex-pairs-list
+      security:
+      - authorizationHeader:
+        - '[]'
+      - queryParameter:
+        - '[]'
+    servers:
+    - url: https://api.twelvedata.com/
+  /funds:
+    get:
+      description: The funds endpoint provides a daily updated list of available investment funds. It returns an array containing detailed information about each fund, including identifiers, names, and other relevant attributes.
+      operationId: GetFunds
+      parameters:
+      - description: The ticker symbol of an instrument for which data is requested
+        in: query
+        name: symbol
+        schema:
+          type: string
+          x-go-name: Symbol
+        x-go-name: Symbol
+        example: FXAIX
+      - description: Filter by financial instrument global identifier (FIGI). This parameter is available on the <a href="https://twelvedata.com/pricing">Ultra</a> plan (individual) and the <a href="https://twelvedata.com/pricing-business">Enterprise</a> plan (business) and above.
+        in: query
+        name: figi
+        schema:
+          type: string
+          x-go-name: Figi
+        x-go-name: Figi
+        example: BBG000BHTMY7
+      - description: Filter by international securities identification number (ISIN). ISIN access is activating in the <a href="https://twelvedata.com/account/add-ons">Data add-ons</a> section
+        in: query
+        name: isin
+        schema:
+          type: string
+          x-go-name: Isin
+        x-go-name: Isin
+        example: US0378331005
+      - description: The CUSIP of an instrument for which data is requested. CUSIP access is activating in the <a href="https://twelvedata.com/account/add-ons">Data add-ons</a> section
+        in: query
+        name: cusip
+        schema:
+          type: string
+          x-go-name: Cusip
+        x-go-name: Cusip
+        example: '594918104'
+      - description: The CIK of an instrument for which data is requested
+        in: query
+        name: cik
+        schema:
+          type: string
+          x-go-name: Cik
+        x-go-name: Cik
+        example: '95953'
+      - description: Filter by exchange name
+        in: query
+        name: exchange
+        schema:
+          type: string
+          x-go-name: Exchange
+        x-go-name: Exchange
+        example: Nasdaq
+      - description: Filter by country name or alpha code, e.g., `United States` or `US`
+        in: query
+        name: country
+        schema:
+          type: string
+          x-go-name: Country
+        x-go-name: Country
+        example: United States
+      - description: The format of the response data
+        in: query
+        name: format
+        schema:
+          $ref: '#/components/schemas/FormatEnum'
+        x-go-name: Format
+      - description: The separator used in the CSV response data
+        in: query
+        name: delimiter
+        schema:
+          default: ;
+          type: string
+          x-go-name: Delimiter
+        x-go-name: Delimiter
+      - description: Adds info on which plan symbol is available
+        in: query
+        name: show_plan
+        schema:
+          default: false
+          type: boolean
+          x-go-name: ShowPlan
+        x-go-name: ShowPlan
+      - description: Page number of the results to fetch
+        in: query
+        name: page
+        schema:
+          default: 1
+          format: int64
+          type: integer
+          x-go-name: Page
+        x-go-name: Page
+      - description: Determines the number of data points returned in the output
+        in: query
+        name: outputsize
+        schema:
+          default: 5000
+          format: int64
+          type: integer
+          x-go-name: PageSize
+        x-go-name: PageSize
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetFunds_200_response'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBadRequestErrorResponseBody'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnauthorizedErrorResponseBody'
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiForbiddenErrorResponseBody'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiNotFoundErrorResponseBody'
+          description: ''
+        '414':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiParameterTooLongErrorResponseBody'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTooManyRequestsErrorResponseBody'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInternalServerErrorResponseBody'
+          description: ''
+      summary: Funds
+      tags:
+      - Reference Data
+      x-api-credits-cost: '1'
+      x-api-credits-type: request
+      x-group: Reference data/Asset catalogs
+      x-order: '50'
+      x-url-hash: funds-list
+      security:
+      - authorizationHeader:
+        - '[]'
+      - queryParameter:
+        - '[]'
+    servers:
+    - url: https://api.twelvedata.com/
+  /instrument_type:
+    get:
+      description: The instrument type endpoint lists all available financial instrument types, such as stocks, ETFs, and cryptos. This information is essential for users to identify and categorize different financial instruments when accessing or analyzing market data.
+      operationId: GetInstrumentType
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetInstrumentType_200_response'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBadRequestErrorResponseBody'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnauthorizedErrorResponseBody'
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiForbiddenErrorResponseBody'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiNotFoundErrorResponseBody'
+          description: ''
+        '414':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiParameterTooLongErrorResponseBody'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTooManyRequestsErrorResponseBody'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInternalServerErrorResponseBody'
+          description: ''
+      summary: Instrument type
+      tags:
+      - Reference Data
+      x-api-credits-cost: '1'
+      x-api-credits-type: request
+      x-group: Reference data/Supporting metadata
+      x-order: '20'
+      x-url-hash: instrument-type
+      security:
+      - authorizationHeader:
+        - '[]'
+      - queryParameter:
+        - '[]'
+    servers:
+    - url: https://api.twelvedata.com/
+  /intervals:
+    get:
+      description: The intervals endpoint provides a list of supported time intervals that can be used for querying financial data.
+      operationId: GetIntervals
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetIntervals_200_response'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBadRequestErrorResponseBody'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnauthorizedErrorResponseBody'
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiForbiddenErrorResponseBody'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiNotFoundErrorResponseBody'
+          description: ''
+        '414':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiParameterTooLongErrorResponseBody'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTooManyRequestsErrorResponseBody'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInternalServerErrorResponseBody'
+          description: ''
+      summary: Intervals List
+      tags:
+      - Reference Data
+      security:
+      - authorizationHeader:
+        - '[]'
+      - queryParameter:
+        - '[]'
+    servers:
+    - url: https://api.twelvedata.com/
+  /market_state:
+    get:
+      description: The market state endpoint provides real-time information on the operational status of all available stock exchanges. It returns data on whether each exchange is currently open or closed, along with the time remaining until the next opening or closing. This endpoint is useful for users who need to monitor exchange hours and plan their trading activities accordingly.
+      operationId: GetMarketState
+      parameters:
+      - description: The exchange name where the instrument is traded.
+        in: query
+        name: exchange
+        schema:
+          type: string
+          x-go-name: Exchange
+          x-order: '10'
+        x-go-name: Exchange
+        x-order: '10'
+        example: NYSE
+      - description: The Market Identifier Code (MIC) of the exchange where the instrument is traded.
+        in: query
+        name: code
+        schema:
+          type: string
+          x-go-name: MicCode
+          x-order: '20'
+        x-go-name: MicCode
+        x-order: '20'
+        example: XNYS
+      - description: The country where the exchange is located. Takes country name or alpha code.
+        in: query
+        name: country
+        schema:
+          type: string
+          x-go-name: Country
+          x-order: '30'
+        x-go-name: Country
+        x-order: '30'
+        example: United States
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/MarketStateResponseItem'
+                type: array
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBadRequestErrorResponseBody'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnauthorizedErrorResponseBody'
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiForbiddenErrorResponseBody'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiNotFoundErrorResponseBody'
+          description: ''
+        '414':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiParameterTooLongErrorResponseBody'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTooManyRequestsErrorResponseBody'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInternalServerErrorResponseBody'
+          description: ''
+      summary: Market state
+      tags:
+      - Reference Data
+      x-api-credits-cost: '1'
+      x-api-credits-type: request
+      x-group: Reference data/Markets
+      x-order: '40'
+      security:
+      - authorizationHeader:
+        - '[]'
+      - queryParameter:
+        - '[]'
+    servers:
+    - url: https://api.twelvedata.com/
+  /stocks:
+    get:
+      description: The stocks endpoint provides a daily updated list of all available stock symbols. It returns an array containing the symbols, which can be used to identify and access specific stock data across various services. This endpoint is essential for users needing to retrieve the latest stock symbol information for further data requests or integration into financial applications.
+      operationId: GetStocks
+      parameters:
+      - description: The ticker symbol of an instrument for which data is requested
+        in: query
+        name: symbol
+        schema:
+          type: string
+          x-go-name: Symbol
+        x-go-name: Symbol
+        example: AAPL
+      - description: Filter by financial instrument global identifier (FIGI). This parameter is available on the <a href="https://twelvedata.com/pricing">Ultra</a> plan (individual) and the <a href="https://twelvedata.com/pricing-business">Enterprise</a> plan (business) and above.
+        in: query
+        name: figi
+        schema:
+          type: string
+          x-go-name: Figi
+        x-go-name: Figi
+        example: BBG000B9Y5X2
+      - description: Filter by international securities identification number (ISIN). ISIN access is activating in the <a href="https://twelvedata.com/account/add-ons">Data add-ons</a> section
+        in: query
+        name: isin
+        schema:
+          type: string
+          x-go-name: Isin
+        x-go-name: Isin
+        example: US0378331005
+      - description: The CUSIP of an instrument for which data is requested. CUSIP access is activating in the <a href="https://twelvedata.com/account/add-ons">Data add-ons</a> section
+        in: query
+        name: cusip
+        schema:
+          type: string
+          x-go-name: Cusip
+        x-go-name: Cusip
+        example: '594918104'
+      - description: The CIK of an instrument for which data is requested
+        in: query
+        name: cik
+        schema:
+          type: string
+          x-go-name: Cik
+        x-go-name: Cik
+        example: '95953'
+      - description: Filter by exchange name
+        in: query
+        name: exchange
+        schema:
+          type: string
+          x-go-name: Exchange
+        x-go-name: Exchange
+        example: NASDAQ
+      - description: Filter by market identifier code (MIC) under ISO 10383 standard
+        in: query
+        name: mic_code
+        schema:
+          type: string
+          x-go-name: MicCode
+        x-go-name: MicCode
+        example: XNGS
+      - description: Filter by country name or alpha code, e.g., `United States` or `US`
+        in: query
+        name: country
+        schema:
+          type: string
+          x-go-name: Country
+        x-go-name: Country
+        example: United States
+      - description: The asset class to which the instrument belongs
+        in: query
+        name: type
+        schema:
+          $ref: '#/components/schemas/TypeEnum'
+        x-go-name: Type
+        example: Common Stock
+      - description: The format of the response data
+        in: query
+        name: format
+        schema:
+          $ref: '#/components/schemas/FormatEnum'
+        x-go-name: Format
+      - description: The separator used in the CSV response data
+        in: query
+        name: delimiter
+        schema:
+          default: ;
+          type: string
+          x-go-name: Delimiter
+        x-go-name: Delimiter
+      - description: Adds info on which plan symbol is available
+        in: query
+        name: show_plan
+        schema:
+          default: false
+          type: boolean
+          x-go-name: ShowPlan
+        x-go-name: ShowPlan
+      - description: Include delisted identifiers
+        in: query
+        name: include_delisted
+        schema:
+          default: false
+          type: boolean
+          x-go-name: IncludeDelisted
+        x-go-name: IncludeDelisted
+      - description: Page number of the results to fetch
+        in: query
+        name: page
+        schema:
+          default: 1
+          format: int64
+          type: integer
+          x-go-name: Page
+        x-go-name: Page
+      - description: Determines the number of data points returned in the output
+        in: query
+        name: outputsize
+        schema:
+          format: int64
+          type: integer
+          x-go-name: PageSize
+        x-go-name: PageSize
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetStocks_200_response'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBadRequestErrorResponseBody'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnauthorizedErrorResponseBody'
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiForbiddenErrorResponseBody'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiNotFoundErrorResponseBody'
+          description: ''
+        '414':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiParameterTooLongErrorResponseBody'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTooManyRequestsErrorResponseBody'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInternalServerErrorResponseBody'
+          description: ''
+      summary: Stocks
+      tags:
+      - Reference Data
+      x-api-credits-cost: '1'
+      x-api-credits-type: request
+      x-group: Reference data/Asset catalogs
+      x-order: '10'
+      x-url-hash: stocks-list
+      security:
+      - authorizationHeader:
+        - '[]'
+      - queryParameter:
+        - '[]'
+    servers:
+    - url: https://api.twelvedata.com/
+  /symbol_search:
+    get:
+      description: The symbol search endpoint allows users to find financial instruments by name or symbol. It returns a list of matching symbols, ordered by relevance, with the most relevant instrument first. This is useful for quickly locating specific stocks, ETFs, or other financial instruments when only partial information is available.
+      operationId: GetSymbolSearch
+      parameters:
+      - description: 'Symbol to search. Supports:
+
+          <ul>
+
+          <li>Ticker symbol of instrument.</li>
+
+          <li>International securities identification number (ISIN). ISIN access is activating in the <a href="https://twelvedata.com/account/add-ons">Data add-ons</a> section</li>
+
+          <li>The FIGI (Financial Instrument Global Identifier) parameter is available on the <a href="https://twelvedata.com/pricing">Ultra</a> plan (individual) and <a href="https://twelvedata.com/pricing-business">Enterprise</a> plan (business) and above.</li>
+
+          <li>Composite FIGI parameter is available on the <a href="https://twelvedata.com/pricing">Ultra</a> plan (individual) and <a href="https://twelvedata.com/pricing-business">Enterprise</a> plan (business) and above.</li>
+
+          <li>Share Class FIGI parameter is available on the <a href="https://twelvedata.com/pricing">Ultra</a> plan (individual) and <a href="https://twelvedata.com/pricing-business">Enterprise</a> plan (business) and above.</li>
+
+          </ul>'
+        in: query
+        name: symbol
+        required: true
+        schema:
+          type: string
+          x-go-name: Symbol
+          x-order: '10'
+        x-go-name: Symbol
+        x-order: '10'
+        example: AAPL
+      - description: Number of matches in response. Max <code>120</code>
+        in: query
+        name: outputsize
+        schema:
+          default: 30
+          format: int64
+          maximum: 120
+          type: integer
+          x-go-name: Outputsize
+          x-order: '30'
+        x-go-name: Outputsize
+        x-order: '30'
+      - description: Adds info on which plan symbol is available.
+        in: query
+        name: show_plan
+        schema:
+          default: false
+          type: boolean
+          x-go-name: ShowPlan
+          x-order: '40'
+        x-go-name: ShowPlan
+        x-order: '40'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSymbolSearch_200_response'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBadRequestErrorResponseBody'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnauthorizedErrorResponseBody'
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiForbiddenErrorResponseBody'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiNotFoundErrorResponseBody'
+          description: ''
+        '414':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiParameterTooLongErrorResponseBody'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTooManyRequestsErrorResponseBody'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInternalServerErrorResponseBody'
+          description: ''
+      summary: Symbol search
+      tags:
+      - Reference Data
+      x-api-credits-cost: '1'
+      x-api-credits-type: request
+      x-badge: High demand
+      x-group: Reference data/Discovery
+      x-order: '10'
+      security:
+      - authorizationHeader:
+        - '[]'
+      - queryParameter:
+        - '[]'
+    servers:
+    - url: https://api.twelvedata.com/
+  /technical_indicators:
+    get:
+      description: The technical indicators endpoint provides a comprehensive list of available technical indicators, each represented as an object. This endpoint is useful for developers looking to integrate a variety of technical analysis tools into their applications, allowing for streamlined access to indicator data without needing to manually configure each one.
+      operationId: GetTechnicalIndicators
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTechnicalIndicators_200_response'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiBadRequestErrorResponseBody'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnauthorizedErrorResponseBody'
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiForbiddenErrorResponseBody'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiNotFoundErrorResponseBody'
+          description: ''
+        '414':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiParameterTooLongErrorResponseBody'
+          description: ''
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTooManyRequestsErrorResponseBody'
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiInternalServerErrorResponseBody'
+          description: ''
+      summary: Technical indicators
+      tags:
+      - Reference Data
+      x-api-credits-cost: '1'
+      x-api-credits-type: request
+      x-group: Reference data/Supporting metadata
+      x-order: '30'
+      x-url-hash: technical-indicators-interface
+      security:
+      - authorizationHeader:
+        - '[]'
+      - queryParameter:
+        - '[]'
+    servers:
+    - url: https://api.twelvedata.com/
   /indices:
     get:
       operationId: listIndices
@@ -89,59 +2195,1857 @@ paths:
       responses:
         '200':
           description: Index catalog payload.
-  /exchanges:
-    get:
-      operationId: listExchanges
-      tags:
-      - Reference Data
-      summary: List exchanges
-      description: Returns the catalog of available equity exchanges.
-      parameters:
-      - $ref: '#/components/parameters/apikeyParam'
-      responses:
-        '200':
-          description: Exchange catalog payload.
-  /symbol_search:
-    get:
-      operationId: symbolSearch
-      tags:
-      - Reference Data
-      summary: Symbol search
-      description: Finds instruments by name, symbol, ISIN, or FIGI.
-      parameters:
-      - name: symbol
-        in: query
-        required: true
-        schema:
-          type: string
-        description: Search term (name, ticker, ISIN, or FIGI).
-      - $ref: '#/components/parameters/apikeyParam'
-      responses:
-        '200':
-          description: Symbol search payload.
-  /earliest_timestamp:
-    get:
-      operationId: getEarliestTimestamp
-      tags:
-      - Reference Data
-      summary: Earliest timestamp
-      description: Returns the earliest date for which data is available for an instrument and interval.
-      parameters:
-      - $ref: '#/components/parameters/symbol'
-      - $ref: '#/components/parameters/interval'
-      - $ref: '#/components/parameters/apikeyParam'
-      responses:
-        '200':
-          description: Earliest timestamp payload.
+      security:
+      - apikeyQuery: []
+      - apikeyHeader: []
+    servers:
+    - url: https://api.twelvedata.com
+      description: Twelve Data REST base URL
 components:
+  schemas:
+    GetForexPairs_200_response:
+      properties:
+        count:
+          description: Count
+          examples:
+          - 100
+          format: int64
+          type: integer
+          x-go-name: Count
+        data:
+          description: List of forex pairs
+          items:
+            $ref: '#/components/schemas/ForexResponseItem'
+          type: array
+          x-go-name: Data
+        status:
+          description: Response status
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+      required:
+      - count
+      - data
+      - status
+      type: object
+    ForexResponseItem:
+      description: ForexResponseItem represents details of a forex pair
+      properties:
+        symbol:
+          description: Currency pair according to ISO 4217 standard codes with slash(/) delimiter
+          examples:
+          - EUR/USD
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        currency_group:
+          description: 'Group to which currency pair belongs to, could be: Major, Minor, Exotic and Exotic-Cross'
+          examples:
+          - Major
+          type: string
+          x-go-name: CurrencyGroup
+          x-order: 20
+        currency_base:
+          description: Base currency name according to ISO 4217 standard
+          examples:
+          - EUR
+          type: string
+          x-go-name: CurrencyBase
+          x-order: 30
+        currency_quote:
+          description: Quote currency name according to ISO 4217 standard
+          examples:
+          - USD
+          type: string
+          x-go-name: CurrencyQuote
+          x-order: 40
+      required:
+      - currency_base
+      - currency_group
+      - currency_quote
+      - symbol
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetFunds_200_response:
+      properties:
+        result:
+          $ref: '#/components/schemas/GetFunds_200_response_result'
+        status:
+          description: Status of the response
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+      required:
+      - result
+      - status
+      type: object
+    CrossListingsResult:
+      description: Represents the result of cross listings
+      properties:
+        count:
+          description: Number of cross listings found
+          examples:
+          - 4
+          format: int64
+          type: integer
+          x-go-name: Count
+        list:
+          description: List of cross listings
+          examples:
+          - - exchange: NASDAQ
+              mic_code: XNGS
+              name: NVIDIA Corporation
+              symbol: NVDA
+            - exchange: VSE
+              mic_code: XWBO
+              name: NVIDIA Corporation
+              symbol: NVDA
+            - exchange: BVS
+              mic_code: XSGO
+              name: NVIDIA Corporation
+              symbol: NVDACL
+            - exchange: BVS
+              mic_code: XSGO
+              name: NVIDIA Corporation
+              symbol: NVDA
+          items:
+            $ref: '#/components/schemas/CrossListingsItem'
+          type: array
+          x-go-name: List
+      required:
+      - count
+      - list
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetTechnicalIndicators_200_response:
+      properties:
+        data:
+          additionalProperties:
+            $ref: '#/components/schemas/GetTechnicalIndicators_200_response_data_value'
+          description: Map of technical indicators available at Twelve Data API
+          type: object
+          x-example-key: macd
+          x-go-name: Data
+          x-order: 10
+        status:
+          description: Response status
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+      required:
+      - data
+      - status
+      type: object
+    GetCrossListings_200_response:
+      properties:
+        result:
+          $ref: '#/components/schemas/CrossListingsResult'
+      type: object
+    BondResponseItem:
+      description: BondResponseItem represents details of a bond
+      properties:
+        symbol:
+          description: Bond symbol
+          examples:
+          - US2Y
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        name:
+          description: Full name of the bond
+          examples:
+          - US Treasury Yield 2 Years
+          type: string
+          x-go-name: Name
+          x-order: 20
+        country:
+          description: Country where the bond is located
+          examples:
+          - United States
+          type: string
+          x-go-name: Country
+          x-order: 30
+        currency:
+          description: Currency of the bond according to the ISO 4217 standard
+          examples:
+          - USD
+          type: string
+          x-go-name: Currency
+          x-order: 40
+        exchange:
+          description: Exchange where the bond is traded
+          examples:
+          - NYSE
+          type: string
+          x-go-name: Exchange
+          x-order: 50
+        mic_code:
+          description: Market identifier code (MIC) under ISO 10383 standard
+          examples:
+          - XNYS
+          type: string
+          x-go-name: MicCode
+          x-order: 60
+        type:
+          description: Type of the bond
+          examples:
+          - Bond
+          type: string
+          x-go-name: Type
+          x-order: 70
+        access:
+          $ref: '#/components/schemas/BondsResponseItemAccess'
+      required:
+      - country
+      - currency
+      - exchange
+      - mic_code
+      - name
+      - symbol
+      - type
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    TechnicalIndicatorsResponseMacdTinting:
+      description: An array of tinting values used for proper indicator coloring
+      properties:
+        display:
+          description: How the tinting should be rendered
+          examples:
+          - fill
+          type: string
+          x-go-name: Display
+          x-order: 10
+        color:
+          description: Hex color code for the tinting
+          examples:
+          - '#FF0000'
+          type: string
+          x-go-name: Color
+          x-order: 20
+        transparency:
+          description: Transparency level, float value from <code>0</code> to <code>1</code>
+          examples:
+          - 0.5
+          format: double
+          type: number
+          x-go-name: Transparency
+          x-order: 30
+        lower_bound:
+          description: Lower bound of tinting, can be a number or a return parameter name
+          examples:
+          - '0'
+          type: object
+          x-go-name: LowerBound
+        upper_bound:
+          description: Upper bound of tinting, can be a number or a return parameter name
+          examples:
+          - macd
+          type: object
+          x-go-name: UpperBound
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetCommodities_200_response:
+      properties:
+        count:
+          description: Count
+          examples:
+          - 100
+          format: int64
+          type: integer
+          x-go-name: Count
+        data:
+          description: List of commodities
+          examples:
+          - - category: Agricultural Product
+              description: Standardized contract to buy or sell a set quantity of corn at a future date.
+              name: Corn Futures
+              symbol: C_1
+            - category: Agricultural Product
+              description: Agreement to transact cocoa beans at a predetermined price and date.
+              name: Cocoa Futures
+              symbol: CC1
+            - category: Precious Metal
+              description: Spot price per troy ounce of gold.
+              name: Gold Spot
+              symbol: XAU/USD
+          items:
+            $ref: '#/components/schemas/CommoditiesResponseItem'
+          type: array
+          x-go-name: Data
+        status:
+          description: Response status
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+      required:
+      - count
+      - data
+      - status
+      type: object
+    ApiBadRequestErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 400
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Invalid request
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetCryptocurrencyExchanges_200_response:
+      properties:
+        data:
+          description: List of cryptocurrency exchanges
+          examples:
+          - - name: Binance
+            - name: Coinbase Pro
+            - name: Kraken
+            - name: OKX
+          items:
+            $ref: '#/components/schemas/CryptocurrencyExchangesResponseItem'
+          type: array
+          x-go-name: Data
+        status:
+          description: Response status
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+      required:
+      - data
+      - status
+      type: object
+    TechnicalIndicatorsResponseMacdParameters:
+      description: An array of input parameters for the indicator
+      properties:
+        parameter_name:
+          $ref: '#/components/schemas/TechnicalIndicatorsResponseMacdParameter'
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    EtfResponseItem:
+      description: EtfResponseItem represents details of an ETF
+      properties:
+        symbol:
+          description: Instrument symbol (ticker)
+          examples:
+          - SPY
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        name:
+          description: Full name of the ETF
+          examples:
+          - SPDR S&P 500 ETF Trust
+          type: string
+          x-go-name: Name
+          x-order: 20
+        currency:
+          description: Currency of the ETF according to the ISO 4217 standard
+          examples:
+          - USD
+          type: string
+          x-go-name: Currency
+          x-order: 30
+        exchange:
+          description: Exchange where the ETF is traded
+          examples:
+          - NYSE
+          type: string
+          x-go-name: Exchange
+          x-order: 40
+        mic_code:
+          description: Market identifier code (MIC) under ISO 10383 standard
+          examples:
+          - ARCX
+          type: string
+          x-go-name: MicCode
+          x-order: 50
+        country:
+          description: Country where the ETF is located
+          examples:
+          - United States
+          type: string
+          x-go-name: Country
+          x-order: 60
+        figi_code:
+          description: Financial instrument global identifier (FIGI)
+          examples:
+          - BBG000BDTF76
+          type: string
+          x-go-name: FigiCode
+          x-order: 70
+        cfi_code:
+          description: Classification of Financial Instruments (CFI)
+          examples:
+          - CECILU
+          type: string
+          x-go-name: CfiCode
+          x-order: 80
+        isin:
+          description: International securities identification number (ISIN)
+          examples:
+          - US78462F1030
+          type: string
+          x-go-name: Isin
+          x-order: 100
+        cusip:
+          description: A unique nine-character alphanumeric code used to identify financial securities, ensuring accurate data retrieval for the specified asset
+          examples:
+          - 037833100
+          type: string
+          x-go-name: Cusip
+          x-order: 110
+        access:
+          $ref: '#/components/schemas/EtfResponseItem_access'
+      required:
+      - cfi_code
+      - country
+      - currency
+      - cusip
+      - exchange
+      - figi_code
+      - isin
+      - mic_code
+      - name
+      - symbol
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    FundResponseItem:
+      description: FundResponseItem represents details of a fund
+      properties:
+        symbol:
+          description: Instrument symbol (ticker)
+          examples:
+          - DIVI
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        name:
+          description: Full name of the fund
+          examples:
+          - AdvisorShares Athena High Dividend ETF
+          type: string
+          x-go-name: Name
+          x-order: 20
+        country:
+          description: Country where the fund is located
+          examples:
+          - United States
+          type: string
+          x-go-name: Country
+          x-order: 30
+        currency:
+          description: Currency of the fund according to the ISO 4217 standard
+          examples:
+          - USD
+          type: string
+          x-go-name: Currency
+          x-order: 40
+        exchange:
+          description: Exchange where the fund is traded
+          examples:
+          - NYSE
+          type: string
+          x-go-name: Exchange
+          x-order: 50
+        mic_code:
+          description: Market identifier code (MIC) under ISO 10383 standard
+          examples:
+          - ARCX
+          type: string
+          x-go-name: MicCode
+          x-order: 60
+        type:
+          description: Type of the fund
+          examples:
+          - ETF
+          type: string
+          x-go-name: Type
+          x-order: 70
+        figi_code:
+          description: Financial instrument global identifier (FIGI)
+          examples:
+          - BBG00161BCW4
+          type: string
+          x-go-name: FigiCode
+          x-order: 80
+        cfi_code:
+          description: Classification of Financial Instruments (CFI)
+          examples:
+          - CECILU
+          type: string
+          x-go-name: CfiCode
+          x-order: 90
+        isin:
+          description: International securities identification number (ISIN)
+          examples:
+          - GB00B65TLW28
+          type: string
+          x-go-name: Isin
+          x-order: 100
+        cusip:
+          description: A unique nine-character alphanumeric code used to identify financial securities, ensuring accurate data retrieval for the specified asset
+          examples:
+          - 35473P108
+          type: string
+          x-go-name: Cusip
+          x-order: 110
+        access:
+          $ref: '#/components/schemas/EtfResponseItem_access'
+      required:
+      - cfi_code
+      - country
+      - currency
+      - cusip
+      - exchange
+      - figi_code
+      - isin
+      - mic_code
+      - name
+      - symbol
+      - type
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiNotFoundErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 404
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - symbol or figi parameter is missing or invalid
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ExchangesResponseItemAccess:
+      description: Info on which plan symbol is available (displayed then `show_plan` is `true`)
+      properties:
+        global:
+          description: Level of access to the symbol
+          examples:
+          - Pro
+          type: string
+          x-go-name: Global
+        plan:
+          description: The individual plan name for the symbol
+          examples:
+          - Pro
+          type: string
+          x-go-name: Plan
+        plan_business:
+          description: The business plan name for the symbol
+          examples:
+          - Basic
+          type: string
+          x-go-name: PlanBusiness
+      required:
+      - global
+      - plan
+      - plan_business
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetBonds_200_response_result:
+      properties:
+        count:
+          description: Total number of matching instruments
+          examples:
+          - 6
+          format: int64
+          type: integer
+          x-go-name: Count
+        list:
+          description: List of bonds
+          items:
+            $ref: '#/components/schemas/BondResponseItem'
+          type: array
+          x-go-name: Data
+      required:
+      - count
+      - list
+      type: object
+      x-go-name: Result
+    ApiTooManyRequestsErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 429
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - You have run out of API credits for the current minute. 1000 API credits were used, with the current limit being 987. Wait for the next minute or consider upgrading your plan at https://twelvedata.com/pricing
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetEarliestTimestamp_200_response:
+      properties:
+        datetime:
+          description: Earliest datetime, the format depends on interval
+          examples:
+          - '1980-12-12'
+          type: string
+          x-go-name: Datetime
+          x-order: 50
+        unix_time:
+          description: Datetime converted to UNIX timestamp
+          examples:
+          - 345479400
+          format: int64
+          type: integer
+          x-go-name: UnixTime
+          x-order: 50
+      required:
+      - datetime
+      - unix_time
+      type: object
+    GetTechnicalIndicators_200_response_data_value:
+      properties:
+        enable:
+          description: If the indicator is tested, approved and is recommended for use returns <code>true</code>, otherwise returns <code>false</code>
+          examples:
+          - true
+          type: boolean
+          x-go-name: Enable
+          x-order: 10
+        full_name:
+          description: Full indicator name
+          examples:
+          - Moving Average Convergence Divergence
+          type: string
+          x-go-name: FullName
+          x-order: 20
+        description:
+          description: Brief description of the indicator
+          examples:
+          - Moving Average Convergence Divergence(MACD) is ...
+          type: string
+          x-go-name: Description
+          x-order: 30
+        type:
+          description: Group to which indicator belongs to
+          examples:
+          - Momentum Indicators
+          type: string
+          x-go-name: Type
+          x-order: 40
+        overlay:
+          description: If indicator should be plotted over price bars returns <code>true</code>, otherwise returns <code>false</code>
+          examples:
+          - false
+          type: boolean
+          x-go-name: Overlay
+          x-order: 50
+        output_values:
+          $ref: '#/components/schemas/TechnicalIndicatorsResponseMacdOutputValues'
+        parameters:
+          $ref: '#/components/schemas/TechnicalIndicatorsResponseMacdParameters'
+        tinting:
+          $ref: '#/components/schemas/TechnicalIndicatorsResponseMacdTinting'
+      required:
+      - description
+      - enable
+      - full_name
+      - overlay
+      - type
+      type: object
+    ExchangeScheduleSession:
+      description: ExchangeScheduleSession represents a trading session
+      properties:
+        open_time:
+          description: Opening time of the session
+          examples:
+          - 04:00:00
+          type: string
+          x-go-name: OpenTime
+          x-order: 10
+        close_time:
+          description: Closing time of the session
+          examples:
+          - 09:30:00
+          type: string
+          x-go-name: CloseTime
+          x-order: 20
+        session_name:
+          description: Name of the session
+          examples:
+          - Pre market
+          type: string
+          x-go-name: SessionName
+          x-order: 30
+        session_type:
+          description: Type of the session
+          examples:
+          - pre
+          type: string
+          x-go-name: SessionType
+          x-order: 40
+      required:
+      - close_time
+      - open_time
+      - session_name
+      - session_type
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ExchangeScheduleResponseItem:
+      description: ExchangeScheduleResponseItem represents details of an exchange schedule
+      properties:
+        title:
+          description: Official name of exchange
+          examples:
+          - NASDAQ/NGS (Global Select Market)
+          type: string
+          x-go-name: Title
+          x-order: 10
+        name:
+          description: Name of exchange
+          examples:
+          - NASDAQ
+          type: string
+          x-go-name: Name
+          x-order: 20
+        code:
+          description: Market identifier code (MIC) under ISO 10383 standard
+          examples:
+          - XNYS
+          type: string
+          x-go-name: Code
+          x-order: 30
+        country:
+          description: Country to which stock exchange belongs to
+          examples:
+          - United States
+          type: string
+          x-go-name: Country
+          x-order: 40
+        time_zone:
+          description: Time zone where exchange is located
+          examples:
+          - America/New_York
+          type: string
+          x-go-name: TimeZone
+          x-order: 50
+        sessions:
+          description: Exchange trading hours
+          items:
+            $ref: '#/components/schemas/ExchangeScheduleSession'
+          type: array
+          x-go-name: Sessions
+          x-order: 60
+      required:
+      - code
+      - country
+      - name
+      - sessions
+      - time_zone
+      - title
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    SymbolSearchResponseItemAccess:
+      description: Info on which plan symbol is available (displayed then `show_plan` is `true`)
+      properties:
+        global:
+          description: Level of access to the symbol
+          examples:
+          - Basic
+          type: string
+          x-go-name: Global
+        plan:
+          description: The individual plan name for the symbol
+          examples:
+          - Basic
+          type: string
+          x-go-name: Plan
+        plan_business:
+          description: The business plan name for the symbol
+          examples:
+          - Basic
+          type: string
+          x-go-name: PlanBusiness
+      required:
+      - global
+      - plan
+      - plan_business
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    SymbolSearchResponseItem:
+      description: SymbolSearchResponseItem represents details of a symbol search result
+      properties:
+        symbol:
+          description: Ticker symbol of instrument
+          examples:
+          - AA
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        instrument_name:
+          description: Name of exchange
+          examples:
+          - Alcoa Corp
+          type: string
+          x-go-name: InstrumentName
+          x-order: 20
+        exchange:
+          description: Exchange where instrument is traded
+          examples:
+          - NYSE
+          type: string
+          x-go-name: Exchange
+          x-order: 30
+        mic_code:
+          description: Market identifier code (MIC) under ISO 10383 standard
+          examples:
+          - XNYS
+          type: string
+          x-go-name: MicCode
+          x-order: 40
+        exchange_timezone:
+          description: Time zone where exchange is located
+          examples:
+          - America/New_York
+          type: string
+          x-go-name: ExchangeTimezone
+          x-order: 50
+        instrument_type:
+          description: Type of instrument
+          examples:
+          - Common Stock
+          type: string
+          x-go-name: InstrumentType
+          x-order: 60
+        country:
+          description: Country to which stock exchange belongs to
+          examples:
+          - United States
+          type: string
+          x-go-name: Country
+          x-order: 70
+        currency:
+          description: Currency in which the instrument is traded
+          examples:
+          - USD
+          type: string
+          x-go-name: Currency
+          x-order: 80
+        access:
+          $ref: '#/components/schemas/SymbolSearchResponseItemAccess'
+      required:
+      - country
+      - currency
+      - exchange
+      - exchange_timezone
+      - instrument_name
+      - instrument_type
+      - mic_code
+      - symbol
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    MarketStateResponseItem:
+      properties:
+        name:
+          description: The full name of exchange
+          examples:
+          - NYSE
+          type: string
+          x-go-name: Name
+          x-order: 10
+        code:
+          description: Market identifier code (MIC) under ISO 10383 standard
+          examples:
+          - XNYS
+          type: string
+          x-go-name: Code
+          x-order: 20
+        country:
+          description: Country where the exchange is located
+          examples:
+          - United States
+          type: string
+          x-go-name: Country
+          x-order: 30
+        is_market_open:
+          description: Indicates if the market is currently open
+          examples:
+          - true
+          type: boolean
+          x-go-name: IsMarketOpen
+          x-order: 40
+        time_after_open:
+          description: Time after market opening in <code>HH:MM:SS</code> format; if currently closed - returns <code>00:00:00</code>
+          examples:
+          - 02:39:03
+          type: string
+          x-go-name: TimeAfterOpen
+          x-order: 50
+        time_to_open:
+          description: Time to market opening in <code>HH:MM:SS</code> format; if currently open - returns <code>00:00:00</code>
+          examples:
+          - 00:00:00
+          type: string
+          x-go-name: TimeToOpen
+          x-order: 60
+        time_to_close:
+          description: Time to market closing in <code>HH:MM:SS</code> format; if currently closed - returns <code>00:00:00</code>
+          examples:
+          - 05:20:57
+          type: string
+          x-go-name: TimeToClose
+          x-order: 70
+      required:
+      - code
+      - country
+      - is_market_open
+      - name
+      - time_after_open
+      - time_to_close
+      - time_to_open
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    IntervalEnum:
+      enum:
+      - 1min
+      - 5min
+      - 15min
+      - 30min
+      - 45min
+      - 1h
+      - 2h
+      - 4h
+      - 8h
+      - 1day
+      - 1week
+      - 1month
+      type: string
+      x-go-name: Interval
+      x-order: '30'
+    TechnicalIndicatorsResponseMacdParameter:
+      description: 'Input parameter name. Example values: <code>series_type</code>, <code>fast_period</code>, <code>slow_period</code>, <code>time_period</code>, <code>signal_period</code>'
+      properties:
+        default:
+          description: Specifies parameter value set by default
+          examples:
+          - 12
+          format: int64
+          type: integer
+          x-go-name: Default
+        max_range:
+          description: If the parameter has upper bound in order to ensure correct calculation
+          examples:
+          - 1
+          format: int64
+          type: integer
+          x-go-name: MaxRange
+        min_range:
+          description: If the parameter has lower bound in order to ensure correct calculation
+          examples:
+          - 1
+          format: int64
+          type: integer
+          x-go-name: MinRange
+        range:
+          description: An array of available parameter values
+          examples:
+          - - open
+            - high
+            - low
+            - close
+          items:
+            type: string
+          type: array
+          x-go-name: Range
+        type:
+          description: Type of parameter might be <code>string</code>, <code>int</code>, <code>float</code> or <code>array</code>
+          examples:
+          - int
+          type: string
+          x-go-name: Type
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    CommoditiesResponseItem:
+      description: CommoditiesResponseItem represents details of a commodity
+      properties:
+        symbol:
+          description: Currency pair according to ISO 4217 standard codes with slash(/) delimiter
+          examples:
+          - XAU/USD
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        name:
+          description: Full name of the instrument
+          examples:
+          - Gold Spot
+          type: string
+          x-go-name: Name
+          x-order: 20
+        category:
+          description: Category of commodity
+          examples:
+          - Precious Metal
+          type: string
+          x-go-name: Category
+          x-order: 30
+        description:
+          description: Short description of the commodity
+          type: string
+          x-go-name: Description
+          x-order: 40
+      required:
+      - category
+      - description
+      - name
+      - symbol
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    EtfResponseItem_access:
+      description: Info on which plan symbol is available (displayed then `show_plan` is `true`)
+      properties:
+        global:
+          description: Level of access to the symbol
+          examples:
+          - Basic
+          type: string
+          x-go-name: Global
+        plan:
+          description: The individual plan name for the symbol
+          examples:
+          - Basic
+          type: string
+          x-go-name: Plan
+        plan_business:
+          description: The business plan name for the symbol
+          examples:
+          - Basic
+          type: string
+          x-go-name: PlanBusiness
+      required:
+      - global
+      - plan
+      - plan_business
+      type: object
+      x-go-name: Access
+      x-order: 120
+    FormatEnum:
+      default: JSON
+      enum:
+      - JSON
+      - CSV
+      type: string
+      x-go-name: Format
+      x-order: '90'
+    CryptocurrencyExchangesResponseItem:
+      properties:
+        name:
+          description: Name of cryptocurrency exchange
+          examples:
+          - Binance
+          type: string
+          x-go-name: Name
+          x-order: 10
+      required:
+      - name
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetCountries_200_response:
+      properties:
+        data:
+          description: List of countries with their ISO codes, names, capital, and currency
+          items:
+            $ref: '#/components/schemas/CountryResponseItem'
+          type: array
+          x-go-name: Data
+          x-order: 10
+      required:
+      - data
+      type: object
+    CrossListingsItem:
+      description: Represents details of a cross listing
+      properties:
+        symbol:
+          description: Ticker symbol of instrument
+          examples:
+          - NVDA
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        name:
+          description: Name of symbol
+          examples:
+          - NVIDIA Corp
+          type: string
+          x-go-name: Name
+          x-order: 20
+        exchange:
+          description: Exchange where instrument is traded
+          examples:
+          - NASDAQ
+          type: string
+          x-go-name: Exchange
+          x-order: 30
+        mic_code:
+          description: Market identifier code (MIC) under ISO 10383 standard
+          examples:
+          - XNGS
+          type: string
+          x-go-name: MicCode
+          x-order: 40
+      required:
+      - exchange
+      - mic_code
+      - name
+      - symbol
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetEtf_200_response:
+      properties:
+        count:
+          description: Count
+          examples:
+          - 100
+          format: int64
+          type: integer
+          x-go-name: Count
+        data:
+          description: List of ETFs
+          items:
+            $ref: '#/components/schemas/EtfResponseItem'
+          type: array
+          x-go-name: Data
+        status:
+          description: Response status
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+      required:
+      - count
+      - data
+      - status
+      type: object
+    TypeEnum:
+      enum:
+      - American Depositary Receipt
+      - Bond
+      - Bond Fund
+      - Closed-end Fund
+      - Common Stock
+      - Depositary Receipt
+      - Digital Currency
+      - ETF
+      - Exchange-Traded Note
+      - Global Depositary Receipt
+      - Limited Partnership
+      - Mutual Fund
+      - Physical Currency
+      - Preferred Stock
+      - REIT
+      - Right
+      - Structured Product
+      - Trust
+      - Unit
+      - Warrant
+      type: string
+      x-go-name: Type
+      x-order: '70'
+    BondsResponseItemAccess:
+      description: Info on which plan symbol is available (displayed then `show_plan` is `true`)
+      properties:
+        global:
+          description: Level of access to the symbol
+          examples:
+          - Basic
+          type: string
+          x-go-name: Global
+        plan:
+          description: The individual plan name for the symbol
+          examples:
+          - Basic
+          type: string
+          x-go-name: Plan
+        plan_business:
+          description: The business plan name for the symbol
+          examples:
+          - Basic
+          type: string
+          x-go-name: PlanBusiness
+      required:
+      - global
+      - plan
+      - plan_business
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiInternalServerErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 500
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Internal server error
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetBonds_200_response:
+      properties:
+        result:
+          $ref: '#/components/schemas/GetBonds_200_response_result'
+        status:
+          description: Response status
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+      required:
+      - result
+      - status
+      type: object
+    TechnicalIndicatorsResponseMacdOutputValue:
+      description: 'Output parameter name. Example values: <code>ad</code>, <code>add</code>, <code>adxr</code>, <code>aroonosc</code>,  <code>macd</code>, <code>macd_signal</code>, <code>macd_hist</code>, etc'
+      properties:
+        default_color:
+          description: Suggested color for displaying returns hex color code
+          examples:
+          - '#FF0000'
+          type: string
+          x-go-name: DefaultColor
+          x-order: 10
+        display:
+          description: How output value should be rendered
+          enum:
+          - line
+          - histogram
+          - candle
+          - points
+          examples:
+          - line
+          type: string
+          x-go-name: Display
+          x-order: 20
+        min_range:
+          description: If output value has minimum bound
+          examples:
+          - 0
+          format: int64
+          type: integer
+          x-go-name: MinRange
+          x-order: 30
+        max_range:
+          description: If output value has maximum bound
+          examples:
+          - 5
+          format: int64
+          type: integer
+          x-go-name: MaxRange
+          x-order: 40
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    CountryResponseItem:
+      description: CountryResponseItem represents details of a country
+      properties:
+        iso2:
+          description: Two-letter country code defined in ISO 3166
+          examples:
+          - US
+          type: string
+          x-go-name: Iso2
+          x-order: 10
+        iso3:
+          description: Three-letter country code defined in ISO 3166
+          examples:
+          - USA
+          type: string
+          x-go-name: Iso3
+          x-order: 20
+        numeric:
+          description: Numeric country code defined in ISO 3166
+          examples:
+          - '840'
+          type: string
+          x-go-name: Numeric
+          x-order: 30
+        name:
+          description: The full name of country
+          examples:
+          - United States
+          type: string
+          x-go-name: Name
+          x-order: 40
+        official_name:
+          description: Official name of country
+          examples:
+          - United States of America
+          type: string
+          x-go-name: OfficialName
+          x-order: 50
+        capital:
+          description: Capital of country
+          examples:
+          - Washington D.C.
+          type: string
+          x-go-name: Capital
+          x-order: 60
+        currency:
+          description: Currency of country
+          examples:
+          - USD
+          type: string
+          x-go-name: Currency
+          x-order: 70
+      required:
+      - capital
+      - currency
+      - iso2
+      - iso3
+      - name
+      - numeric
+      - official_name
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetInstrumentType_200_response:
+      properties:
+        result:
+          description: List of instrument types available at Twelve Data API.
+          examples:
+          - - Agricultural Product
+            - American Depositary Receipt
+            - Bond
+            - Bond Fund
+            - Closed-end Fund
+            - Common Stock
+            - Depositary Receipt
+            - Digital Currency
+            - Energy Resource
+            - ETF
+            - Exchange-Traded Note
+            - Global Depositary Receipt
+            - Index
+            - Industrial Metal
+            - Limited Partnership
+            - Livestock
+            - Mutual Fund
+            - Physical Currency
+            - Precious Metal
+            - Preferred Stock
+            - REIT
+            - Right
+            - Structured Product
+            - Trust
+            - Unit
+            - Warrant
+          items:
+            type: string
+          type: array
+          x-go-name: Result
+        status:
+          description: Status of the response
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+      required:
+      - result
+      - status
+      type: object
+    ApiForbiddenErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 403
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - API key lacks permissions for the requested resource
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetExchangeSchedule_200_response:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/ExchangeScheduleResponseItem'
+          type: array
+          x-go-name: Data
+          x-order: 10
+      required:
+      - data
+      type: object
+    CryptocurrencyResponseItem:
+      description: CryptocurrencyResponseItem represents details of a cryptocurrency
+      properties:
+        symbol:
+          description: Cryptocurrency pair codes with slash(/) delimiter
+          examples:
+          - BTC/USD
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        available_exchanges:
+          description: List of exchanges where the cryptocurrency is available
+          examples:
+          - - ABCC
+            - Allcoin
+            - BTC-Alpha
+            - BTCTurk
+            - Bibox
+            - n.exchange
+            - p2pb2b
+            - xBTCe
+          items:
+            type: string
+          type: array
+          x-go-name: AvailableExchanges
+          x-order: 20
+        currency_base:
+          description: Base currency of the cryptocurrency pair
+          examples:
+          - Bitcoin
+          type: string
+          x-go-name: CurrencyBase
+          x-order: 30
+        currency_quote:
+          description: Quote currency of the cryptocurrency pair
+          examples:
+          - US Dollar
+          type: string
+          x-go-name: CurrencyQuote
+          x-order: 40
+      required:
+      - available_exchanges
+      - currency_base
+      - currency_quote
+      - symbol
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetIntervals_200_response:
+      properties:
+        data:
+          description: List of available intervals
+          examples:
+          - - 1min
+            - 5min
+            - 15min
+            - 30min
+            - 45min
+            - 1h
+            - 2h
+            - 4h
+            - 8h
+            - 1day
+            - 1week
+            - 1month
+          items:
+            type: string
+          type: array
+          x-go-name: Data
+        status:
+          description: Status of the response
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+      required:
+      - data
+      - status
+      type: object
+    ApiUnauthorizedErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 401
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - apikey parameter is incorrect or not specified
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetSymbolSearch_200_response:
+      properties:
+        data:
+          description: List of symbols matching the search criteria
+          items:
+            $ref: '#/components/schemas/SymbolSearchResponseItem'
+          type: array
+          x-go-name: Data
+          x-order: 10
+        status:
+          description: Status of the response
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+          x-order: 20
+      required:
+      - data
+      - status
+      type: object
+    GetFunds_200_response_result:
+      properties:
+        count:
+          description: Total number of matching instruments
+          examples:
+          - 84799
+          format: int64
+          type: integer
+          x-go-name: Count
+        list:
+          description: List of funds
+          items:
+            $ref: '#/components/schemas/FundResponseItem'
+          type: array
+          x-go-name: Data
+      required:
+      - count
+      - list
+      type: object
+      x-go-name: Result
+    GetStocks_200_response:
+      properties:
+        count:
+          description: Count
+          examples:
+          - 100
+          format: int64
+          type: integer
+          x-go-name: Count
+        data:
+          description: List of stock instruments
+          items:
+            $ref: '#/components/schemas/StocksResponseItem'
+          type: array
+          x-go-name: Data
+        status:
+          description: Response status
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+      required:
+      - count
+      - data
+      - status
+      type: object
+    GetCryptocurrencies_200_response:
+      properties:
+        count:
+          description: Count
+          examples:
+          - 100
+          format: int64
+          type: integer
+          x-go-name: Count
+        data:
+          description: List of cryptocurrencies
+          items:
+            $ref: '#/components/schemas/CryptocurrencyResponseItem'
+          type: array
+          x-go-name: Data
+        status:
+          description: Response status
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+      required:
+      - count
+      - data
+      - status
+      type: object
+    ExchangesResponseItem:
+      description: ExchangesResponseItem represents details of an exchange
+      properties:
+        title:
+          description: Title of exchange
+          examples:
+          - Argentinian Stock Exchange
+          type: string
+          x-go-name: Title
+          x-order: 5
+        name:
+          description: Name of exchange
+          examples:
+          - BCBA
+          type: string
+          x-go-name: Name
+          x-order: 10
+        code:
+          description: Market identifier code (MIC) under ISO 10383 standard
+          examples:
+          - XBUE
+          type: string
+          x-go-name: Code
+          x-order: 20
+        country:
+          description: Country to which stock exchange belongs to
+          examples:
+          - Argentina
+          type: string
+          x-go-name: Country
+          x-order: 30
+        timezone:
+          description: Time zone where exchange is located
+          examples:
+          - America/Argentina/Buenos_Aires
+          type: string
+          x-go-name: Timezone
+          x-order: 40
+        access:
+          $ref: '#/components/schemas/ExchangesResponseItemAccess'
+      required:
+      - code
+      - country
+      - name
+      - timezone
+      - title
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    TechnicalIndicatorsResponseMacdOutputValues:
+      description: An array of output values
+      properties:
+        parameter_name:
+          $ref: '#/components/schemas/TechnicalIndicatorsResponseMacdOutputValue'
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetExchanges_200_response:
+      properties:
+        data:
+          description: List of exchanges
+          items:
+            $ref: '#/components/schemas/ExchangesResponseItem'
+          type: array
+          x-go-name: Data
+          x-order: 10
+        status:
+          description: Response status
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+          x-order: 20
+      required:
+      - data
+      - status
+      type: object
+    StocksResponseItem:
+      description: StocksResponseItem represents details of a stock instrument
+      properties:
+        symbol:
+          description: Instrument symbol (ticker)
+          examples:
+          - AAPL
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        name:
+          description: Full name of instrument
+          examples:
+          - Apple Inc
+          type: string
+          x-go-name: Name
+          x-order: 20
+        currency:
+          description: Currency of the instrument according to the ISO 4217 standard
+          examples:
+          - USD
+          type: string
+          x-go-name: Currency
+          x-order: 30
+        exchange:
+          description: Exchange where instrument is traded
+          examples:
+          - NASDAQ
+          type: string
+          x-go-name: Exchange
+          x-order: 40
+        mic_code:
+          description: Market identifier code (MIC) under ISO 10383 standard
+          examples:
+          - XNGS
+          type: string
+          x-go-name: ExchangeCode
+          x-order: 50
+        country:
+          description: Country where exchange is located
+          examples:
+          - United States
+          type: string
+          x-go-name: Country
+          x-order: 60
+        type:
+          description: Common issue type
+          examples:
+          - Common Stock
+          type: string
+          x-go-name: Type
+          x-order: 70
+        figi_code:
+          description: Financial instrument global identifier (FIGI)
+          examples:
+          - BBG000B9Y5X2
+          type: string
+          x-go-name: FigiCode
+          x-order: 80
+        cfi_code:
+          description: Classification of Financial Instruments (CFI)
+          examples:
+          - ESVUFR
+          type: string
+          x-go-name: CfiCode
+          x-order: 90
+        isin:
+          description: International securities identification number (ISIN), available by individual request to support
+          examples:
+          - US0378331005
+          type: string
+          x-go-name: Isin
+          x-order: 100
+        cusip:
+          description: A unique nine-character alphanumeric code used to identify financial securities, ensuring accurate data retrieval for the specified asset
+          examples:
+          - 037833100
+          type: string
+          x-go-name: Cusip
+          x-order: 110
+        access:
+          $ref: '#/components/schemas/EtfResponseItem_access'
+      required:
+      - cfi_code
+      - country
+      - currency
+      - cusip
+      - exchange
+      - figi_code
+      - isin
+      - mic_code
+      - name
+      - symbol
+      - type
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiParameterTooLongErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 414
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Input parameter array exceeds the allowed length
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
   parameters:
-    symbol:
-      name: symbol
-      in: query
-      required: true
-      schema:
-        type: string
-      description: Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.
     apikeyParam:
       name: apikey
       in: query
@@ -168,7 +4072,23 @@ components:
         - 1week
         - 1month
       description: Time interval between two consecutive data points.
+    symbol:
+      name: symbol
+      in: query
+      required: true
+      schema:
+        type: string
+      description: Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.
   securitySchemes:
+    authorizationHeader:
+      description: Enter the token with the `apikey ` prefix, e.g. "apikey abcde12345".
+      in: header
+      name: Authorization
+      type: apiKey
+    queryParameter:
+      in: query
+      name: apikey
+      type: apiKey
     apikeyQuery:
       type: apiKey
       in: query
@@ -179,3 +4099,80 @@ components:
       in: header
       name: Authorization
       description: 'API key supplied as `Authorization: apikey <KEY>`.'
+x-refined-from:
+- twelvedata-openapi-original.json
+- twelvedata-openapi.yml
+x-group-list:
+- description: Access real-time and historical market prices—time series and exchange rates—for equities, forex, cryptocurrencies, ETFs, and more. These endpoints form the foundation for any trading or data-driven application.
+  name: Market data
+  order: 10
+- children:
+  - description: Asset Catalog endpoints are your starting point. They return the complete inventory of tradeable instruments available through Twelve Data — over 1,000,000 symbols across 50+ countries. You query a catalog first to discover which symbols exist, then pass those symbols to price, fundamental, or indicator endpoints.
+    name: Asset catalogs
+    order: 10
+  - description: Discovery endpoints help you find instruments when you don't already know the exact identifier. The Asset Catalog is the phone book; Discovery is the search engine on top of it.
+    name: Discovery
+    order: 20
+  - description: 'Market endpoints answer operational questions about exchanges themselves: which ones are open right now, what are their trading hours, and how far back does data go for a given instrument?'
+    name: Markets
+    order: 30
+  - description: 'Metadata endpoints return the lookup tables and enumerations that define valid parameter values across the entire API. They answer: what instrument types exist? What intervals are supported? Which countries are covered? What technical indicators can I use?'
+    name: Supporting metadata
+    order: 40
+  description: Lookup static metadata—symbol lists, exchange details, currency information-to filter, validate, and contextualize your core data calls. Ideal for building dropdowns, mappings, and ensuring data consistency.
+  name: Reference data
+  order: 20
+- description: In-depth company and fund financials—income statements, balance sheets, cash flows, profiles, corporate events, and key ratios. Unlock comprehensive datasets for valuation, screening, and fundamental research.
+  name: Fundamentals
+  order: 30
+- name: Currencies
+  order: 35
+- description: 'ETF-focused metadata and analytics: universe lists, family and type groupings, NAV snapshots, performance metrics, risk measures, and current fund composition. Tailored to the unique characteristics and reporting cadence of exchange-traded funds.'
+  name: ETFs
+  order: 40
+- description: 'Mutual-fund-specific listings and snapshots: fund directories, issuer families, fund types, NAV history, dividend records, key ratios, and portfolio holdings. Ideal for long-term performance analysis and portfolio attribution.'
+  name: Mutual funds
+  order: 50
+- description: 'Money-market-fund directories and full-data snapshots: fund listings ranked by fund size, plus screener metrics (fund size, liquidity, weighted average maturity), yields, key facts, and risk indicators. Focused on short-term, low-risk cash-management instruments for liquidity and capital-preservation analysis.'
+  name: Money market funds
+  order: 55
+- children:
+  - description: Plotted directly on the price chart to smooth or envelope price data, highlighting trend direction, support/resistance, and mean-reversion levels (e.g. moving averages, Bollinger Bands, Parabolic SAR, Ichimoku Cloud, Keltner Channels, McGinley Dynamic).
+    name: Overlap studies
+    order: 10
+  - description: Oscillators that measure the speed or strength of price movement, helping detect overbought/oversold conditions, divergences, and shifts in trend momentum (e.g. RSI, MACD, ROC, Stochastics, ADX, CCI, Coppock Curve, TRIX).
+    name: Momentum indicators
+    order: 20
+  - description: Use trading volume to confirm price moves or warn of exhaustion—volume and price in tandem suggest trend strength, while divergences can signal reversals (e.g. OBV, Chaikin AD, Accumulation/Distribution Oscillator).
+    name: Volume indicators
+    order: 30
+  - description: Quantify the range or dispersion of price over time to gauge risk, size stops, or identify breakouts (e.g. ATR, NATR, True Range) and adaptive overlays like SuperTrend.
+    name: Volatility indicators
+    order: 40
+  - description: Convert raw OHLC data into derived series or aggregated values to feed other indicators or reveal different perspectives on price (e.g. typical price, HLC3, weighted close, arithmetic transforms like SUM, AVG, LOG, SQRT).
+    name: Price transform
+    order: 50
+  - description: Detect and follow recurring periodic patterns in price action using Hilbert Transform–based measures of cycle period and phase (e.g. HT_SINE, HT_DCPERIOD, HT_DCPHASE, HT_PHASOR, HT_TRENDMODE).
+    name: Cycle indicators
+    order: 60
+  - description: Scan bars or bar‐groups for predefined candlestick patterns that historically signal continuation or reversal setups (e.g. Doji, Hammer, Engulfing, Three Black Crows, Morning Star, Dark Cloud Cover, etc.).
+    name: Pattern recognition
+    order: 70
+  - description: Compute fundamental statistical metrics on price series—dispersion, regression, correlation, and forecasting components—for standalone analysis or as inputs to other models (e.g. STDDEV, VAR, LINEARREG, CORREL, TSF, BETA).
+    name: Statistic functions
+    order: 80
+  - name: Math transform
+    order: 90
+  description: On-demand calculation of popular indicators (SMA, EMA, RSI, MACD, Bollinger Bands, etc.) over any supported time series. Streamline chart overlays, signal generation, and backtesting without external libraries.
+  name: Technical indicators
+  order: 60
+- description: Forward-looking and consensus analytics—earnings and revenue estimates, EPS trends and revisions, growth projections, analyst recommendations and ratings, price targets, and other consensus metrics. Perfect for incorporating expert forecasts and sentiment into your models and dashboards.
+  name: Analysis
+  order: 70
+- description: 'Compliance and filings data: insider transactions, SEC reports, governance documents, and more. Critical for audit trails, due-diligence workflows, and risk-management integrations.'
+  name: Regulatory
+  order: 80
+- description: High-throughput and management endpoints for power users—submit and monitor batch jobs to pull large datasets asynchronously, track your API usage and quotas programmatically, and access other developer-focused tools for automating and scaling your data workflows.
+  name: Advanced
+  order: 90
+x-original-swagger-version: '2.0'

@@ -1,22 +1,64 @@
 {
   "provider": "twelvedata",
   "sources": [
-    "twelvedata-core-data-api-openapi.yml",
-    "twelvedata-fundamentals-api-openapi.yml",
-    "twelvedata-reference-data-api-openapi.yml",
-    "twelvedata-technical-indicators-api-openapi.yml",
-    "twelvedata-time-series-api-openapi.yml"
+    "_original/twelvedata-openapi-original.json",
+    "_original/twelvedata-openapi.yml"
   ],
   "outputs": [
-    "twelvedata-core-data-api-openapi.yml",
+    "twelvedata-advanced-api-openapi.yml",
+    "twelvedata-analysis-api-openapi.yml",
+    "twelvedata-currencies-api-openapi.yml",
+    "twelvedata-etfs-api-openapi.yml",
     "twelvedata-fundamentals-api-openapi.yml",
+    "twelvedata-market-data-api-openapi.yml",
+    "twelvedata-money-market-funds-api-openapi.yml",
+    "twelvedata-mutual-funds-api-openapi.yml",
     "twelvedata-reference-data-api-openapi.yml",
+    "twelvedata-regulatory-api-openapi.yml",
+    "twelvedata-technical-indicator-api-openapi.yml",
+    "twelvedata-core-data-api-openapi.yml",
     "twelvedata-technical-indicators-api-openapi.yml",
     "twelvedata-time-series-api-openapi.yml"
   ],
-  "archived": [],
+  "archived": [
+    "deleted 1 superseded output(s) from the previous generation"
+  ],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (2 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "twelvedata-openapi-original.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "twelvedata-openapi-original.json: declared missing tag: advanced",
+    "twelvedata-openapi-original.json: declared missing tag: analysis",
+    "twelvedata-openapi-original.json: declared missing tag: currencies",
+    "twelvedata-openapi-original.json: declared missing tag: etfs",
+    "twelvedata-openapi-original.json: declared missing tag: fundamentals",
+    "twelvedata-openapi-original.json: declared missing tag: market_data",
+    "twelvedata-openapi-original.json: declared missing tag: money_market_funds",
+    "twelvedata-openapi-original.json: declared missing tag: mutual_funds",
+    "twelvedata-openapi-original.json: declared missing tag: reference_data",
+    "twelvedata-openapi-original.json: declared missing tag: regulatory",
+    "twelvedata-openapi-original.json: declared missing tag: technical_indicator",
+    "twelvedata-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "tag 'fundamentals' spans 2 source specs (twelvedata-openapi-original.json, twelvedata-openapi.yml): per-path servers applied",
+    "tag 'reference_data' spans 2 source specs (twelvedata-openapi-original.json, twelvedata-openapi.yml): per-path servers applied",
+    "superseded outputs removed: twelvedata-et-fs-api-openapi.yml",
+    "apis.yml register: written (+1 apis, 15 total)"
+  ],
+  "skipped": [
+    "twelvedata-advanced-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "twelvedata-analysis-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "twelvedata-core-data-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "twelvedata-currencies-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "twelvedata-et-fs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "twelvedata-fundamentals-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "twelvedata-market-data-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "twelvedata-money-market-funds-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "twelvedata-mutual-funds-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "twelvedata-reference-data-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "twelvedata-regulatory-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "twelvedata-technical-indicator-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "twelvedata-technical-indicators-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "twelvedata-time-series-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

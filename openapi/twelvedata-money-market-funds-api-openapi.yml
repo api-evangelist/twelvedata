@@ -249,75 +249,6 @@ paths:
           - isin
 components:
   schemas:
-    GetMoneyMarketFundsWorld_200_response:
-      properties:
-        status:
-          description: Response status
-          examples:
-          - ok
-          type: string
-          x-go-name: Status
-          x-order: 20
-        money_market_fund:
-          $ref: '#/components/schemas/MoneyMarketFundsWorldResponseItem'
-      required:
-      - money_market_fund
-      - status
-      type: object
-    ApiForbiddenErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 403
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - API key lacks permissions for the requested resource
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    ApiNotFoundErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 404
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - symbol or figi parameter is missing or invalid
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
     MoneyMarketFundsListResponseListItem:
       properties:
         symbol:
@@ -388,60 +319,6 @@ components:
       - symbol
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    ApiUnauthorizedErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 401
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - apikey parameter is incorrect or not specified
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    ApiParameterTooLongErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 414
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - Input parameter array exceeds the allowed length
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
     ApiTooManyRequestsErrorResponseBody:
       properties:
         code:
@@ -469,19 +346,19 @@ components:
       - status
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    ApiInternalServerErrorResponseBody:
+    ApiForbiddenErrorResponseBody:
       properties:
         code:
           description: Error code
           examples:
-          - 500
+          - 403
           format: int64
           type: integer
           x-go-name: Code
         message:
           description: Error message
           examples:
-          - Internal server error
+          - API key lacks permissions for the requested resource
           type: string
           x-go-name: Message
         status:
@@ -496,19 +373,19 @@ components:
       - status
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    ApiBadRequestErrorResponseBody:
+    ApiNotFoundErrorResponseBody:
       properties:
         code:
           description: Error code
           examples:
-          - 400
+          - 404
           format: int64
           type: integer
           x-go-name: Code
         message:
           description: Error message
           examples:
-          - Invalid request
+          - symbol or figi parameter is missing or invalid
           type: string
           x-go-name: Message
         status:
@@ -523,61 +400,6 @@ components:
       - status
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetMoneyMarketFundsList_200_response:
-      properties:
-        data:
-          description: List of money market funds
-          items:
-            $ref: '#/components/schemas/MoneyMarketFundsListResponseListItem'
-          type: array
-          x-go-name: Data
-          x-order: 10
-        count:
-          description: Total number of matching funds
-          examples:
-          - 168
-          format: int64
-          type: integer
-          x-go-name: Count
-          x-order: 20
-        page:
-          description: Current page number
-          examples:
-          - 1
-          format: int64
-          type: integer
-          x-go-name: Page
-          x-order: 30
-        page_size:
-          description: Number of records per page
-          examples:
-          - 100
-          format: int64
-          type: integer
-          x-go-name: PageSize
-          x-order: 40
-        status:
-          description: Response status
-          examples:
-          - ok
-          type: string
-          x-go-name: Status
-          x-order: 50
-      required:
-      - count
-      - data
-      - page
-      - page_size
-      - status
-      type: object
-    FormatMoneyMarketFundsListEnum:
-      default: json
-      enum:
-      - json
-      - csv
-      type: string
-      x-go-name: FormatMoneyMarketFundsList
-      x-order: '30'
     MoneyMarketFundsWorldResponseItem:
       properties:
         symbol:
@@ -736,6 +558,184 @@ components:
           x-order: 250
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetMoneyMarketFundsWorld_200_response:
+      properties:
+        status:
+          description: Response status
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+          x-order: 20
+        money_market_fund:
+          $ref: '#/components/schemas/MoneyMarketFundsWorldResponseItem'
+      required:
+      - money_market_fund
+      - status
+      type: object
+    ApiUnauthorizedErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 401
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - apikey parameter is incorrect or not specified
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetMoneyMarketFundsList_200_response:
+      properties:
+        data:
+          description: List of money market funds
+          items:
+            $ref: '#/components/schemas/MoneyMarketFundsListResponseListItem'
+          type: array
+          x-go-name: Data
+          x-order: 10
+        count:
+          description: Total number of matching funds
+          examples:
+          - 168
+          format: int64
+          type: integer
+          x-go-name: Count
+          x-order: 20
+        page:
+          description: Current page number
+          examples:
+          - 1
+          format: int64
+          type: integer
+          x-go-name: Page
+          x-order: 30
+        page_size:
+          description: Number of records per page
+          examples:
+          - 100
+          format: int64
+          type: integer
+          x-go-name: PageSize
+          x-order: 40
+        status:
+          description: Response status
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+          x-order: 50
+      required:
+      - count
+      - data
+      - page
+      - page_size
+      - status
+      type: object
+    ApiParameterTooLongErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 414
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Input parameter array exceeds the allowed length
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiInternalServerErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 500
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Internal server error
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiBadRequestErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 400
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Invalid request
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    FormatMoneyMarketFundsListEnum:
+      default: json
+      enum:
+      - json
+      - csv
+      type: string
+      x-go-name: FormatMoneyMarketFundsList
+      x-order: '30'
   securitySchemes:
     authorizationHeader:
       description: Enter the token with the `apikey ` prefix, e.g. "apikey abcde12345".

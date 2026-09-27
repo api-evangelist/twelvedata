@@ -20,9 +20,7 @@
     "twelvedata-technical-indicators-api-openapi.yml",
     "twelvedata-time-series-api-openapi.yml"
   ],
-  "archived": [
-    "deleted 1 superseded output(s) from the previous generation"
-  ],
+  "archived": [],
   "errors": [],
   "warnings": [],
   "notes": [
@@ -42,15 +40,14 @@
     "twelvedata-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
     "tag 'fundamentals' spans 2 source specs (twelvedata-openapi-original.json, twelvedata-openapi.yml): per-path servers applied",
     "tag 'reference_data' spans 2 source specs (twelvedata-openapi-original.json, twelvedata-openapi.yml): per-path servers applied",
-    "superseded outputs removed: twelvedata-et-fs-api-openapi.yml",
-    "apis.yml register: written (+1 apis, 15 total)"
+    "apis.yml register: already-registered"
   ],
   "skipped": [
     "twelvedata-advanced-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "twelvedata-analysis-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "twelvedata-core-data-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "twelvedata-currencies-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "twelvedata-et-fs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "twelvedata-etfs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "twelvedata-fundamentals-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "twelvedata-market-data-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "twelvedata-money-market-funds-api-openapi.yml: previously refined output, superseded by openapi/_original/",

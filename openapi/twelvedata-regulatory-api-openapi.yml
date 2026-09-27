@@ -1039,6 +1039,204 @@ paths:
           - cusip
 components:
   schemas:
+    GetInstitutionalHolders_200_response:
+      properties:
+        meta:
+          $ref: '#/components/schemas/GetFundHolders_200_response_meta'
+        institutional_holders:
+          description: List of institutional holders for the financial instrument
+          items:
+            $ref: '#/components/schemas/InstitutionalHolderItem'
+          type: array
+          x-go-name: InstitutionalHolders
+          x-order: 20
+      required:
+      - institutional_holders
+      - meta
+      type: object
+    ResponseSanctionItem:
+      properties:
+        source:
+          description: The sanction source
+          examples:
+          - ofac
+          type: string
+          x-go-name: Source
+          x-order: 10
+        program:
+          description: The sanction program
+          examples:
+          - RUSSIA-EO14024
+          type: string
+          x-go-name: Program
+          x-order: 20
+        notes:
+          description: Notes for the sanction
+          examples:
+          - Block
+          type: string
+          x-go-name: Notes
+          x-order: 30
+        lists:
+          description: Sanction lists
+          items:
+            $ref: '#/components/schemas/ResponseSanctionItemList'
+          type: array
+          x-go-name: Lists
+          x-order: 40
+      required:
+      - lists
+      - notes
+      - program
+      - source
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetTaxInfo_200_response_meta:
+      description: Metadata about the requested instrument
+      properties:
+        symbol:
+          description: The ticker symbol of an instrument for which data was requested
+          examples:
+          - SKYQ
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        name:
+          description: The instrument name
+          examples:
+          - Sky Quarry Inc.
+          type: string
+          x-go-name: Name
+          x-order: 20
+        exchange:
+          description: The exchange name where the instrument is traded
+          examples:
+          - NASDAQ
+          type: string
+          x-go-name: Exchange
+          x-order: 30
+        mic_code:
+          description: The Market Identifier Code (MIC) of the exchange where the instrument is traded
+          examples:
+          - XNCM
+          type: string
+          x-go-name: MicCode
+          x-order: 40
+        country:
+          description: The instrument country name
+          examples:
+          - United States
+          type: string
+          x-go-name: Country
+          x-order: 50
+      required:
+      - country
+      - exchange
+      - mic_code
+      - name
+      - symbol
+      type: object
+      x-go-name: Meta
+      x-order: 10
+    FundHolderItem:
+      properties:
+        entity_name:
+          description: Refers to the legal name of the institution
+          examples:
+          - VANGUARD INDEX FUNDS-Vanguard Total Stock Market Index Fund
+          type: string
+          x-go-name: EntityName
+          x-order: 10
+        date_reported:
+          description: Refers to date reported
+          examples:
+          - '2025-09-30'
+          type: string
+          x-go-name: DateReported
+          x-order: 20
+        shares:
+          description: Refers to the number of shares owned
+          examples:
+          - 467135722
+          format: int64
+          type: integer
+          x-go-name: Shares
+          x-order: 30
+        value:
+          description: Total value of shares owned, calculated by multiplying `shares` by the current price
+          examples:
+          - 129695568698
+          format: int64
+          type: integer
+          x-go-name: Value
+          x-order: 40
+        percent_held:
+          description: Represents the percentage of shares outstanding that are owned by the financial institution
+          examples:
+          - 0.031600002
+          format: double
+          type: number
+          x-go-name: PercentHeld
+          x-order: 50
+      required:
+      - entity_name
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetEdgarFilingsArchive_200_response:
+      properties:
+        meta:
+          $ref: '#/components/schemas/GetEdgarFilingsArchive_200_response_meta'
+        values:
+          description: List of filings
+          items:
+            $ref: '#/components/schemas/EdgarFilingValue'
+          type: array
+          x-go-name: Values
+          x-order: 20
+      required:
+      - meta
+      - values
+      type: object
+    ResponseSanctionedEntitiy:
+      properties:
+        symbol:
+          description: The instrument symbol ticker
+          examples:
+          - LOKESHMACH
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        name:
+          description: The instrument name
+          examples:
+          - Lokesh Machines Ltd.
+          type: string
+          x-go-name: Name
+          x-order: 20
+        mic_code:
+          description: Market Identifier Code (MIC) under ISO 10383 standard
+          examples:
+          - NSE
+          type: string
+          x-go-name: MicCode
+          x-order: 30
+        country:
+          description: Country name
+          examples:
+          - India
+          type: string
+          x-go-name: Country
+          x-order: 40
+        sanction:
+          $ref: '#/components/schemas/ResponseSanctionItem'
+      required:
+      - country
+      - mic_code
+      - name
+      - sanction
+      - symbol
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
     DirectHolderItem:
       properties:
         entity_name:
@@ -1083,34 +1281,20 @@ components:
       - entity_name
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetSourceSanctionedEntities_200_response:
+    GetFundHolders_200_response:
       properties:
-        sanctions:
-          description: List of sanctioned entities
+        meta:
+          $ref: '#/components/schemas/GetFundHolders_200_response_meta'
+        fund_holders:
+          description: List of fund holders for the financial instrument
           items:
-            $ref: '#/components/schemas/ResponseSanctionedEntitiy'
+            $ref: '#/components/schemas/FundHolderItem'
           type: array
-          x-go-name: Sanctions
-          x-order: 10
-        count:
-          description: Total number of sanctioned entities
-          examples:
-          - 143
-          format: int64
-          type: integer
-          x-go-name: Count
+          x-go-name: FundHolders
           x-order: 20
-        status:
-          description: Response status
-          examples:
-          - ok
-          type: string
-          x-go-name: Status
-          x-order: 30
       required:
-      - count
-      - sanctions
-      - status
+      - fund_holders
+      - meta
       type: object
     GetInsiderTransactions_200_response:
       properties:
@@ -1127,6 +1311,14 @@ components:
       - insider_transactions
       - meta
       type: object
+    SourceEnum:
+      enum:
+      - ofac
+      - uk
+      - eu
+      - au
+      type: string
+      x-go-name: Source
     GetInsiderTransactions_200_response_insider_transactions_inner:
       properties:
         full_name:
@@ -1186,19 +1378,92 @@ components:
       - full_name
       - position
       type: object
-    ApiBadRequestErrorResponseBody:
+    GetTaxInfo_200_response:
+      properties:
+        meta:
+          $ref: '#/components/schemas/GetTaxInfo_200_response_meta'
+        data:
+          $ref: '#/components/schemas/GetTaxInfo_200_response_data'
+        status:
+          description: The status of the request, e.g., `ok`, `error`
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+          x-order: 30
+      required:
+      - data
+      - meta
+      - status
+      type: object
+    GetFundHolders_200_response_meta:
+      description: Meta information about the financial instrument
+      properties:
+        symbol:
+          description: Ticker symbol of instrument
+          examples:
+          - AAPL
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        name:
+          description: Name of symbol
+          examples:
+          - Apple Inc
+          type: string
+          x-go-name: Name
+          x-order: 20
+        currency:
+          description: Currency of the instrument according to the ISO 4217 standard
+          examples:
+          - USD
+          type: string
+          x-go-name: Currency
+          x-order: 30
+        exchange:
+          description: Exchange where instrument is traded
+          examples:
+          - NASDAQ
+          type: string
+          x-go-name: Exchange
+          x-order: 40
+        mic_code:
+          description: Market identifier code (MIC) under ISO 10383 standard
+          examples:
+          - XNAS
+          type: string
+          x-go-name: MicCode
+          x-order: 50
+        exchange_timezone:
+          description: Timezone of the exchange
+          examples:
+          - America/New_York
+          type: string
+          x-go-name: ExchangeTimezone
+          x-order: 60
+      required:
+      - currency
+      - exchange
+      - exchange_timezone
+      - mic_code
+      - name
+      - symbol
+      type: object
+      x-go-name: Meta
+      x-order: 10
+    ApiForbiddenErrorResponseBody:
       properties:
         code:
           description: Error code
           examples:
-          - 400
+          - 403
           format: int64
           type: integer
           x-go-name: Code
         message:
           description: Error message
           examples:
-          - Invalid request
+          - API key lacks permissions for the requested resource
           type: string
           x-go-name: Message
         status:
@@ -1213,21 +1478,6 @@ components:
       - status
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetDirectHolders_200_response:
-      properties:
-        meta:
-          $ref: '#/components/schemas/GetDirectHolders_200_response_meta'
-        direct_holders:
-          description: List of direct holders for the financial instrument
-          items:
-            $ref: '#/components/schemas/DirectHolderItem'
-          type: array
-          x-go-name: DirectHolders
-          x-order: 20
-      required:
-      - direct_holders
-      - meta
-      type: object
     GetInsiderTransactions_200_response_meta:
       description: Metadata about the instrument
       properties:
@@ -1283,201 +1533,6 @@ components:
       type: object
       x-go-name: Meta
       x-order: 10
-    GetInstitutionalHolders_200_response:
-      properties:
-        meta:
-          $ref: '#/components/schemas/GetFundHolders_200_response_meta'
-        institutional_holders:
-          description: List of institutional holders for the financial instrument
-          items:
-            $ref: '#/components/schemas/InstitutionalHolderItem'
-          type: array
-          x-go-name: InstitutionalHolders
-          x-order: 20
-      required:
-      - institutional_holders
-      - meta
-      type: object
-    ApiNotFoundErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 404
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - symbol or figi parameter is missing or invalid
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    FundHolderItem:
-      properties:
-        entity_name:
-          description: Refers to the legal name of the institution
-          examples:
-          - VANGUARD INDEX FUNDS-Vanguard Total Stock Market Index Fund
-          type: string
-          x-go-name: EntityName
-          x-order: 10
-        date_reported:
-          description: Refers to date reported
-          examples:
-          - '2025-09-30'
-          type: string
-          x-go-name: DateReported
-          x-order: 20
-        shares:
-          description: Refers to the number of shares owned
-          examples:
-          - 467135722
-          format: int64
-          type: integer
-          x-go-name: Shares
-          x-order: 30
-        value:
-          description: Total value of shares owned, calculated by multiplying `shares` by the current price
-          examples:
-          - 129695568698
-          format: int64
-          type: integer
-          x-go-name: Value
-          x-order: 40
-        percent_held:
-          description: Represents the percentage of shares outstanding that are owned by the financial institution
-          examples:
-          - 0.031600002
-          format: double
-          type: number
-          x-go-name: PercentHeld
-          x-order: 50
-      required:
-      - entity_name
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    ApiTooManyRequestsErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 429
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - You have run out of API credits for the current minute. 1000 API credits were used, with the current limit being 987. Wait for the next minute or consider upgrading your plan at https://twelvedata.com/pricing
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetTaxInfo_200_response_meta:
-      description: Metadata about the requested instrument
-      properties:
-        symbol:
-          description: The ticker symbol of an instrument for which data was requested
-          examples:
-          - SKYQ
-          type: string
-          x-go-name: Symbol
-          x-order: 10
-        name:
-          description: The instrument name
-          examples:
-          - Sky Quarry Inc.
-          type: string
-          x-go-name: Name
-          x-order: 20
-        exchange:
-          description: The exchange name where the instrument is traded
-          examples:
-          - NASDAQ
-          type: string
-          x-go-name: Exchange
-          x-order: 30
-        mic_code:
-          description: The Market Identifier Code (MIC) of the exchange where the instrument is traded
-          examples:
-          - XNCM
-          type: string
-          x-go-name: MicCode
-          x-order: 40
-        country:
-          description: The instrument country name
-          examples:
-          - United States
-          type: string
-          x-go-name: Country
-          x-order: 50
-      required:
-      - country
-      - exchange
-      - mic_code
-      - name
-      - symbol
-      type: object
-      x-go-name: Meta
-      x-order: 10
-    ResponseSanctionItemList:
-      properties:
-        name:
-          description: The sanction list name
-          examples:
-          - SDN List
-          type: string
-          x-go-name: Name
-          x-order: 10
-        published_at:
-          description: The sanction published date in the current sanctions list
-          examples:
-          - '2024-10-30'
-          type: string
-          x-go-name: PublishedAt
-          x-order: 20
-      required:
-      - name
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetFundHolders_200_response:
-      properties:
-        meta:
-          $ref: '#/components/schemas/GetFundHolders_200_response_meta'
-        fund_holders:
-          description: List of fund holders for the financial instrument
-          items:
-            $ref: '#/components/schemas/FundHolderItem'
-          type: array
-          x-go-name: FundHolders
-          x-order: 20
-      required:
-      - fund_holders
-      - meta
-      type: object
     GetTaxInfo_200_response_data:
       description: Tax information data containing the tax indicator for the requested instrument
       properties:
@@ -1537,166 +1592,6 @@ components:
       - entity_name
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    ResponseSanctionedEntitiy:
-      properties:
-        symbol:
-          description: The instrument symbol ticker
-          examples:
-          - LOKESHMACH
-          type: string
-          x-go-name: Symbol
-          x-order: 10
-        name:
-          description: The instrument name
-          examples:
-          - Lokesh Machines Ltd.
-          type: string
-          x-go-name: Name
-          x-order: 20
-        mic_code:
-          description: Market Identifier Code (MIC) under ISO 10383 standard
-          examples:
-          - NSE
-          type: string
-          x-go-name: MicCode
-          x-order: 30
-        country:
-          description: Country name
-          examples:
-          - India
-          type: string
-          x-go-name: Country
-          x-order: 40
-        sanction:
-          $ref: '#/components/schemas/ResponseSanctionItem'
-      required:
-      - country
-      - mic_code
-      - name
-      - sanction
-      - symbol
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetTaxInfo_200_response:
-      properties:
-        meta:
-          $ref: '#/components/schemas/GetTaxInfo_200_response_meta'
-        data:
-          $ref: '#/components/schemas/GetTaxInfo_200_response_data'
-        status:
-          description: The status of the request, e.g., `ok`, `error`
-          examples:
-          - ok
-          type: string
-          x-go-name: Status
-          x-order: 30
-      required:
-      - data
-      - meta
-      - status
-      type: object
-    ResponseSanctionItem:
-      properties:
-        source:
-          description: The sanction source
-          examples:
-          - ofac
-          type: string
-          x-go-name: Source
-          x-order: 10
-        program:
-          description: The sanction program
-          examples:
-          - RUSSIA-EO14024
-          type: string
-          x-go-name: Program
-          x-order: 20
-        notes:
-          description: Notes for the sanction
-          examples:
-          - Block
-          type: string
-          x-go-name: Notes
-          x-order: 30
-        lists:
-          description: Sanction lists
-          items:
-            $ref: '#/components/schemas/ResponseSanctionItemList'
-          type: array
-          x-go-name: Lists
-          x-order: 40
-      required:
-      - lists
-      - notes
-      - program
-      - source
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    EdgarFilingValue:
-      description: Filing value object
-      properties:
-        cik:
-          description: CIK code
-          examples:
-          - 1711463
-          format: int64
-          type: integer
-          x-go-name: Cik
-          x-order: 10
-        filed_at:
-          description: Filing date in UNIX timestamp
-          examples:
-          - 1726617600
-          format: int64
-          type: integer
-          x-go-name: FiledAt
-          x-order: 20
-        files:
-          description: Filing files
-          items:
-            $ref: '#/components/schemas/EdgarFilingFile'
-          type: array
-          x-go-name: Files
-          x-order: 40
-        filing_url:
-          description: Full URL of the filing
-          examples:
-          - https://www.sec.gov/Archives/edgar/data/1711463/0001971857-24-000581-index.htm
-          type: string
-          x-go-name: FilingURL
-          x-order: 50
-        form_type:
-          description: Filing form type
-          examples:
-          - '144'
-          type: string
-          x-go-name: FormType
-          x-order: 55
-        ticker:
-          description: Ticker symbols associated with the filing
-          examples:
-          - - AAPL
-          items:
-            type: string
-          type: array
-          x-go-name: Ticker
-          x-order: 60
-      required:
-      - cik
-      - filed_at
-      - filing_url
-      - form_type
-      - ticker
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    SourceEnum:
-      enum:
-      - ofac
-      - uk
-      - eu
-      - au
-      type: string
-      x-go-name: Source
     ApiInternalServerErrorResponseBody:
       properties:
         code:
@@ -1779,42 +1674,108 @@ components:
       type: object
       x-go-name: Meta
       x-order: 10
-    EdgarFilingFile:
-      description: Filing file object
+    ApiTooManyRequestsErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 429
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - You have run out of API credits for the current minute. 1000 API credits were used, with the current limit being 987. Wait for the next minute or consider upgrading your plan at https://twelvedata.com/pricing
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ResponseSanctionItemList:
       properties:
         name:
-          description: File name
+          description: The sanction list name
           examples:
-          - primary_doc.html
+          - SDN List
           type: string
           x-go-name: Name
           x-order: 10
-        size:
-          description: File size
+        published_at:
+          description: The sanction published date in the current sanctions list
           examples:
-          - 2980
+          - '2024-10-30'
+          type: string
+          x-go-name: PublishedAt
+          x-order: 20
+      required:
+      - name
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    EdgarFilingValue:
+      description: Filing value object
+      properties:
+        cik:
+          description: CIK code
+          examples:
+          - 1711463
           format: int64
           type: integer
-          x-go-name: Size
+          x-go-name: Cik
+          x-order: 10
+        filed_at:
+          description: Filing date in UNIX timestamp
+          examples:
+          - 1726617600
+          format: int64
+          type: integer
+          x-go-name: FiledAt
           x-order: 20
-        type:
-          description: File type
+        files:
+          description: Filing files
+          items:
+            $ref: '#/components/schemas/EdgarFilingFile'
+          type: array
+          x-go-name: Files
+          x-order: 40
+        filing_url:
+          description: Full URL of the filing
+          examples:
+          - https://www.sec.gov/Archives/edgar/data/1711463/0001971857-24-000581-index.htm
+          type: string
+          x-go-name: FilingURL
+          x-order: 50
+        form_type:
+          description: Filing form type
           examples:
           - '144'
           type: string
-          x-go-name: Type
-          x-order: 30
-        url:
-          description: File full url
+          x-go-name: FormType
+          x-order: 55
+        ticker:
+          description: Ticker symbols associated with the filing
           examples:
-          - https://www.sec.gov/Archives/edgar/data/1711463/000197185724000581/primary_doc.xml
-          type: string
-          x-go-name: URL
-          x-order: 40
+          - - AAPL
+          items:
+            type: string
+          type: array
+          x-go-name: Ticker
+          x-order: 60
       required:
-      - name
-      - type
-      - url
+      - cik
+      - filed_at
+      - filing_url
+      - form_type
+      - ticker
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
     GetEdgarFilingsArchive_200_response_meta:
@@ -1856,34 +1817,19 @@ components:
       type: object
       x-go-name: Meta
       x-order: 10
-    GetEdgarFilingsArchive_200_response:
-      properties:
-        meta:
-          $ref: '#/components/schemas/GetEdgarFilingsArchive_200_response_meta'
-        values:
-          description: List of filings
-          items:
-            $ref: '#/components/schemas/EdgarFilingValue'
-          type: array
-          x-go-name: Values
-          x-order: 20
-      required:
-      - meta
-      - values
-      type: object
-    ApiForbiddenErrorResponseBody:
+    ApiNotFoundErrorResponseBody:
       properties:
         code:
           description: Error code
           examples:
-          - 403
+          - 404
           format: int64
           type: integer
           x-go-name: Code
         message:
           description: Error message
           examples:
-          - API key lacks permissions for the requested resource
+          - symbol or figi parameter is missing or invalid
           type: string
           x-go-name: Message
         status:
@@ -1925,61 +1871,73 @@ components:
       - status
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetFundHolders_200_response_meta:
-      description: Meta information about the financial instrument
+    GetSourceSanctionedEntities_200_response:
       properties:
-        symbol:
-          description: Ticker symbol of instrument
-          examples:
-          - AAPL
-          type: string
-          x-go-name: Symbol
+        sanctions:
+          description: List of sanctioned entities
+          items:
+            $ref: '#/components/schemas/ResponseSanctionedEntitiy'
+          type: array
+          x-go-name: Sanctions
           x-order: 10
-        name:
-          description: Name of symbol
+        count:
+          description: Total number of sanctioned entities
           examples:
-          - Apple Inc
+          - 143
+          format: int64
+          type: integer
+          x-go-name: Count
+          x-order: 20
+        status:
+          description: Response status
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+          x-order: 30
+      required:
+      - count
+      - sanctions
+      - status
+      type: object
+    EdgarFilingFile:
+      description: Filing file object
+      properties:
+        name:
+          description: File name
+          examples:
+          - primary_doc.html
           type: string
           x-go-name: Name
+          x-order: 10
+        size:
+          description: File size
+          examples:
+          - 2980
+          format: int64
+          type: integer
+          x-go-name: Size
           x-order: 20
-        currency:
-          description: Currency of the instrument according to the ISO 4217 standard
+        type:
+          description: File type
           examples:
-          - USD
+          - '144'
           type: string
-          x-go-name: Currency
+          x-go-name: Type
           x-order: 30
-        exchange:
-          description: Exchange where instrument is traded
+        url:
+          description: File full url
           examples:
-          - NASDAQ
+          - https://www.sec.gov/Archives/edgar/data/1711463/000197185724000581/primary_doc.xml
           type: string
-          x-go-name: Exchange
+          x-go-name: URL
           x-order: 40
-        mic_code:
-          description: Market identifier code (MIC) under ISO 10383 standard
-          examples:
-          - XNAS
-          type: string
-          x-go-name: MicCode
-          x-order: 50
-        exchange_timezone:
-          description: Timezone of the exchange
-          examples:
-          - America/New_York
-          type: string
-          x-go-name: ExchangeTimezone
-          x-order: 60
       required:
-      - currency
-      - exchange
-      - exchange_timezone
-      - mic_code
       - name
-      - symbol
+      - type
+      - url
       type: object
-      x-go-name: Meta
-      x-order: 10
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
     ApiParameterTooLongErrorResponseBody:
       properties:
         code:
@@ -1993,6 +1951,48 @@ components:
           description: Error message
           examples:
           - Input parameter array exceeds the allowed length
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetDirectHolders_200_response:
+      properties:
+        meta:
+          $ref: '#/components/schemas/GetDirectHolders_200_response_meta'
+        direct_holders:
+          description: List of direct holders for the financial instrument
+          items:
+            $ref: '#/components/schemas/DirectHolderItem'
+          type: array
+          x-go-name: DirectHolders
+          x-order: 20
+      required:
+      - direct_holders
+      - meta
+      type: object
+    ApiBadRequestErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 400
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Invalid request
           type: string
           x-go-name: Message
         status:

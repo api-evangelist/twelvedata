@@ -221,6 +221,41 @@ paths:
       x-codegen-request-body-name: key
 components:
   schemas:
+    ApiTooManyRequestsErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 429
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - You have run out of API credits for the current minute. 1000 API credits were used, with the current limit being 987. Wait for the next minute or consider upgrading your plan at https://twelvedata.com/pricing
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    FormatEnum:
+      default: JSON
+      enum:
+      - JSON
+      - CSV
+      type: string
+      x-go-name: Format
+      x-order: '90'
     ApiForbiddenErrorResponseBody:
       properties:
         code:
@@ -248,14 +283,68 @@ components:
       - status
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    FormatEnum:
-      default: JSON
-      enum:
-      - JSON
-      - CSV
-      type: string
-      x-go-name: Format
-      x-order: '90'
+    advanced_request_value:
+      properties:
+        url:
+          description: Requested url
+          examples:
+          - /time_series?symbol=AAPL&interval=1min&apikey=demo&outputsize=2
+          type: string
+          x-go-name: Url
+      type: object
+    GetApiUsage_200_response:
+      properties:
+        timestamp:
+          description: Current timestamp in UTC timezone
+          examples:
+          - '2025-05-07 11:10:12'
+          type: string
+          x-go-name: Timestamp
+          x-order: 10
+        current_usage:
+          description: Number of requests made in last minute
+          examples:
+          - 4003
+          format: int64
+          type: integer
+          x-go-name: CurrentUsage
+          x-order: 20
+        plan_limit:
+          description: Your personal API limit (requests/minute) depending on the plan
+          examples:
+          - 20000
+          format: int64
+          type: integer
+          x-go-name: PlanLimit
+          x-order: 30
+        daily_usage:
+          description: Number of requests made in the current day. Returned only when the plan has a daily limit.
+          examples:
+          - 12500
+          format: int64
+          type: integer
+          x-go-name: DailyUsage
+          x-order: 35
+        plan_daily_limit:
+          description: Your personal API limit (requests/day) depending on the plan. Returned only when the plan has a daily limit.
+          examples:
+          - 100000
+          format: int64
+          type: integer
+          x-go-name: PlanDailyLimit
+          x-order: 36
+        plan_category:
+          description: Plan category name
+          examples:
+          - enterprise
+          type: string
+          x-go-name: PlanCategory
+          x-order: 40
+      required:
+      - current_usage
+      - plan_limit
+      - timestamp
+      type: object
     ApiNotFoundErrorResponseBody:
       properties:
         code:
@@ -296,6 +385,87 @@ components:
           description: Error message
           examples:
           - apikey parameter is incorrect or not specified
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiParameterTooLongErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 414
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Input parameter array exceeds the allowed length
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiInternalServerErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 500
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Internal server error
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiBadRequestErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 400
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Invalid request
           type: string
           x-go-name: Message
         status:
@@ -375,176 +545,6 @@ components:
           x-go-name: Data
           x-order: 30
       type: object
-    ApiTooManyRequestsErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 429
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - You have run out of API credits for the current minute. 1000 API credits were used, with the current limit being 987. Wait for the next minute or consider upgrading your plan at https://twelvedata.com/pricing
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    advanced_request_value:
-      properties:
-        url:
-          description: Requested url
-          examples:
-          - /time_series?symbol=AAPL&interval=1min&apikey=demo&outputsize=2
-          type: string
-          x-go-name: Url
-      type: object
-    ApiInternalServerErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 500
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - Internal server error
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    ApiBadRequestErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 400
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - Invalid request
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetApiUsage_200_response:
-      properties:
-        timestamp:
-          description: Current timestamp in UTC timezone
-          examples:
-          - '2025-05-07 11:10:12'
-          type: string
-          x-go-name: Timestamp
-          x-order: 10
-        current_usage:
-          description: Number of requests made in last minute
-          examples:
-          - 4003
-          format: int64
-          type: integer
-          x-go-name: CurrentUsage
-          x-order: 20
-        plan_limit:
-          description: Your personal API limit (requests/minute) depending on the plan
-          examples:
-          - 20000
-          format: int64
-          type: integer
-          x-go-name: PlanLimit
-          x-order: 30
-        daily_usage:
-          description: Number of requests made in the current day. Returned only when the plan has a daily limit.
-          examples:
-          - 12500
-          format: int64
-          type: integer
-          x-go-name: DailyUsage
-          x-order: 35
-        plan_daily_limit:
-          description: Your personal API limit (requests/day) depending on the plan. Returned only when the plan has a daily limit.
-          examples:
-          - 100000
-          format: int64
-          type: integer
-          x-go-name: PlanDailyLimit
-          x-order: 36
-        plan_category:
-          description: Plan category name
-          examples:
-          - enterprise
-          type: string
-          x-go-name: PlanCategory
-          x-order: 40
-      required:
-      - current_usage
-      - plan_limit
-      - timestamp
-      type: object
-    ApiParameterTooLongErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 414
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - Input parameter array exceeds the allowed length
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
   securitySchemes:
     authorizationHeader:
       description: Enter the token with the `apikey ` prefix, e.g. "apikey abcde12345".

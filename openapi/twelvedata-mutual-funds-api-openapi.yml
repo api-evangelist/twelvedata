@@ -1514,23 +1514,8 @@ paths:
           - cusip
 components:
   schemas:
-    GetMutualFundsWorldRatings_200_response:
-      properties:
-        mutual_fund:
-          $ref: '#/components/schemas/GetMutualFundsWorldRatings_200_response_mutual_fund'
-        status:
-          description: Status of the response
-          examples:
-          - ok
-          type: string
-          x-go-name: Status
-          x-order: 20
-      required:
-      - mutual_fund
-      - status
-      type: object
-    ResponseMutualFundWorldComposition:
-      description: Mutual fund composition
+    GetMutualFundsWorld_200_response_mutual_fund_composition:
+      description: Composition of a mutual fund
       properties:
         major_market_sectors:
           description: Breakdown of the fund’s portfolio by major industry sectors and their respective weights
@@ -1551,11 +1536,12 @@ components:
         bond_breakdown:
           $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_composition_bond_breakdown'
       type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/model/repository
-    GetMutualFundsWorldPurchaseInfo_200_response:
+      x-go-name: Composition
+      x-order: 50
+    GetMutualFundsWorldPerformance_200_response:
       properties:
         mutual_fund:
-          $ref: '#/components/schemas/GetMutualFundsWorldPurchaseInfo_200_response_mutual_fund'
+          $ref: '#/components/schemas/GetMutualFundsWorldPerformance_200_response_mutual_fund'
         status:
           description: Status of the response
           examples:
@@ -1567,273 +1553,56 @@ components:
       - mutual_fund
       - status
       type: object
-    GetMutualFundsWorldComposition_200_response:
-      properties:
-        mutual_fund:
-          $ref: '#/components/schemas/GetMutualFundsWorldComposition_200_response_mutual_fund'
-        status:
-          description: Status of the response
-          examples:
-          - ok
-          type: string
-          x-go-name: Status
-          x-order: 20
-      required:
-      - mutual_fund
-      - status
-      type: object
-    GetMutualFundsWorld_200_response_mutual_fund_purchase_info_minimums:
-      description: Minimum investment amounts required to purchase or add to the mutual fund, including IRA minimums
-      properties:
-        initial_investment:
-          description: Investment minimum
-          examples:
-          - 0
-          format: int64
-          type: integer
-          x-go-name: InitialInvestment
-          x-order: 10
-        additional_investment:
-          description: Minimum amount of additional investment
-          examples:
-          - 0
-          format: int64
-          type: integer
-          x-go-name: AdditionalInvestment
-          x-order: 20
-        initial_ira_investment:
-          description: Investment minimum for IRA
-          format: int64
-          type: integer
-          x-go-name: InitialIraInvestment
-          x-order: 30
-        additional_ira_investment:
-          description: Minimum amount of additional investment for IRA
-          format: int64
-          type: integer
-          x-go-name: AdditionalIraInvestment
-          x-order: 40
-      type: object
-      x-go-name: Minimums
-      x-order: 20
-    GetMutualFundsWorld_200_response_mutual_fund_composition_bond_breakdown:
-      description: Breakdown of the fund’s bond holdings by maturity, duration, and credit quality
-      properties:
-        average_maturity:
-          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_composition_bond_breakdown_average_maturity'
-        average_duration:
-          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_composition_bond_breakdown_average_duration'
-        credit_quality:
-          description: Breakdown of the fund’s bond holdings by credit rating and their respective portfolio weights
-          items:
-            $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_composition_bond_breakdown_credit_quality_inner'
-          type: array
-          x-go-name: CreditQuality
-          x-order: 20
-      type: object
-      x-go-name: BondBreakdown
-      x-order: 30
-    GetMutualFundsList_200_response:
-      properties:
-        result:
-          $ref: '#/components/schemas/GetMutualFundsList_200_response_result'
-        status:
-          description: Response status
-          examples:
-          - ok
-          type: string
-          x-go-name: Status
-      required:
-      - status
-      type: object
-    GetMutualFundsWorld_200_response_mutual_fund_summary_people_inner:
-      properties:
-        name:
-          description: Manager name
-          examples:
-          - John Doe
-          type: string
-          x-go-name: Name
-          x-order: 10
-        tenure_since:
-          description: Manager tenuring date
-          examples:
-          - '2018-01-01'
-          type: string
-          x-go-name: TenureSince
-          x-order: 20
-      type: object
-    ApiBadRequestErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 400
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - Invalid request
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetMutualFundsWorld_200_response_mutual_fund_composition_asset_allocation:
-      description: Asset allocation of the fund by different asset classes and their respective weights
-      properties:
-        cash:
-          description: Percentage of overall portfolio composition in cash
-          examples:
-          - 0.0043
-          format: double
-          type: number
-          x-go-name: Cash
-          x-order: 10
-        stocks:
-          description: Percentage of overall portfolio composition in stocks
-          examples:
-          - 0.9956
-          format: double
-          type: number
-          x-go-name: Stocks
-          x-order: 20
-        preferred_stocks:
-          description: Percentage of overall portfolio composition in preferred stocks
-          examples:
-          - 0
-          format: double
-          type: number
-          x-go-name: PreferredStocks
-          x-order: 30
-        convertables:
-          description: Percentage of overall portfolio composition in convertable securities
-          examples:
-          - 0
-          format: double
-          type: number
-          x-go-name: Convertables
-          x-order: 40
-        bonds:
-          description: Percentage of overall portfolio composition in bond
-          examples:
-          - 0
-          format: double
-          type: number
-          x-go-name: Bonds
-          x-order: 50
-        others:
-          description: Percentage of overall portfolio composition in other forms of holding
-          examples:
-          - 0
-          format: double
-          type: number
-          x-go-name: Others
-          x-order: 60
-      type: object
-      x-go-name: AssetAllocation
-      x-order: 20
-    GetMutualFundsWorld_200_response_mutual_fund_sustainability_corporate_esg_pillars:
-      description: Corporate ESG pillars
-      properties:
-        environmental:
-          description: ESG environmental score
-          examples:
-          - 3.73
-          format: double
-          type: number
-          x-go-name: Environmental
-          x-order: 10
-        social:
-          description: ESG social score
-          examples:
-          - 10.44
-          format: double
-          type: number
-          x-go-name: Social
-          x-order: 20
-        governance:
-          description: ESG governance score
-          examples:
-          - 7.86
-          format: double
-          type: number
-          x-go-name: Governance
-          x-order: 30
-      type: object
-      x-go-name: CorporateEsgPillars
-      x-order: 20
-    GetMutualFundsWorld_200_response_mutual_fund_purchase_info_expenses:
-      description: Costs associated with investing in the mutual fund, including gross and net expense ratios
-      properties:
-        expense_ratio_gross:
-          description: Cost of investing in a mutual fund
-          examples:
-          - 0.0022
-          format: double
-          type: number
-          x-go-name: ExpenseRatioGross
-          x-order: 10
-        expense_ratio_net:
-          description: Percentage of mutual fund assets steered toward a fund's operating expenses and fund management fees
-          examples:
-          - 0.001
-          format: double
-          type: number
-          x-go-name: ExpenseRatioNet
-          x-order: 20
-      type: object
-      x-go-name: Expenses
-      x-order: 10
-    GetMutualFundsWorldSustainability_200_response_mutual_fund:
+    GetMutualFundsWorld_200_response_mutual_fund:
       description: Mutual fund information
       properties:
+        summary:
+          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_summary'
+        performance:
+          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_performance'
+        risk:
+          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_risk'
+        ratings:
+          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_ratings'
+        composition:
+          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_composition'
+        purchase_info:
+          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_purchase_info'
         sustainability:
-          $ref: '#/components/schemas/ResponseMutualFundWorldSustainability'
+          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_sustainability'
       type: object
-      x-go-name: Sustainability
+      x-go-name: MutualFund
       x-order: 10
-    GetMutualFundsWorld_200_response_mutual_fund_risk:
-      description: Risk metrics of a mutual fund
+    GetMutualFundsWorld_200_response_mutual_fund_ratings:
+      description: Ratings of a mutual fund
       properties:
-        volatility_measures:
-          description: Volatility statistics of the fund
-          items:
-            $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_risk_volatility_measures_inner'
-          type: array
-          x-go-name: VolatilityMeasures
-          x-order: 10
-        valuation_metrics:
-          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_risk_valuation_metrics'
-      type: object
-      x-go-name: Risk
-      x-order: 30
-    GetMutualFundsWorldSummary_200_response:
-      properties:
-        mutual_fund:
-          $ref: '#/components/schemas/GetMutualFundsWorldSummary_200_response_mutual_fund'
-        status:
-          description: Status of the response
+        performance_rating:
+          description: Performance rating from 0 to 5
           examples:
-          - ok
-          type: string
-          x-go-name: Status
+          - 2
+          format: int64
+          type: integer
+          x-go-name: PerformanceRating
+          x-order: 10
+        risk_rating:
+          description: Risk rating from 0 to 5
+          examples:
+          - 4
+          format: int64
+          type: integer
+          x-go-name: RiskRating
           x-order: 20
-      required:
-      - mutual_fund
-      - status
+        return_rating:
+          description: Return rating from 0 to 5
+          examples:
+          - 0
+          format: int64
+          type: integer
+          x-go-name: ReturnRating
+          x-order: 30
       type: object
+      x-go-name: Ratings
+      x-order: 40
     GetMutualFundsWorld_200_response_mutual_fund_composition_bond_breakdown_average_duration:
       description: Average duration of bond holdings for the fund and its category
       properties:
@@ -1854,196 +1623,6 @@ components:
       type: object
       x-go-name: AverageDuration
       x-order: 20
-    GetMutualFundsType_200_response:
-      properties:
-        result:
-          additionalProperties:
-            items:
-              type: string
-            type: array
-          description: List of fund types by country
-          examples:
-          - Singapore:
-            - Property - Indirect Asia
-            - Sector Equity Water
-            - SGD Bond
-            - Singapore Equity
-            - Taiwan Large-Cap Equity
-            United States:
-            - Asia-Pacific ex-Japan Equity
-            - EUR Flexible Allocation - Global
-            - Euro Short Bond PP
-            - Large Blend
-            - Other Allocation
-          type: object
-          x-go-name: Result
-          x-order: 10
-        status:
-          description: Response status
-          examples:
-          - ok
-          type: string
-          x-go-name: Status
-          x-order: 20
-      required:
-      - result
-      - status
-      type: object
-    ApiNotFoundErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 404
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - symbol or figi parameter is missing or invalid
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetMutualFundsWorld_200_response_mutual_fund_performance_trailing_returns_inner:
-      properties:
-        period:
-          description: Period of trailing returns
-          examples:
-          - ytd
-          type: string
-          x-go-name: Period
-          x-order: 10
-        share_class_return:
-          description: Fund returns (%) generated over a given period
-          examples:
-          - -0.02986
-          format: double
-          type: number
-          x-go-name: ShareClassReturn
-          x-order: 20
-        category_return:
-          description: Same category average returns (%) generated over a given period
-          examples:
-          - 0.2019
-          format: double
-          type: number
-          x-go-name: CategoryReturn
-          x-order: 30
-        rank_in_category:
-          description: Rank of a fund in category by total returns
-          examples:
-          - 76
-          format: int64
-          type: integer
-          x-go-name: RankInCategory
-          x-order: 40
-      type: object
-    GetMutualFundsWorld_200_response_mutual_fund_performance_annual_total_returns_inner:
-      properties:
-        year:
-          description: Year of total returns
-          examples:
-          - 2024
-          format: int64
-          type: integer
-          x-go-name: Year
-          x-order: 10
-        share_class_return:
-          description: Fund total returns (%) generated over a given year
-          examples:
-          - 0.08546
-          format: double
-          type: number
-          x-go-name: ShareClassReturn
-          x-order: 20
-        category_return:
-          description: Same category average total returns (%) generated over a given year
-          examples:
-          - 0.1119
-          format: double
-          type: number
-          x-go-name: CategoryReturn
-          x-order: 30
-      type: object
-    GetMutualFundsWorld_200_response_mutual_fund_composition_major_market_sectors_inner:
-      properties:
-        sector:
-          description: Sector category of a fund exposure
-          examples:
-          - Industrials
-          type: string
-          x-go-name: Sector
-          x-order: 10
-        weight:
-          description: Weight of a fund exposure in a sector
-          examples:
-          - 0.1742
-          format: double
-          type: number
-          x-go-name: Weight
-          x-order: 20
-      type: object
-    GetMutualFundsWorld_200_response_mutual_fund_purchase_info:
-      description: Purchase information of a mutual fund
-      properties:
-        expenses:
-          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_purchase_info_expenses'
-        minimums:
-          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_purchase_info_minimums'
-        pricing:
-          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_purchase_info_pricing'
-        brokerages:
-          description: List of brokerages where mutual fund can be purchased
-          examples:
-          - []
-          items:
-            type: string
-          type: array
-          x-go-name: Brokerages
-          x-order: 40
-      type: object
-      x-go-name: PurchaseInfo
-      x-order: 60
-    GetMutualFundsWorldPurchaseInfo_200_response_mutual_fund:
-      description: Mutual fund information
-      properties:
-        purchase_info:
-          $ref: '#/components/schemas/ResponseMutualFundWorldPurchaseInfo'
-      type: object
-      x-go-name: MutualFund
-      x-order: 10
-    ResponseMutualFundWorldPurchaseInfo:
-      description: Purchase information for the mutual fund
-      properties:
-        expenses:
-          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_purchase_info_expenses'
-        minimums:
-          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_purchase_info_minimums'
-        pricing:
-          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_purchase_info_pricing'
-        brokerages:
-          description: List of brokerages where mutual fund can be purchased
-          examples:
-          - []
-          items:
-            type: string
-          type: array
-          x-go-name: Brokerages
-          x-order: 40
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/model/repository
     ResponseMutualFundWorldPerformance:
       description: Detailed performance of a mutual fund
       properties:
@@ -2077,522 +1656,36 @@ components:
           x-order: 40
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/model/repository
-    ApiTooManyRequestsErrorResponseBody:
+    GetMutualFundsWorld_200_response_mutual_fund_sustainability_corporate_esg_pillars:
+      description: Corporate ESG pillars
       properties:
-        code:
-          description: Error code
+        environmental:
+          description: ESG environmental score
           examples:
-          - 429
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - You have run out of API credits for the current minute. 1000 API credits were used, with the current limit being 987. Wait for the next minute or consider upgrading your plan at https://twelvedata.com/pricing
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetMutualFundsList_200_response_result:
-      description: Response result
-      properties:
-        count:
-          description: Total number of matching funds
-          examples:
-          - 1000
-          format: int64
-          type: integer
-          x-go-name: Count
+          - 3.73
+          format: double
+          type: number
+          x-go-name: Environmental
           x-order: 10
-        list:
-          description: List of mutual funds
-          items:
-            $ref: '#/components/schemas/MutualFundsListResponseListItem'
-          type: array
-          x-go-name: Data
-          x-order: 20
-      required:
-      - count
-      - list
-      type: object
-      x-go-name: Result
-    GetMutualFundsWorld_200_response_mutual_fund:
-      description: Mutual fund information
-      properties:
-        summary:
-          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_summary'
-        performance:
-          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_performance'
-        risk:
-          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_risk'
-        ratings:
-          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_ratings'
-        composition:
-          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_composition'
-        purchase_info:
-          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_purchase_info'
-        sustainability:
-          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_sustainability'
-      type: object
-      x-go-name: MutualFund
-      x-order: 10
-    GetMutualFundsWorld_200_response_mutual_fund_composition:
-      description: Composition of a mutual fund
-      properties:
-        major_market_sectors:
-          description: Breakdown of the fund’s portfolio by major industry sectors and their respective weights
-          items:
-            $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_composition_major_market_sectors_inner'
-          type: array
-          x-go-name: MajorMarketSectors
-          x-order: 10
-        asset_allocation:
-          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_composition_asset_allocation'
-        top_holdings:
-          description: Top holdings of the fund with their respective weights in the overall portfolio composition
-          items:
-            $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_composition_top_holdings_inner'
-          type: array
-          x-go-name: TopHoldings
-          x-order: 20
-        bond_breakdown:
-          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_composition_bond_breakdown'
-      type: object
-      x-go-name: Composition
-      x-order: 50
-    GetMutualFundsWorld_200_response_mutual_fund_ratings:
-      description: Ratings of a mutual fund
-      properties:
-        performance_rating:
-          description: Performance rating from 0 to 5
+        social:
+          description: ESG social score
           examples:
-          - 2
-          format: int64
-          type: integer
-          x-go-name: PerformanceRating
-          x-order: 10
-        risk_rating:
-          description: Risk rating from 0 to 5
-          examples:
-          - 4
-          format: int64
-          type: integer
-          x-go-name: RiskRating
+          - 10.44
+          format: double
+          type: number
+          x-go-name: Social
           x-order: 20
-        return_rating:
-          description: Return rating from 0 to 5
+        governance:
+          description: ESG governance score
           examples:
-          - 0
-          format: int64
-          type: integer
-          x-go-name: ReturnRating
+          - 7.86
+          format: double
+          type: number
+          x-go-name: Governance
           x-order: 30
       type: object
-      x-go-name: Ratings
-      x-order: 40
-    GetMutualFundsWorldRisk_200_response_mutual_fund:
-      description: Mutual fund information
-      properties:
-        risk:
-          $ref: '#/components/schemas/ResponseMutualFundWorldRisk'
-      type: object
-      x-go-name: MutualFund
-      x-order: 10
-    ResponseMutualFundWorldRisk:
-      description: Risk and volatility statistics of the fund and its category over different periods
-      properties:
-        volatility_measures:
-          description: Volatility statistics of the fund
-          items:
-            $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_risk_volatility_measures_inner'
-          type: array
-          x-go-name: VolatilityMeasures
-          x-order: 10
-        valuation_metrics:
-          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_risk_valuation_metrics'
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/model/repository
-    GetMutualFundsWorldComposition_200_response_mutual_fund:
-      description: Mutual fund information
-      properties:
-        composition:
-          $ref: '#/components/schemas/ResponseMutualFundWorldComposition'
-      type: object
-      x-go-name: MutualFund
-      x-order: 10
-    GetMutualFundsWorld_200_response_mutual_fund_performance:
-      description: Detailed performance of a mutual fund
-      properties:
-        trailing_returns:
-          description: Trailing returns of the fund
-          items:
-            $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_performance_trailing_returns_inner'
-          type: array
-          x-go-name: TrailingReturns
-          x-order: 10
-        annual_total_returns:
-          description: Annual total returns of the fund
-          items:
-            $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_performance_annual_total_returns_inner'
-          type: array
-          x-go-name: AnnualTotalReturns
-          x-order: 20
-        quarterly_total_returns:
-          description: Quarterly total returns of the fund
-          items:
-            $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_performance_quarterly_total_returns_inner'
-          type: array
-          x-go-name: QuarterlyTotalReturns
-          x-order: 30
-        load_adjusted_return:
-          description: Load adjusted return of the fund
-          items:
-            $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_performance_load_adjusted_return_inner'
-          type: array
-          x-go-name: LoadAdjustedReturn
-          x-order: 40
-      type: object
-      x-go-name: Performance
+      x-go-name: CorporateEsgPillars
       x-order: 20
-    MutualFundsListResponseListItem:
-      properties:
-        symbol:
-          description: Fund symbol ticker
-          examples:
-          - 0P0001LCQ3
-          type: string
-          x-go-name: Symbol
-          x-order: 10
-        name:
-          description: Fund name
-          examples:
-          - JNL Small Cap Index Fund (I)
-          type: string
-          x-go-name: Name
-          x-order: 20
-        country:
-          description: Country of fund incorporation
-          examples:
-          - United States
-          type: string
-          x-go-name: Country
-          x-order: 30
-        fund_family:
-          description: Investment company that manages the fund
-          examples:
-          - Jackson National
-          type: string
-          x-go-name: FundFamily
-          x-order: 40
-        fund_type:
-          description: Type of fund
-          examples:
-          - Small Blend
-          type: string
-          x-go-name: FundType
-          x-order: 50
-        performance_rating:
-          description: Performance rating from `0` to `5`
-          examples:
-          - 2
-          format: int64
-          type: integer
-          x-go-name: PerformanceRating
-          x-order: 60
-        risk_rating:
-          description: Risk rating from `0` to `5`
-          examples:
-          - 4
-          format: int64
-          type: integer
-          x-go-name: RiskRating
-          x-order: 70
-        currency:
-          description: Currency code in which the fund is denominated
-          examples:
-          - USD
-          type: string
-          x-go-name: Currency
-          x-order: 80
-        exchange:
-          description: Exchange name where the fund is listed
-          examples:
-          - OTC
-          type: string
-          x-go-name: Exchange
-          x-order: 90
-        mic_code:
-          description: Market identifier code (MIC) under ISO 10383 standard
-          examples:
-          - OTCM
-          type: string
-          x-go-name: MicCode
-          x-order: 100
-      required:
-      - country
-      - currency
-      - exchange
-      - fund_family
-      - fund_type
-      - mic_code
-      - name
-      - symbol
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    ResponseMutualFundWorldSummary:
-      description: A brief summary of a mutual fund
-      properties:
-        symbol:
-          description: All available fund types segmented by country
-          examples:
-          - 0P0001LCQ3
-          type: string
-          x-go-name: Symbol
-          x-order: 10
-        name:
-          description: Fund name
-          examples:
-          - JNL Small Cap Index Fund (I)
-          type: string
-          x-go-name: Name
-          x-order: 20
-        fund_family:
-          description: Investment company that manages the fund
-          examples:
-          - Jackson National
-          type: string
-          x-go-name: FundFamily
-          x-order: 30
-        fund_type:
-          description: Type of the fund
-          examples:
-          - Small Blend
-          type: string
-          x-go-name: FundType
-          x-order: 40
-        currency:
-          description: Currency of fund price
-          examples:
-          - USD
-          type: string
-          x-go-name: Currency
-          x-order: 50
-        share_class_inception_date:
-          description: The date from which the fund started operations and the returns are calculated
-          examples:
-          - '2021-04-26'
-          type: string
-          x-go-name: ShareClassInceptionDate
-          x-order: 60
-        ytd_return:
-          description: Percentage of profit of the fund since the first trading day of the current calendar year
-          examples:
-          - -0.02986
-          format: double
-          type: number
-          x-go-name: YtdReturn
-          x-order: 70
-        expense_ratio_net:
-          description: Percentage of mutual fund assets steered toward a fund's operating expenses and fund management fees
-          examples:
-          - 0.001
-          format: double
-          type: number
-          x-go-name: ExpenseRatioNet
-          x-order: 80
-        yield:
-          description: Income returned to its investors through interest and dividends generated by the fund's investments
-          examples:
-          - 0
-          format: double
-          type: number
-          x-go-name: Yield
-          x-order: 90
-        nav:
-          description: 'Net Asset Value: fund value minus liabilities'
-          examples:
-          - 10.09
-          format: double
-          type: number
-          x-go-name: Nav
-          x-order: 100
-        min_investment:
-          description: Investment minimum
-          examples:
-          - 0
-          format: int64
-          type: integer
-          x-go-name: MinInvestment
-          x-order: 110
-        turnover_rate:
-          description: Percentage rate at which mutual fund replaces its holdings on investment every year
-          examples:
-          - 0.32
-          format: double
-          type: number
-          x-go-name: TurnoverRate
-          x-order: 120
-        net_assets:
-          description: Total assets of a fund minus its total liabilities
-          examples:
-          - 2400762112
-          format: int64
-          type: integer
-          x-go-name: NetAssets
-          x-order: 130
-        overview:
-          description: Description of the fund
-          examples:
-          - The fund invests, normally, at least 80% of its assets in the stocks...
-          type: string
-          x-go-name: Overview
-          x-order: 140
-        people:
-          description: Information about the fund’s managers
-          items:
-            $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_summary_people_inner'
-          type: array
-          x-go-name: People
-          x-order: 150
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/model/repository
-    GetMutualFundsWorld_200_response_mutual_fund_summary:
-      description: A brief summary of a mutual fund
-      properties:
-        symbol:
-          description: All available fund types segmented by country
-          examples:
-          - 0P0001LCQ3
-          type: string
-          x-go-name: Symbol
-          x-order: 10
-        name:
-          description: Fund name
-          examples:
-          - JNL Small Cap Index Fund (I)
-          type: string
-          x-go-name: Name
-          x-order: 20
-        fund_family:
-          description: Investment company that manages the fund
-          examples:
-          - Jackson National
-          type: string
-          x-go-name: FundFamily
-          x-order: 30
-        fund_type:
-          description: Type of the fund
-          examples:
-          - Small Blend
-          type: string
-          x-go-name: FundType
-          x-order: 40
-        currency:
-          description: Currency of fund price
-          examples:
-          - USD
-          type: string
-          x-go-name: Currency
-          x-order: 50
-        share_class_inception_date:
-          description: The date from which the fund started operations and the returns are calculated
-          examples:
-          - '2021-04-26'
-          type: string
-          x-go-name: ShareClassInceptionDate
-          x-order: 60
-        ytd_return:
-          description: Percentage of profit of the fund since the first trading day of the current calendar year
-          examples:
-          - -0.02986
-          format: double
-          type: number
-          x-go-name: YtdReturn
-          x-order: 70
-        expense_ratio_net:
-          description: Percentage of mutual fund assets steered toward a fund's operating expenses and fund management fees
-          examples:
-          - 0.001
-          format: double
-          type: number
-          x-go-name: ExpenseRatioNet
-          x-order: 80
-        yield:
-          description: Income returned to its investors through interest and dividends generated by the fund's investments
-          examples:
-          - 0
-          format: double
-          type: number
-          x-go-name: Yield
-          x-order: 90
-        nav:
-          description: 'Net Asset Value: fund value minus liabilities'
-          examples:
-          - 10.09
-          format: double
-          type: number
-          x-go-name: Nav
-          x-order: 100
-        min_investment:
-          description: Investment minimum
-          examples:
-          - 0
-          format: int64
-          type: integer
-          x-go-name: MinInvestment
-          x-order: 110
-        turnover_rate:
-          description: Percentage rate at which mutual fund replaces its holdings on investment every year
-          examples:
-          - 0.32
-          format: double
-          type: number
-          x-go-name: TurnoverRate
-          x-order: 120
-        net_assets:
-          description: Total assets of a fund minus its total liabilities
-          examples:
-          - 2400762112
-          format: int64
-          type: integer
-          x-go-name: NetAssets
-          x-order: 130
-        overview:
-          description: Description of the fund
-          examples:
-          - The fund invests, normally, at least 80% of its assets in the stocks...
-          type: string
-          x-go-name: Overview
-          x-order: 140
-        people:
-          description: Information about the fund’s managers
-          items:
-            $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_summary_people_inner'
-          type: array
-          x-go-name: People
-          x-order: 150
-      type: object
-      x-go-name: Summary
-      x-order: 10
-    FormatEnum:
-      default: JSON
-      enum:
-      - JSON
-      - CSV
-      type: string
-      x-go-name: Format
-      x-order: '90'
     GetMutualFundsWorldRatings_200_response_mutual_fund:
       description: Mutual fund information
       properties:
@@ -2601,10 +1694,10 @@ components:
       type: object
       x-go-name: MutualFund
       x-order: 10
-    GetMutualFundsWorldRisk_200_response:
+    GetMutualFundsWorldRatings_200_response:
       properties:
         mutual_fund:
-          $ref: '#/components/schemas/GetMutualFundsWorldRisk_200_response_mutual_fund'
+          $ref: '#/components/schemas/GetMutualFundsWorldRatings_200_response_mutual_fund'
         status:
           description: Status of the response
           examples:
@@ -2616,272 +1709,21 @@ components:
       - mutual_fund
       - status
       type: object
-    GetMutualFundsWorld_200_response_mutual_fund_sustainability:
-      description: Sustainability information of a mutual fund
+    GetMutualFundsWorldSustainability_200_response:
       properties:
-        score:
-          description: 'Sustainability score: asset-weighted average of normalized company-level ESG Scores for the covered holdings in the portfolio from `0` to `100`'
+        mutual_fund:
+          $ref: '#/components/schemas/GetMutualFundsWorldSustainability_200_response_mutual_fund'
+        status:
+          description: Status of the response
           examples:
-          - 22
-          format: int64
-          type: integer
-          x-go-name: Score
-          x-order: 10
-        corporate_esg_pillars:
-          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_sustainability_corporate_esg_pillars'
-        sustainable_investment:
-          description: Indication that the fund discloses in their prospectus that they employ socially responsible or ESG principles in their investment selection processes
-          examples:
-          - false
-          type: boolean
-          x-go-name: SustainableInvestment
-          x-order: 30
-        corporate_aum:
-          description: Percentage of AUM used to calculate sustainability score
-          examples:
-          - 0.99486
-          format: double
-          type: number
-          x-go-name: CorporateAum
-          x-order: 40
-      type: object
-      x-go-name: Sustainability
-      x-order: 70
-    GetMutualFundsWorld_200_response_mutual_fund_risk_valuation_metrics:
-      description: Valuation ratios and metrics of the fund and its category
-      properties:
-        price_to_earnings:
-          description: Fund price to earnings metric
-          examples:
-          - 0.05695
-          format: double
-          type: number
-          x-go-name: PriceToEarnings
-          x-order: 10
-        price_to_earnings_category:
-          description: Average price to earnings metric of funds in the same category
-          examples:
-          - 20.63
-          format: double
-          type: number
-          x-go-name: PriceToEarningsCategory
+          - ok
+          type: string
+          x-go-name: Status
           x-order: 20
-        price_to_book:
-          description: Fund price to book metric
-          examples:
-          - 0.55626
-          format: double
-          type: number
-          x-go-name: PriceToBook
-          x-order: 30
-        price_to_book_category:
-          description: Average price to book metric of funds in the same category
-          examples:
-          - 2.87
-          format: double
-          type: number
-          x-go-name: PriceToBookCategory
-          x-order: 40
-        price_to_sales:
-          description: Fund price to sales metric
-          examples:
-          - 0.97803
-          format: double
-          type: number
-          x-go-name: PriceToSales
-          x-order: 50
-        price_to_sales_category:
-          description: Average price to sales metric of funds in the same category
-          examples:
-          - 1.34
-          format: double
-          type: number
-          x-go-name: PriceToSalesCategory
-          x-order: 60
-        price_to_cashflow:
-          description: Fund price to cashflow metric
-          examples:
-          - 0.10564
-          format: double
-          type: number
-          x-go-name: PriceToCashflow
-          x-order: 70
-        price_to_cashflow_category:
-          description: Average price to cashflow metric of funds in the same category
-          examples:
-          - 11.81
-          format: double
-          type: number
-          x-go-name: PriceToCashflowCategory
-          x-order: 80
-        median_market_capitalization:
-          description: Median market capitalization of a fund
-          examples:
-          - 2965
-          format: int64
-          type: integer
-          x-go-name: MedianMarketCapitalization
-          x-order: 90
-        median_market_capitalization_category:
-          description: Median market capitalization of funds in the same category
-          examples:
-          - 4925
-          format: int64
-          type: integer
-          x-go-name: MedianMarketCapitalizationCategory
-          x-order: 100
-        3_year_earnings_growth:
-          description: Earnings growth over the last three years
-          examples:
-          - 16.32
-          format: double
-          type: number
-          x-go-name: ThreeYearEarningsGrowth
-          x-order: 110
-        3_year_earnings_growths_category:
-          description: Earnings growth over the last three years of funds in the same category
-          examples:
-          - 10.55
-          format: double
-          type: number
-          x-go-name: ThreeYearEarningsGrowthCategory
-          x-order: 120
+      required:
+      - mutual_fund
+      - status
       type: object
-      x-go-name: ValuationMetrics
-      x-order: 20
-    ResponseMutualFundWorldSustainability:
-      description: Sustainability score and ESG (Environmental, Social, Governance) metrics for the fund
-      properties:
-        score:
-          description: 'Sustainability score: asset-weighted average of normalized company-level ESG Scores for the covered holdings in the portfolio from `0` to `100`'
-          examples:
-          - 22
-          format: int64
-          type: integer
-          x-go-name: Score
-          x-order: 10
-        corporate_esg_pillars:
-          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_sustainability_corporate_esg_pillars'
-        sustainable_investment:
-          description: Indication that the fund discloses in their prospectus that they employ socially responsible or ESG principles in their investment selection processes
-          examples:
-          - false
-          type: boolean
-          x-go-name: SustainableInvestment
-          x-order: 30
-        corporate_aum:
-          description: Percentage of AUM used to calculate sustainability score
-          examples:
-          - 0.99486
-          format: double
-          type: number
-          x-go-name: CorporateAum
-          x-order: 40
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/model/repository
-    GetMutualFundsWorldPerformance_200_response_mutual_fund:
-      description: Mutual fund information
-      properties:
-        performance:
-          $ref: '#/components/schemas/ResponseMutualFundWorldPerformance'
-      type: object
-      x-go-name: MutualFund
-      x-order: 10
-    GetMutualFundsWorld_200_response_mutual_fund_composition_top_holdings_inner:
-      properties:
-        symbol:
-          description: Symbol ticker of a holding instrument
-          examples:
-          - BBWI
-          type: string
-          x-go-name: Symbol
-          x-order: 10
-        name:
-          description: Name of a holding instrument
-          examples:
-          - Bath & Body Works Inc
-          type: string
-          x-go-name: Name
-          x-order: 20
-        exchange:
-          description: Exchange where instrument is traded
-          examples:
-          - NASDAQ
-          type: string
-          x-go-name: Exchange
-          x-order: 30
-        mic_code:
-          description: Market Identifier Code (MIC) under ISO 10383 standard
-          examples:
-          - XNAS
-          type: string
-          x-go-name: MicCode
-          x-order: 40
-        weight:
-          description: Weight of a holding instrument in overall portfolio composition
-          examples:
-          - 0.00624
-          format: double
-          type: number
-          x-go-name: Weight
-          x-order: 50
-      type: object
-    GetMutualFundsWorld_200_response_mutual_fund_composition_bond_breakdown_credit_quality_inner:
-      properties:
-        grade:
-          description: Rating of bond holding of a fund from AAA to below B
-          examples:
-          - U.S. Government
-          type: string
-          x-go-name: Grade
-          x-order: 10
-        weight:
-          description: Weight of bond holding in fund portfolio
-          examples:
-          - 0
-          format: double
-          type: number
-          x-go-name: Weight
-          x-order: 20
-      type: object
-    GetMutualFundsWorld_200_response_mutual_fund_purchase_info_pricing:
-      description: Pricing information for the mutual fund
-      properties:
-        nav:
-          description: 'Net Asset Value: fund value minus liabilities'
-          examples:
-          - 10.09
-          format: double
-          type: number
-          x-go-name: Nav
-          x-order: 10
-        12_month_low:
-          description: Lowest price of the fund over the last year
-          examples:
-          - 9.630000114441
-          format: double
-          type: number
-          x-go-name: TwelveMonthLow
-          x-order: 20
-        12_month_high:
-          description: Highest price of the fund over the last year
-          examples:
-          - 12.10000038147
-          format: double
-          type: number
-          x-go-name: TwelveMonthHigh
-          x-order: 30
-        last_month:
-          description: Fund price at the end of the last month
-          examples:
-          - 11.050000190735
-          format: double
-          type: number
-          x-go-name: LastMonth
-          x-order: 40
-      type: object
-      x-go-name: Pricing
-      x-order: 30
     GetMutualFundsWorld_200_response_mutual_fund_risk_volatility_measures_inner:
       properties:
         period:
@@ -3004,101 +1846,14 @@ components:
           x-go-name: TreynorRatioCategory
           x-order: 150
       type: object
-    ApiInternalServerErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 500
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - Internal server error
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetMutualFundsWorld_200_response_mutual_fund_performance_load_adjusted_return_inner:
-      properties:
-        period:
-          description: Period of a load adjusted return
-          examples:
-          - 1_year
-          type: string
-          x-go-name: Period
-          x-order: 10
-        return:
-          description: Actual return (%) an investor sees after accounting for fees and sales charges are deducted from a mutual fund's performance
-          examples:
-          - 0.06139
-          format: double
-          type: number
-          x-go-name: Return
-          x-order: 20
-      type: object
-    GetMutualFundsWorldSummary_200_response_mutual_fund:
-      description: Mutual fund information
-      properties:
-        summary:
-          $ref: '#/components/schemas/ResponseMutualFundWorldSummary'
-      type: object
-      x-go-name: MutualFund
-      x-order: 10
-    GetMutualFundsWorld_200_response:
-      properties:
-        mutual_fund:
-          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund'
-        status:
-          description: Status of the response
-          examples:
-          - ok
-          type: string
-          x-go-name: Status
-          x-order: 20
-      required:
-      - mutual_fund
-      - status
-      type: object
-    ApiForbiddenErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 403
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - API key lacks permissions for the requested resource
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    FormatEnum:
+      default: JSON
+      enum:
+      - JSON
+      - CSV
+      type: string
+      x-go-name: Format
+      x-order: '90'
     GetMutualFundsWorld_200_response_mutual_fund_performance_quarterly_total_returns_inner:
       properties:
         year:
@@ -3142,19 +1897,421 @@ components:
           x-go-name: Q4
           x-order: 50
       type: object
-    ApiUnauthorizedErrorResponseBody:
+    GetMutualFundsWorldComposition_200_response_mutual_fund:
+      description: Mutual fund information
+      properties:
+        composition:
+          $ref: '#/components/schemas/ResponseMutualFundWorldComposition'
+      type: object
+      x-go-name: MutualFund
+      x-order: 10
+    GetMutualFundsWorld_200_response_mutual_fund_performance_annual_total_returns_inner:
+      properties:
+        year:
+          description: Year of total returns
+          examples:
+          - 2024
+          format: int64
+          type: integer
+          x-go-name: Year
+          x-order: 10
+        share_class_return:
+          description: Fund total returns (%) generated over a given year
+          examples:
+          - 0.08546
+          format: double
+          type: number
+          x-go-name: ShareClassReturn
+          x-order: 20
+        category_return:
+          description: Same category average total returns (%) generated over a given year
+          examples:
+          - 0.1119
+          format: double
+          type: number
+          x-go-name: CategoryReturn
+          x-order: 30
+      type: object
+    GetMutualFundsWorld_200_response_mutual_fund_composition_top_holdings_inner:
+      properties:
+        symbol:
+          description: Symbol ticker of a holding instrument
+          examples:
+          - BBWI
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        name:
+          description: Name of a holding instrument
+          examples:
+          - Bath & Body Works Inc
+          type: string
+          x-go-name: Name
+          x-order: 20
+        exchange:
+          description: Exchange where instrument is traded
+          examples:
+          - NASDAQ
+          type: string
+          x-go-name: Exchange
+          x-order: 30
+        mic_code:
+          description: Market Identifier Code (MIC) under ISO 10383 standard
+          examples:
+          - XNAS
+          type: string
+          x-go-name: MicCode
+          x-order: 40
+        weight:
+          description: Weight of a holding instrument in overall portfolio composition
+          examples:
+          - 0.00624
+          format: double
+          type: number
+          x-go-name: Weight
+          x-order: 50
+      type: object
+    GetMutualFundsWorld_200_response_mutual_fund_performance_load_adjusted_return_inner:
+      properties:
+        period:
+          description: Period of a load adjusted return
+          examples:
+          - 1_year
+          type: string
+          x-go-name: Period
+          x-order: 10
+        return:
+          description: Actual return (%) an investor sees after accounting for fees and sales charges are deducted from a mutual fund's performance
+          examples:
+          - 0.06139
+          format: double
+          type: number
+          x-go-name: Return
+          x-order: 20
+      type: object
+    GetMutualFundsWorld_200_response_mutual_fund_composition_bond_breakdown:
+      description: Breakdown of the fund’s bond holdings by maturity, duration, and credit quality
+      properties:
+        average_maturity:
+          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_composition_bond_breakdown_average_maturity'
+        average_duration:
+          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_composition_bond_breakdown_average_duration'
+        credit_quality:
+          description: Breakdown of the fund’s bond holdings by credit rating and their respective portfolio weights
+          items:
+            $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_composition_bond_breakdown_credit_quality_inner'
+          type: array
+          x-go-name: CreditQuality
+          x-order: 20
+      type: object
+      x-go-name: BondBreakdown
+      x-order: 30
+    GetMutualFundsWorldSustainability_200_response_mutual_fund:
+      description: Mutual fund information
+      properties:
+        sustainability:
+          $ref: '#/components/schemas/ResponseMutualFundWorldSustainability'
+      type: object
+      x-go-name: Sustainability
+      x-order: 10
+    GetMutualFundsWorldPurchaseInfo_200_response_mutual_fund:
+      description: Mutual fund information
+      properties:
+        purchase_info:
+          $ref: '#/components/schemas/ResponseMutualFundWorldPurchaseInfo'
+      type: object
+      x-go-name: MutualFund
+      x-order: 10
+    ResponseMutualFundWorldSustainability:
+      description: Sustainability score and ESG (Environmental, Social, Governance) metrics for the fund
+      properties:
+        score:
+          description: 'Sustainability score: asset-weighted average of normalized company-level ESG Scores for the covered holdings in the portfolio from `0` to `100`'
+          examples:
+          - 22
+          format: int64
+          type: integer
+          x-go-name: Score
+          x-order: 10
+        corporate_esg_pillars:
+          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_sustainability_corporate_esg_pillars'
+        sustainable_investment:
+          description: Indication that the fund discloses in their prospectus that they employ socially responsible or ESG principles in their investment selection processes
+          examples:
+          - false
+          type: boolean
+          x-go-name: SustainableInvestment
+          x-order: 30
+        corporate_aum:
+          description: Percentage of AUM used to calculate sustainability score
+          examples:
+          - 0.99486
+          format: double
+          type: number
+          x-go-name: CorporateAum
+          x-order: 40
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/model/repository
+    ResponseMutualFundWorldComposition:
+      description: Mutual fund composition
+      properties:
+        major_market_sectors:
+          description: Breakdown of the fund’s portfolio by major industry sectors and their respective weights
+          items:
+            $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_composition_major_market_sectors_inner'
+          type: array
+          x-go-name: MajorMarketSectors
+          x-order: 10
+        asset_allocation:
+          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_composition_asset_allocation'
+        top_holdings:
+          description: Top holdings of the fund with their respective weights in the overall portfolio composition
+          items:
+            $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_composition_top_holdings_inner'
+          type: array
+          x-go-name: TopHoldings
+          x-order: 20
+        bond_breakdown:
+          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_composition_bond_breakdown'
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/model/repository
+    GetMutualFundsWorld_200_response_mutual_fund_purchase_info:
+      description: Purchase information of a mutual fund
+      properties:
+        expenses:
+          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_purchase_info_expenses'
+        minimums:
+          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_purchase_info_minimums'
+        pricing:
+          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_purchase_info_pricing'
+        brokerages:
+          description: List of brokerages where mutual fund can be purchased
+          examples:
+          - []
+          items:
+            type: string
+          type: array
+          x-go-name: Brokerages
+          x-order: 40
+      type: object
+      x-go-name: PurchaseInfo
+      x-order: 60
+    GetMutualFundsWorld_200_response_mutual_fund_purchase_info_minimums:
+      description: Minimum investment amounts required to purchase or add to the mutual fund, including IRA minimums
+      properties:
+        initial_investment:
+          description: Investment minimum
+          examples:
+          - 0
+          format: int64
+          type: integer
+          x-go-name: InitialInvestment
+          x-order: 10
+        additional_investment:
+          description: Minimum amount of additional investment
+          examples:
+          - 0
+          format: int64
+          type: integer
+          x-go-name: AdditionalInvestment
+          x-order: 20
+        initial_ira_investment:
+          description: Investment minimum for IRA
+          format: int64
+          type: integer
+          x-go-name: InitialIraInvestment
+          x-order: 30
+        additional_ira_investment:
+          description: Minimum amount of additional investment for IRA
+          format: int64
+          type: integer
+          x-go-name: AdditionalIraInvestment
+          x-order: 40
+      type: object
+      x-go-name: Minimums
+      x-order: 20
+    ResponseMutualFundWorldSummary:
+      description: A brief summary of a mutual fund
+      properties:
+        symbol:
+          description: All available fund types segmented by country
+          examples:
+          - 0P0001LCQ3
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        name:
+          description: Fund name
+          examples:
+          - JNL Small Cap Index Fund (I)
+          type: string
+          x-go-name: Name
+          x-order: 20
+        fund_family:
+          description: Investment company that manages the fund
+          examples:
+          - Jackson National
+          type: string
+          x-go-name: FundFamily
+          x-order: 30
+        fund_type:
+          description: Type of the fund
+          examples:
+          - Small Blend
+          type: string
+          x-go-name: FundType
+          x-order: 40
+        currency:
+          description: Currency of fund price
+          examples:
+          - USD
+          type: string
+          x-go-name: Currency
+          x-order: 50
+        share_class_inception_date:
+          description: The date from which the fund started operations and the returns are calculated
+          examples:
+          - '2021-04-26'
+          type: string
+          x-go-name: ShareClassInceptionDate
+          x-order: 60
+        ytd_return:
+          description: Percentage of profit of the fund since the first trading day of the current calendar year
+          examples:
+          - -0.02986
+          format: double
+          type: number
+          x-go-name: YtdReturn
+          x-order: 70
+        expense_ratio_net:
+          description: Percentage of mutual fund assets steered toward a fund's operating expenses and fund management fees
+          examples:
+          - 0.001
+          format: double
+          type: number
+          x-go-name: ExpenseRatioNet
+          x-order: 80
+        yield:
+          description: Income returned to its investors through interest and dividends generated by the fund's investments
+          examples:
+          - 0
+          format: double
+          type: number
+          x-go-name: Yield
+          x-order: 90
+        nav:
+          description: 'Net Asset Value: fund value minus liabilities'
+          examples:
+          - 10.09
+          format: double
+          type: number
+          x-go-name: Nav
+          x-order: 100
+        min_investment:
+          description: Investment minimum
+          examples:
+          - 0
+          format: int64
+          type: integer
+          x-go-name: MinInvestment
+          x-order: 110
+        turnover_rate:
+          description: Percentage rate at which mutual fund replaces its holdings on investment every year
+          examples:
+          - 0.32
+          format: double
+          type: number
+          x-go-name: TurnoverRate
+          x-order: 120
+        net_assets:
+          description: Total assets of a fund minus its total liabilities
+          examples:
+          - 2400762112
+          format: int64
+          type: integer
+          x-go-name: NetAssets
+          x-order: 130
+        overview:
+          description: Description of the fund
+          examples:
+          - The fund invests, normally, at least 80% of its assets in the stocks...
+          type: string
+          x-go-name: Overview
+          x-order: 140
+        people:
+          description: Information about the fund’s managers
+          items:
+            $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_summary_people_inner'
+          type: array
+          x-go-name: People
+          x-order: 150
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/model/repository
+    ResponseMutualFundWorldRatings:
+      description: Ratings of a mutual fund
+      properties:
+        performance_rating:
+          description: Performance rating from 0 to 5
+          examples:
+          - 2
+          format: int64
+          type: integer
+          x-go-name: PerformanceRating
+          x-order: 10
+        risk_rating:
+          description: Risk rating from 0 to 5
+          examples:
+          - 4
+          format: int64
+          type: integer
+          x-go-name: RiskRating
+          x-order: 20
+        return_rating:
+          description: Return rating from 0 to 5
+          examples:
+          - 0
+          format: int64
+          type: integer
+          x-go-name: ReturnRating
+          x-order: 30
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/model/repository
+    GetMutualFundsWorldPerformance_200_response_mutual_fund:
+      description: Mutual fund information
+      properties:
+        performance:
+          $ref: '#/components/schemas/ResponseMutualFundWorldPerformance'
+      type: object
+      x-go-name: MutualFund
+      x-order: 10
+    GetMutualFundsWorldPurchaseInfo_200_response:
+      properties:
+        mutual_fund:
+          $ref: '#/components/schemas/GetMutualFundsWorldPurchaseInfo_200_response_mutual_fund'
+        status:
+          description: Status of the response
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+          x-order: 20
+      required:
+      - mutual_fund
+      - status
+      type: object
+    ApiForbiddenErrorResponseBody:
       properties:
         code:
           description: Error code
           examples:
-          - 401
+          - 403
           format: int64
           type: integer
           x-go-name: Code
         message:
           description: Error message
           examples:
-          - apikey parameter is incorrect or not specified
+          - API key lacks permissions for the requested resource
           type: string
           x-go-name: Message
         status:
@@ -3169,6 +2326,152 @@ components:
       - status
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetMutualFundsWorld_200_response_mutual_fund_risk:
+      description: Risk metrics of a mutual fund
+      properties:
+        volatility_measures:
+          description: Volatility statistics of the fund
+          items:
+            $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_risk_volatility_measures_inner'
+          type: array
+          x-go-name: VolatilityMeasures
+          x-order: 10
+        valuation_metrics:
+          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_risk_valuation_metrics'
+      type: object
+      x-go-name: Risk
+      x-order: 30
+    MutualFundsListResponseListItem:
+      properties:
+        symbol:
+          description: Fund symbol ticker
+          examples:
+          - 0P0001LCQ3
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        name:
+          description: Fund name
+          examples:
+          - JNL Small Cap Index Fund (I)
+          type: string
+          x-go-name: Name
+          x-order: 20
+        country:
+          description: Country of fund incorporation
+          examples:
+          - United States
+          type: string
+          x-go-name: Country
+          x-order: 30
+        fund_family:
+          description: Investment company that manages the fund
+          examples:
+          - Jackson National
+          type: string
+          x-go-name: FundFamily
+          x-order: 40
+        fund_type:
+          description: Type of fund
+          examples:
+          - Small Blend
+          type: string
+          x-go-name: FundType
+          x-order: 50
+        performance_rating:
+          description: Performance rating from `0` to `5`
+          examples:
+          - 2
+          format: int64
+          type: integer
+          x-go-name: PerformanceRating
+          x-order: 60
+        risk_rating:
+          description: Risk rating from `0` to `5`
+          examples:
+          - 4
+          format: int64
+          type: integer
+          x-go-name: RiskRating
+          x-order: 70
+        currency:
+          description: Currency code in which the fund is denominated
+          examples:
+          - USD
+          type: string
+          x-go-name: Currency
+          x-order: 80
+        exchange:
+          description: Exchange name where the fund is listed
+          examples:
+          - OTC
+          type: string
+          x-go-name: Exchange
+          x-order: 90
+        mic_code:
+          description: Market identifier code (MIC) under ISO 10383 standard
+          examples:
+          - OTCM
+          type: string
+          x-go-name: MicCode
+          x-order: 100
+      required:
+      - country
+      - currency
+      - exchange
+      - fund_family
+      - fund_type
+      - mic_code
+      - name
+      - symbol
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetMutualFundsWorld_200_response_mutual_fund_purchase_info_pricing:
+      description: Pricing information for the mutual fund
+      properties:
+        nav:
+          description: 'Net Asset Value: fund value minus liabilities'
+          examples:
+          - 10.09
+          format: double
+          type: number
+          x-go-name: Nav
+          x-order: 10
+        12_month_low:
+          description: Lowest price of the fund over the last year
+          examples:
+          - 9.630000114441
+          format: double
+          type: number
+          x-go-name: TwelveMonthLow
+          x-order: 20
+        12_month_high:
+          description: Highest price of the fund over the last year
+          examples:
+          - 12.10000038147
+          format: double
+          type: number
+          x-go-name: TwelveMonthHigh
+          x-order: 30
+        last_month:
+          description: Fund price at the end of the last month
+          examples:
+          - 11.050000190735
+          format: double
+          type: number
+          x-go-name: LastMonth
+          x-order: 40
+      type: object
+      x-go-name: Pricing
+      x-order: 30
+    GetMutualFundsWorldSummary_200_response_mutual_fund:
+      description: Mutual fund information
+      properties:
+        summary:
+          $ref: '#/components/schemas/ResponseMutualFundWorldSummary'
+      type: object
+      x-go-name: MutualFund
+      x-order: 10
     GetMutualFundsFamily_200_response:
       properties:
         result:
@@ -3199,10 +2502,274 @@ components:
       - result
       - status
       type: object
-    GetMutualFundsWorldSustainability_200_response:
+    GetMutualFundsWorld_200_response_mutual_fund_risk_valuation_metrics:
+      description: Valuation ratios and metrics of the fund and its category
+      properties:
+        price_to_earnings:
+          description: Fund price to earnings metric
+          examples:
+          - 0.05695
+          format: double
+          type: number
+          x-go-name: PriceToEarnings
+          x-order: 10
+        price_to_earnings_category:
+          description: Average price to earnings metric of funds in the same category
+          examples:
+          - 20.63
+          format: double
+          type: number
+          x-go-name: PriceToEarningsCategory
+          x-order: 20
+        price_to_book:
+          description: Fund price to book metric
+          examples:
+          - 0.55626
+          format: double
+          type: number
+          x-go-name: PriceToBook
+          x-order: 30
+        price_to_book_category:
+          description: Average price to book metric of funds in the same category
+          examples:
+          - 2.87
+          format: double
+          type: number
+          x-go-name: PriceToBookCategory
+          x-order: 40
+        price_to_sales:
+          description: Fund price to sales metric
+          examples:
+          - 0.97803
+          format: double
+          type: number
+          x-go-name: PriceToSales
+          x-order: 50
+        price_to_sales_category:
+          description: Average price to sales metric of funds in the same category
+          examples:
+          - 1.34
+          format: double
+          type: number
+          x-go-name: PriceToSalesCategory
+          x-order: 60
+        price_to_cashflow:
+          description: Fund price to cashflow metric
+          examples:
+          - 0.10564
+          format: double
+          type: number
+          x-go-name: PriceToCashflow
+          x-order: 70
+        price_to_cashflow_category:
+          description: Average price to cashflow metric of funds in the same category
+          examples:
+          - 11.81
+          format: double
+          type: number
+          x-go-name: PriceToCashflowCategory
+          x-order: 80
+        median_market_capitalization:
+          description: Median market capitalization of a fund
+          examples:
+          - 2965
+          format: int64
+          type: integer
+          x-go-name: MedianMarketCapitalization
+          x-order: 90
+        median_market_capitalization_category:
+          description: Median market capitalization of funds in the same category
+          examples:
+          - 4925
+          format: int64
+          type: integer
+          x-go-name: MedianMarketCapitalizationCategory
+          x-order: 100
+        3_year_earnings_growth:
+          description: Earnings growth over the last three years
+          examples:
+          - 16.32
+          format: double
+          type: number
+          x-go-name: ThreeYearEarningsGrowth
+          x-order: 110
+        3_year_earnings_growths_category:
+          description: Earnings growth over the last three years of funds in the same category
+          examples:
+          - 10.55
+          format: double
+          type: number
+          x-go-name: ThreeYearEarningsGrowthCategory
+          x-order: 120
+      type: object
+      x-go-name: ValuationMetrics
+      x-order: 20
+    GetMutualFundsWorld_200_response_mutual_fund_composition_major_market_sectors_inner:
+      properties:
+        sector:
+          description: Sector category of a fund exposure
+          examples:
+          - Industrials
+          type: string
+          x-go-name: Sector
+          x-order: 10
+        weight:
+          description: Weight of a fund exposure in a sector
+          examples:
+          - 0.1742
+          format: double
+          type: number
+          x-go-name: Weight
+          x-order: 20
+      type: object
+    GetMutualFundsWorld_200_response_mutual_fund_summary_people_inner:
+      properties:
+        name:
+          description: Manager name
+          examples:
+          - John Doe
+          type: string
+          x-go-name: Name
+          x-order: 10
+        tenure_since:
+          description: Manager tenuring date
+          examples:
+          - '2018-01-01'
+          type: string
+          x-go-name: TenureSince
+          x-order: 20
+      type: object
+    ApiInternalServerErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 500
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Internal server error
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetMutualFundsWorld_200_response_mutual_fund_performance:
+      description: Detailed performance of a mutual fund
+      properties:
+        trailing_returns:
+          description: Trailing returns of the fund
+          items:
+            $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_performance_trailing_returns_inner'
+          type: array
+          x-go-name: TrailingReturns
+          x-order: 10
+        annual_total_returns:
+          description: Annual total returns of the fund
+          items:
+            $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_performance_annual_total_returns_inner'
+          type: array
+          x-go-name: AnnualTotalReturns
+          x-order: 20
+        quarterly_total_returns:
+          description: Quarterly total returns of the fund
+          items:
+            $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_performance_quarterly_total_returns_inner'
+          type: array
+          x-go-name: QuarterlyTotalReturns
+          x-order: 30
+        load_adjusted_return:
+          description: Load adjusted return of the fund
+          items:
+            $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_performance_load_adjusted_return_inner'
+          type: array
+          x-go-name: LoadAdjustedReturn
+          x-order: 40
+      type: object
+      x-go-name: Performance
+      x-order: 20
+    GetMutualFundsWorld_200_response_mutual_fund_sustainability:
+      description: Sustainability information of a mutual fund
+      properties:
+        score:
+          description: 'Sustainability score: asset-weighted average of normalized company-level ESG Scores for the covered holdings in the portfolio from `0` to `100`'
+          examples:
+          - 22
+          format: int64
+          type: integer
+          x-go-name: Score
+          x-order: 10
+        corporate_esg_pillars:
+          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_sustainability_corporate_esg_pillars'
+        sustainable_investment:
+          description: Indication that the fund discloses in their prospectus that they employ socially responsible or ESG principles in their investment selection processes
+          examples:
+          - false
+          type: boolean
+          x-go-name: SustainableInvestment
+          x-order: 30
+        corporate_aum:
+          description: Percentage of AUM used to calculate sustainability score
+          examples:
+          - 0.99486
+          format: double
+          type: number
+          x-go-name: CorporateAum
+          x-order: 40
+      type: object
+      x-go-name: Sustainability
+      x-order: 70
+    ResponseMutualFundWorldRisk:
+      description: Risk and volatility statistics of the fund and its category over different periods
+      properties:
+        volatility_measures:
+          description: Volatility statistics of the fund
+          items:
+            $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_risk_volatility_measures_inner'
+          type: array
+          x-go-name: VolatilityMeasures
+          x-order: 10
+        valuation_metrics:
+          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_risk_valuation_metrics'
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/model/repository
+    GetMutualFundsList_200_response:
+      properties:
+        result:
+          $ref: '#/components/schemas/GetMutualFundsList_200_response_result'
+        status:
+          description: Response status
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+      required:
+      - status
+      type: object
+    GetMutualFundsWorldRisk_200_response_mutual_fund:
+      description: Mutual fund information
+      properties:
+        risk:
+          $ref: '#/components/schemas/ResponseMutualFundWorldRisk'
+      type: object
+      x-go-name: MutualFund
+      x-order: 10
+    GetMutualFundsWorldRisk_200_response:
       properties:
         mutual_fund:
-          $ref: '#/components/schemas/GetMutualFundsWorldSustainability_200_response_mutual_fund'
+          $ref: '#/components/schemas/GetMutualFundsWorldRisk_200_response_mutual_fund'
         status:
           description: Status of the response
           examples:
@@ -3214,10 +2781,373 @@ components:
       - mutual_fund
       - status
       type: object
-    GetMutualFundsWorldPerformance_200_response:
+    ApiTooManyRequestsErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 429
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - You have run out of API credits for the current minute. 1000 API credits were used, with the current limit being 987. Wait for the next minute or consider upgrading your plan at https://twelvedata.com/pricing
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetMutualFundsWorld_200_response_mutual_fund_summary:
+      description: A brief summary of a mutual fund
+      properties:
+        symbol:
+          description: All available fund types segmented by country
+          examples:
+          - 0P0001LCQ3
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        name:
+          description: Fund name
+          examples:
+          - JNL Small Cap Index Fund (I)
+          type: string
+          x-go-name: Name
+          x-order: 20
+        fund_family:
+          description: Investment company that manages the fund
+          examples:
+          - Jackson National
+          type: string
+          x-go-name: FundFamily
+          x-order: 30
+        fund_type:
+          description: Type of the fund
+          examples:
+          - Small Blend
+          type: string
+          x-go-name: FundType
+          x-order: 40
+        currency:
+          description: Currency of fund price
+          examples:
+          - USD
+          type: string
+          x-go-name: Currency
+          x-order: 50
+        share_class_inception_date:
+          description: The date from which the fund started operations and the returns are calculated
+          examples:
+          - '2021-04-26'
+          type: string
+          x-go-name: ShareClassInceptionDate
+          x-order: 60
+        ytd_return:
+          description: Percentage of profit of the fund since the first trading day of the current calendar year
+          examples:
+          - -0.02986
+          format: double
+          type: number
+          x-go-name: YtdReturn
+          x-order: 70
+        expense_ratio_net:
+          description: Percentage of mutual fund assets steered toward a fund's operating expenses and fund management fees
+          examples:
+          - 0.001
+          format: double
+          type: number
+          x-go-name: ExpenseRatioNet
+          x-order: 80
+        yield:
+          description: Income returned to its investors through interest and dividends generated by the fund's investments
+          examples:
+          - 0
+          format: double
+          type: number
+          x-go-name: Yield
+          x-order: 90
+        nav:
+          description: 'Net Asset Value: fund value minus liabilities'
+          examples:
+          - 10.09
+          format: double
+          type: number
+          x-go-name: Nav
+          x-order: 100
+        min_investment:
+          description: Investment minimum
+          examples:
+          - 0
+          format: int64
+          type: integer
+          x-go-name: MinInvestment
+          x-order: 110
+        turnover_rate:
+          description: Percentage rate at which mutual fund replaces its holdings on investment every year
+          examples:
+          - 0.32
+          format: double
+          type: number
+          x-go-name: TurnoverRate
+          x-order: 120
+        net_assets:
+          description: Total assets of a fund minus its total liabilities
+          examples:
+          - 2400762112
+          format: int64
+          type: integer
+          x-go-name: NetAssets
+          x-order: 130
+        overview:
+          description: Description of the fund
+          examples:
+          - The fund invests, normally, at least 80% of its assets in the stocks...
+          type: string
+          x-go-name: Overview
+          x-order: 140
+        people:
+          description: Information about the fund’s managers
+          items:
+            $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_summary_people_inner'
+          type: array
+          x-go-name: People
+          x-order: 150
+      type: object
+      x-go-name: Summary
+      x-order: 10
+    ResponseMutualFundWorldPurchaseInfo:
+      description: Purchase information for the mutual fund
+      properties:
+        expenses:
+          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_purchase_info_expenses'
+        minimums:
+          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_purchase_info_minimums'
+        pricing:
+          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund_purchase_info_pricing'
+        brokerages:
+          description: List of brokerages where mutual fund can be purchased
+          examples:
+          - []
+          items:
+            type: string
+          type: array
+          x-go-name: Brokerages
+          x-order: 40
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/model/repository
+    GetMutualFundsList_200_response_result:
+      description: Response result
+      properties:
+        count:
+          description: Total number of matching funds
+          examples:
+          - 1000
+          format: int64
+          type: integer
+          x-go-name: Count
+          x-order: 10
+        list:
+          description: List of mutual funds
+          items:
+            $ref: '#/components/schemas/MutualFundsListResponseListItem'
+          type: array
+          x-go-name: Data
+          x-order: 20
+      required:
+      - count
+      - list
+      type: object
+      x-go-name: Result
+    ApiNotFoundErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 404
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - symbol or figi parameter is missing or invalid
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetMutualFundsWorldSummary_200_response:
       properties:
         mutual_fund:
-          $ref: '#/components/schemas/GetMutualFundsWorldPerformance_200_response_mutual_fund'
+          $ref: '#/components/schemas/GetMutualFundsWorldSummary_200_response_mutual_fund'
+        status:
+          description: Status of the response
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+          x-order: 20
+      required:
+      - mutual_fund
+      - status
+      type: object
+    GetMutualFundsWorld_200_response_mutual_fund_performance_trailing_returns_inner:
+      properties:
+        period:
+          description: Period of trailing returns
+          examples:
+          - ytd
+          type: string
+          x-go-name: Period
+          x-order: 10
+        share_class_return:
+          description: Fund returns (%) generated over a given period
+          examples:
+          - -0.02986
+          format: double
+          type: number
+          x-go-name: ShareClassReturn
+          x-order: 20
+        category_return:
+          description: Same category average returns (%) generated over a given period
+          examples:
+          - 0.2019
+          format: double
+          type: number
+          x-go-name: CategoryReturn
+          x-order: 30
+        rank_in_category:
+          description: Rank of a fund in category by total returns
+          examples:
+          - 76
+          format: int64
+          type: integer
+          x-go-name: RankInCategory
+          x-order: 40
+      type: object
+    GetMutualFundsWorld_200_response_mutual_fund_purchase_info_expenses:
+      description: Costs associated with investing in the mutual fund, including gross and net expense ratios
+      properties:
+        expense_ratio_gross:
+          description: Cost of investing in a mutual fund
+          examples:
+          - 0.0022
+          format: double
+          type: number
+          x-go-name: ExpenseRatioGross
+          x-order: 10
+        expense_ratio_net:
+          description: Percentage of mutual fund assets steered toward a fund's operating expenses and fund management fees
+          examples:
+          - 0.001
+          format: double
+          type: number
+          x-go-name: ExpenseRatioNet
+          x-order: 20
+      type: object
+      x-go-name: Expenses
+      x-order: 10
+    GetMutualFundsWorldComposition_200_response:
+      properties:
+        mutual_fund:
+          $ref: '#/components/schemas/GetMutualFundsWorldComposition_200_response_mutual_fund'
+        status:
+          description: Status of the response
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+          x-order: 20
+      required:
+      - mutual_fund
+      - status
+      type: object
+    ApiUnauthorizedErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 401
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - apikey parameter is incorrect or not specified
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetMutualFundsType_200_response:
+      properties:
+        result:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          description: List of fund types by country
+          examples:
+          - Singapore:
+            - Property - Indirect Asia
+            - Sector Equity Water
+            - SGD Bond
+            - Singapore Equity
+            - Taiwan Large-Cap Equity
+            United States:
+            - Asia-Pacific ex-Japan Equity
+            - EUR Flexible Allocation - Global
+            - Euro Short Bond PP
+            - Large Blend
+            - Other Allocation
+          type: object
+          x-go-name: Result
+          x-order: 10
+        status:
+          description: Response status
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+          x-order: 20
+      required:
+      - result
+      - status
+      type: object
+    GetMutualFundsWorld_200_response:
+      properties:
+        mutual_fund:
+          $ref: '#/components/schemas/GetMutualFundsWorld_200_response_mutual_fund'
         status:
           description: Status of the response
           examples:
@@ -3249,35 +3179,6 @@ components:
       type: object
       x-go-name: AverageMaturity
       x-order: 10
-    ResponseMutualFundWorldRatings:
-      description: Ratings of a mutual fund
-      properties:
-        performance_rating:
-          description: Performance rating from 0 to 5
-          examples:
-          - 2
-          format: int64
-          type: integer
-          x-go-name: PerformanceRating
-          x-order: 10
-        risk_rating:
-          description: Risk rating from 0 to 5
-          examples:
-          - 4
-          format: int64
-          type: integer
-          x-go-name: RiskRating
-          x-order: 20
-        return_rating:
-          description: Return rating from 0 to 5
-          examples:
-          - 0
-          format: int64
-          type: integer
-          x-go-name: ReturnRating
-          x-order: 30
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/model/repository
     ApiParameterTooLongErrorResponseBody:
       properties:
         code:
@@ -3305,6 +3206,105 @@ components:
       - status
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiBadRequestErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 400
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Invalid request
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetMutualFundsWorld_200_response_mutual_fund_composition_asset_allocation:
+      description: Asset allocation of the fund by different asset classes and their respective weights
+      properties:
+        cash:
+          description: Percentage of overall portfolio composition in cash
+          examples:
+          - 0.0043
+          format: double
+          type: number
+          x-go-name: Cash
+          x-order: 10
+        stocks:
+          description: Percentage of overall portfolio composition in stocks
+          examples:
+          - 0.9956
+          format: double
+          type: number
+          x-go-name: Stocks
+          x-order: 20
+        preferred_stocks:
+          description: Percentage of overall portfolio composition in preferred stocks
+          examples:
+          - 0
+          format: double
+          type: number
+          x-go-name: PreferredStocks
+          x-order: 30
+        convertables:
+          description: Percentage of overall portfolio composition in convertable securities
+          examples:
+          - 0
+          format: double
+          type: number
+          x-go-name: Convertables
+          x-order: 40
+        bonds:
+          description: Percentage of overall portfolio composition in bond
+          examples:
+          - 0
+          format: double
+          type: number
+          x-go-name: Bonds
+          x-order: 50
+        others:
+          description: Percentage of overall portfolio composition in other forms of holding
+          examples:
+          - 0
+          format: double
+          type: number
+          x-go-name: Others
+          x-order: 60
+      type: object
+      x-go-name: AssetAllocation
+      x-order: 20
+    GetMutualFundsWorld_200_response_mutual_fund_composition_bond_breakdown_credit_quality_inner:
+      properties:
+        grade:
+          description: Rating of bond holding of a fund from AAA to below B
+          examples:
+          - U.S. Government
+          type: string
+          x-go-name: Grade
+          x-order: 10
+        weight:
+          description: Weight of bond holding in fund portfolio
+          examples:
+          - 0
+          format: double
+          type: number
+          x-go-name: Weight
+          x-order: 20
+      type: object
   securitySchemes:
     authorizationHeader:
       description: Enter the token with the `apikey ` prefix, e.g. "apikey abcde12345".

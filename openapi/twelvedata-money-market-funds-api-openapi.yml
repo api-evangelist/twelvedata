@@ -249,157 +249,6 @@ paths:
           - isin
 components:
   schemas:
-    MoneyMarketFundsListResponseListItem:
-      properties:
-        symbol:
-          description: Fund symbol (ISIN or ticker)
-          examples:
-          - IE00BK8M8M59
-          type: string
-          x-go-name: Symbol
-          x-order: 10
-        name:
-          description: Fund name
-          examples:
-          - BlackRock ICS Sterling Liquid Environmentally Aware Fund
-          type: string
-          x-go-name: Name
-          x-order: 20
-        currency:
-          description: Currency in which the fund is denominated
-          examples:
-          - GBP
-          type: string
-          x-go-name: Currency
-          x-order: 30
-        share_class:
-          description: Share class
-          examples:
-          - Premier Dis
-          type: string
-          x-go-name: ShareClass
-          x-order: 40
-        fund_family:
-          description: Investment company family that manages the fund
-          examples:
-          - BlackRock ICS
-          type: string
-          x-go-name: FundFamily
-          x-order: 50
-        fund_type:
-          description: Type of fund
-          examples:
-          - Short-Term Variable NAV
-          type: string
-          x-go-name: FundType
-          x-order: 60
-        regulatory_structure:
-          description: Regulatory structure
-          examples:
-          - UCITS
-          type: string
-          x-go-name: RegulatoryStructure
-          x-order: 70
-        domicile:
-          description: Country of fund domicile (ISO 3166-1 alpha-2 code)
-          examples:
-          - IE
-          type: string
-          x-go-name: Domicile
-          x-order: 80
-        issuing_company:
-          description: Company that issues the fund
-          examples:
-          - BlackRock Asset Management Ireland Limited
-          type: string
-          x-go-name: IssuingCompany
-          x-order: 90
-      required:
-      - name
-      - symbol
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    ApiTooManyRequestsErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 429
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - You have run out of API credits for the current minute. 1000 API credits were used, with the current limit being 987. Wait for the next minute or consider upgrading your plan at https://twelvedata.com/pricing
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    ApiForbiddenErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 403
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - API key lacks permissions for the requested resource
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    ApiNotFoundErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 404
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - symbol or figi parameter is missing or invalid
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
     MoneyMarketFundsWorldResponseItem:
       properties:
         symbol:
@@ -558,48 +407,14 @@ components:
           x-order: 250
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetMoneyMarketFundsWorld_200_response:
-      properties:
-        status:
-          description: Response status
-          examples:
-          - ok
-          type: string
-          x-go-name: Status
-          x-order: 20
-        money_market_fund:
-          $ref: '#/components/schemas/MoneyMarketFundsWorldResponseItem'
-      required:
-      - money_market_fund
-      - status
-      type: object
-    ApiUnauthorizedErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 401
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - apikey parameter is incorrect or not specified
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    FormatMoneyMarketFundsListEnum:
+      default: json
+      enum:
+      - json
+      - csv
+      type: string
+      x-go-name: FormatMoneyMarketFundsList
+      x-order: '30'
     GetMoneyMarketFundsList_200_response:
       properties:
         data:
@@ -647,19 +462,34 @@ components:
       - page_size
       - status
       type: object
-    ApiParameterTooLongErrorResponseBody:
+    GetMoneyMarketFundsWorld_200_response:
+      properties:
+        status:
+          description: Response status
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+          x-order: 20
+        money_market_fund:
+          $ref: '#/components/schemas/MoneyMarketFundsWorldResponseItem'
+      required:
+      - money_market_fund
+      - status
+      type: object
+    ApiNotFoundErrorResponseBody:
       properties:
         code:
           description: Error code
           examples:
-          - 414
+          - 404
           format: int64
           type: integer
           x-go-name: Code
         message:
           description: Error message
           examples:
-          - Input parameter array exceeds the allowed length
+          - symbol or figi parameter is missing or invalid
           type: string
           x-go-name: Message
         status:
@@ -674,19 +504,19 @@ components:
       - status
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    ApiInternalServerErrorResponseBody:
+    ApiUnauthorizedErrorResponseBody:
       properties:
         code:
           description: Error code
           examples:
-          - 500
+          - 401
           format: int64
           type: integer
           x-go-name: Code
         message:
           description: Error message
           examples:
-          - Internal server error
+          - apikey parameter is incorrect or not specified
           type: string
           x-go-name: Message
         status:
@@ -728,14 +558,184 @@ components:
       - status
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    FormatMoneyMarketFundsListEnum:
-      default: json
-      enum:
-      - json
-      - csv
-      type: string
-      x-go-name: FormatMoneyMarketFundsList
-      x-order: '30'
+    ApiForbiddenErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 403
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - API key lacks permissions for the requested resource
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    MoneyMarketFundsListResponseListItem:
+      properties:
+        symbol:
+          description: Fund symbol (ISIN or ticker)
+          examples:
+          - IE00BK8M8M59
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        name:
+          description: Fund name
+          examples:
+          - BlackRock ICS Sterling Liquid Environmentally Aware Fund
+          type: string
+          x-go-name: Name
+          x-order: 20
+        currency:
+          description: Currency in which the fund is denominated
+          examples:
+          - GBP
+          type: string
+          x-go-name: Currency
+          x-order: 30
+        share_class:
+          description: Share class
+          examples:
+          - Premier Dis
+          type: string
+          x-go-name: ShareClass
+          x-order: 40
+        fund_family:
+          description: Investment company family that manages the fund
+          examples:
+          - BlackRock ICS
+          type: string
+          x-go-name: FundFamily
+          x-order: 50
+        fund_type:
+          description: Type of fund
+          examples:
+          - Short-Term Variable NAV
+          type: string
+          x-go-name: FundType
+          x-order: 60
+        regulatory_structure:
+          description: Regulatory structure
+          examples:
+          - UCITS
+          type: string
+          x-go-name: RegulatoryStructure
+          x-order: 70
+        domicile:
+          description: Country of fund domicile (ISO 3166-1 alpha-2 code)
+          examples:
+          - IE
+          type: string
+          x-go-name: Domicile
+          x-order: 80
+        issuing_company:
+          description: Company that issues the fund
+          examples:
+          - BlackRock Asset Management Ireland Limited
+          type: string
+          x-go-name: IssuingCompany
+          x-order: 90
+      required:
+      - name
+      - symbol
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiInternalServerErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 500
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Internal server error
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiTooManyRequestsErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 429
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - You have run out of API credits for the current minute. 1000 API credits were used, with the current limit being 987. Wait for the next minute or consider upgrading your plan at https://twelvedata.com/pricing
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiParameterTooLongErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 414
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Input parameter array exceeds the allowed length
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
   securitySchemes:
     authorizationHeader:
       description: Enter the token with the `apikey ` prefix, e.g. "apikey abcde12345".

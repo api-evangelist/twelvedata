@@ -325,106 +325,6 @@ components:
       - symbol
       - timestamp
       type: object
-    ApiTooManyRequestsErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 429
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - You have run out of API credits for the current minute. 1000 API credits were used, with the current limit being 987. Wait for the next minute or consider upgrading your plan at https://twelvedata.com/pricing
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    FormatEnum:
-      default: JSON
-      enum:
-      - JSON
-      - CSV
-      type: string
-      x-go-name: Format
-      x-order: '90'
-    GetCurrencyConversion_200_response:
-      properties:
-        symbol:
-          description: Requested currency symbol
-          examples:
-          - USD/JPY
-          type: string
-          x-go-name: Symbol
-          x-order: 10
-        rate:
-          description: Real-time exchange rate for the corresponding symbol
-          examples:
-          - 105.12
-          format: double
-          type: number
-          x-go-name: Rate
-          x-order: 20
-        amount:
-          description: Amount of converted currency
-          examples:
-          - 12824.64
-          format: double
-          type: number
-          x-go-name: Amount
-          x-order: 30
-        timestamp:
-          description: Unix timestamp of the rate
-          examples:
-          - 1602714051
-          format: int64
-          type: integer
-          x-go-name: Timestamp
-          x-order: 40
-      required:
-      - rate
-      - symbol
-      - timestamp
-      type: object
-    ApiForbiddenErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 403
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - API key lacks permissions for the requested resource
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
     ApiNotFoundErrorResponseBody:
       properties:
         code:
@@ -479,60 +379,6 @@ components:
       - status
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    ApiParameterTooLongErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 414
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - Input parameter array exceeds the allowed length
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    ApiInternalServerErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 500
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - Internal server error
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
     ApiBadRequestErrorResponseBody:
       properties:
         code:
@@ -560,6 +406,160 @@ components:
       - status
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiForbiddenErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 403
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - API key lacks permissions for the requested resource
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    FormatEnum:
+      default: JSON
+      enum:
+      - JSON
+      - CSV
+      type: string
+      x-go-name: Format
+      x-order: '90'
+    ApiInternalServerErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 500
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Internal server error
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiTooManyRequestsErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 429
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - You have run out of API credits for the current minute. 1000 API credits were used, with the current limit being 987. Wait for the next minute or consider upgrading your plan at https://twelvedata.com/pricing
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiParameterTooLongErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 414
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Input parameter array exceeds the allowed length
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetCurrencyConversion_200_response:
+      properties:
+        symbol:
+          description: Requested currency symbol
+          examples:
+          - USD/JPY
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        rate:
+          description: Real-time exchange rate for the corresponding symbol
+          examples:
+          - 105.12
+          format: double
+          type: number
+          x-go-name: Rate
+          x-order: 20
+        amount:
+          description: Amount of converted currency
+          examples:
+          - 12824.64
+          format: double
+          type: number
+          x-go-name: Amount
+          x-order: 30
+        timestamp:
+          description: Unix timestamp of the rate
+          examples:
+          - 1602714051
+          format: int64
+          type: integer
+          x-go-name: Timestamp
+          x-order: 40
+      required:
+      - rate
+      - symbol
+      - timestamp
+      type: object
   securitySchemes:
     authorizationHeader:
       description: Enter the token with the `apikey ` prefix, e.g. "apikey abcde12345".

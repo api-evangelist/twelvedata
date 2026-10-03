@@ -1392,567 +1392,6 @@ paths:
           - cusip
 components:
   schemas:
-    RatingChangeEnum:
-      enum:
-      - Maintains
-      - Upgrade
-      - Downgrade
-      - Initiates
-      - Reiterates
-      type: string
-      x-go-name: RatingChange
-      x-order: '60'
-    GetEpsTrend_200_response:
-      properties:
-        meta:
-          $ref: '#/components/schemas/GetEarningsEstimate_200_response_meta'
-        eps_trend:
-          description: EPS trend data
-          items:
-            $ref: '#/components/schemas/GetEpsTrend_200_response_eps_trend_inner'
-          type: array
-          x-go-name: EpsTrend
-          x-order: 20
-        status:
-          description: Status of the response
-          examples:
-          - ok
-          type: string
-          x-go-name: Status
-          x-order: 30
-      required:
-      - eps_trend
-      - meta
-      - status
-      type: object
-    GetGrowthEstimates_200_response_growth_estimates:
-      description: Growth estimates data
-      properties:
-        current_quarter:
-          description: Projected growth of the current quarter in percentage (%)
-          examples:
-          - 0.016
-          format: double
-          type: number
-          x-go-name: CurrentQuarter
-          x-order: 10
-        next_quarter:
-          description: Projected growth of the next quarter in percentage (%)
-          examples:
-          - 0.01
-          format: double
-          type: number
-          x-go-name: NextQuarter
-          x-order: 20
-        current_year:
-          description: Projected growth of the current year in percentage (%)
-          examples:
-          - 0.087
-          format: double
-          type: number
-          x-go-name: CurrentYear
-          x-order: 30
-        next_year:
-          description: Projected growth of the next year in percentage (%)
-          examples:
-          - 0.055999998
-          format: double
-          type: number
-          x-go-name: NextYear
-          x-order: 40
-        next_5_years_pa:
-          description: Projected growth during the next 5 years in percentage (%) per annum
-          examples:
-          - 0.094799995
-          format: double
-          type: number
-          x-go-name: Next5YearsPA
-          x-order: 50
-        past_5_years_pa:
-          description: Actual growth over the last 5 years in percentage (%) per annum
-          examples:
-          - 0.23867
-          format: double
-          type: number
-          x-go-name: Past5YearsPA
-          x-order: 60
-      type: object
-      x-go-name: GrowthEstimates
-      x-order: 20
-    GetRecommendations_200_response_meta:
-      description: Metadata about the symbol
-      properties:
-        symbol:
-          description: Symbol ticker of the instrument
-          examples:
-          - AAPL
-          type: string
-          x-go-name: Symbol
-          x-order: 10
-        name:
-          description: Name of the instrument
-          examples:
-          - Apple Inc
-          type: string
-          x-go-name: Name
-          x-order: 20
-        currency:
-          description: Currency in which the instrument is traded
-          examples:
-          - USD
-          type: string
-          x-go-name: Currency
-          x-order: 30
-        exchange_timezone:
-          description: Timezone of the exchange
-          examples:
-          - America/New_York
-          type: string
-          x-go-name: ExchangeTimezone
-          x-order: 40
-        exchange:
-          description: Exchange where the instrument is traded
-          examples:
-          - NASDAQ
-          type: string
-          x-go-name: Exchange
-          x-order: 50
-        mic_code:
-          description: Market identifier code (MIC) under ISO 10383 standard
-          examples:
-          - XNGS
-          type: string
-          x-go-name: MicCode
-          x-order: 60
-        type:
-          description: Type of the instrument
-          examples:
-          - Common Stock
-          type: string
-          x-go-name: Type
-          x-order: 70
-      required:
-      - currency
-      - exchange
-      - exchange_timezone
-      - mic_code
-      - name
-      - symbol
-      - type
-      type: object
-      x-go-name: Meta
-      x-order: 10
-    GetAnalystRatingsLight_200_response_ratings_inner:
-      properties:
-        date:
-          description: Date when the rating was released
-          examples:
-          - '2022-08-19'
-          type: string
-          x-go-name: Date
-          x-order: 10
-        firm:
-          description: Firm that issued the ranking
-          examples:
-          - Keybanc
-          type: string
-          x-go-name: Firm
-          x-order: 20
-        rating_change:
-          description: Defines the action of the firm to ranking, could be `Maintains`, `Upgrade`, `Downgrade`, `Initiates` or `Reiterates`
-          examples:
-          - Maintains
-          type: string
-          x-go-name: RatingChange
-          x-order: 30
-        rating_current:
-          description: Current firm's ranking of the instrument
-          examples:
-          - Overweight
-          type: string
-          x-go-name: RatingCurrent
-          x-order: 40
-        rating_prior:
-          description: Prior firm's ranking of the instrument
-          examples:
-          - Overweight
-          type: string
-          x-go-name: RatingPrior
-          x-order: 50
-      required:
-      - date
-      - firm
-      type: object
-    GetRecommendations_200_response_trends_2_months_ago:
-      description: Two months ago recommendations
-      properties:
-        strong_buy:
-          description: Number of analysts that give a strong buy recommendation
-          examples:
-          - 13
-          format: int64
-          type: integer
-          x-go-name: StrongBuy
-          x-order: 10
-        buy:
-          description: Number of analysts that give a buy recommendation
-          examples:
-          - 20
-          format: int64
-          type: integer
-          x-go-name: Buy
-          x-order: 20
-        hold:
-          description: Number of analysts that give a hold recommendation
-          examples:
-          - 8
-          format: int64
-          type: integer
-          x-go-name: Hold
-          x-order: 30
-        sell:
-          description: Number of analysts that give a sell recommendation
-          examples:
-          - 0
-          format: int64
-          type: integer
-          x-go-name: Sell
-          x-order: 40
-        strong_sell:
-          description: Number of analysts that give a strong sell recommendation
-          examples:
-          - 0
-          format: int64
-          type: integer
-          x-go-name: StrongSell
-          x-order: 50
-      type: object
-      x-go-name: TwoMonthsAgo
-      x-order: 30
-    GetAnalystRatingsUsEquities_200_response_ratings_inner:
-      properties:
-        date:
-          description: Date when the rating was released
-          examples:
-          - '2022-08-19'
-          type: string
-          x-go-name: Date
-          x-order: 10
-        firm:
-          description: Firm that issued the ranking
-          examples:
-          - Keybanc
-          type: string
-          x-go-name: Firm
-          x-order: 20
-        analyst_name:
-          description: Name of an analyst
-          examples:
-          - Brandon Nispel
-          type: string
-          x-go-name: AnalystName
-          x-order: 30
-        rating_change:
-          description: Defines the action of the firm to ranking, could be `Maintains`, `Upgrade`, `Downgrade`, `Initiates`, `Reiterates`, `Assumes`, or `Reinstates`
-          examples:
-          - Maintains
-          type: string
-          x-go-name: RatingChange
-          x-order: 40
-        rating_current:
-          description: Current firm's ranking of the instrument
-          examples:
-          - Overweight
-          type: string
-          x-go-name: RatingCurrent
-          x-order: 50
-        rating_prior:
-          description: Prior firm's ranking of the instrument
-          examples:
-          - Overweight
-          type: string
-          x-go-name: RatingPrior
-          x-order: 60
-        time:
-          description: Time when the rating was released or updated
-          examples:
-          - 08:29:48
-          type: string
-          x-go-name: Time
-          x-order: 70
-        action_price_target:
-          description: Action that firm took towards target price
-          examples:
-          - Raises
-          type: string
-          x-go-name: ActionPriceTarget
-          x-order: 80
-        price_target_current:
-          description: Current firm's price target for the instrument
-          examples:
-          - 185.14
-          format: double
-          type: number
-          x-go-name: PriceTargetCurrent
-          x-order: 90
-        price_target_prior:
-          description: Prior firm's price target for the instrument
-          examples:
-          - 177.01
-          format: double
-          type: number
-          x-go-name: PriceTargetPrior
-          x-order: 100
-      required:
-      - date
-      - firm
-      type: object
-    GetRecommendations_200_response_trends_previous_month:
-      description: Previous month recommendations
-      properties:
-        strong_buy:
-          description: Number of analysts that give a strong buy recommendation
-          examples:
-          - 13
-          format: int64
-          type: integer
-          x-go-name: StrongBuy
-          x-order: 10
-        buy:
-          description: Number of analysts that give a buy recommendation
-          examples:
-          - 20
-          format: int64
-          type: integer
-          x-go-name: Buy
-          x-order: 20
-        hold:
-          description: Number of analysts that give a hold recommendation
-          examples:
-          - 8
-          format: int64
-          type: integer
-          x-go-name: Hold
-          x-order: 30
-        sell:
-          description: Number of analysts that give a sell recommendation
-          examples:
-          - 0
-          format: int64
-          type: integer
-          x-go-name: Sell
-          x-order: 40
-        strong_sell:
-          description: Number of analysts that give a strong sell recommendation
-          examples:
-          - 0
-          format: int64
-          type: integer
-          x-go-name: StrongSell
-          x-order: 50
-      type: object
-      x-go-name: PreviousMonth
-      x-order: 20
-    GetEpsRevisions_200_response:
-      properties:
-        meta:
-          $ref: '#/components/schemas/GetEarningsEstimate_200_response_meta'
-        eps_revision:
-          description: EPS revision data
-          items:
-            $ref: '#/components/schemas/GetEpsRevisions_200_response_eps_revision_inner'
-          type: array
-          x-go-name: EpsRevision
-          x-order: 20
-        status:
-          description: Status of the response
-          examples:
-          - ok
-          type: string
-          x-go-name: Status
-          x-order: 30
-      required:
-      - eps_revision
-      - meta
-      - status
-      type: object
-    GetRevenueEstimate_200_response_revenue_estimate_inner:
-      properties:
-        date:
-          description: Date of the estimate
-          examples:
-          - '2022-09-30'
-          type: string
-          x-go-name: Date
-          x-order: 10
-        period:
-          description: Period of estimation, can be `current_quarter`, `next_quarter`, `current_year`, or `next_year`
-          examples:
-          - current_quarter
-          type: string
-          x-go-name: Period
-          x-order: 20
-        number_of_analysts:
-          description: Number of analysts that made the estimation
-          examples:
-          - 24
-          format: int64
-          type: integer
-          x-go-name: NumberOfAnalysts
-          x-order: 30
-        avg_estimate:
-          description: Average estimation across analysts
-          examples:
-          - 88631500000
-          format: double
-          type: number
-          x-go-name: AvgEstimate
-          x-order: 40
-        low_estimate:
-          description: Lowest estimation given by an analyst
-          examples:
-          - 85144300000
-          format: double
-          type: number
-          x-go-name: LowEstimate
-          x-order: 50
-        high_estimate:
-          description: Highest estimation given by an analyst
-          examples:
-          - 92794900000
-          format: double
-          type: number
-          x-go-name: HighEstimate
-          x-order: 60
-        year_ago_sales:
-          description: Total revenue received a year ago relative to period
-          examples:
-          - 83360000000
-          format: double
-          type: number
-          x-go-name: YearAgoSales
-          x-order: 70
-        sales_growth:
-          description: Estimated sales growth of the period in relation to year-ago sales in prc (%)
-          examples:
-          - 0.06
-          format: double
-          type: number
-          x-go-name: SalesGrowth
-          x-order: 80
-      type: object
-    GetPriceTarget_200_response:
-      properties:
-        meta:
-          $ref: '#/components/schemas/GetPriceTarget_200_response_meta'
-        price_target:
-          $ref: '#/components/schemas/GetPriceTarget_200_response_price_target'
-        status:
-          description: Response status
-          examples:
-          - ok
-          type: string
-          x-go-name: Status
-          x-order: 30
-      required:
-      - meta
-      - price_target
-      - status
-      type: object
-    GetAnalystRatingsLight_200_response:
-      properties:
-        meta:
-          $ref: '#/components/schemas/GetAnalystRatingsLight_200_response_meta'
-        ratings:
-          description: List of analyst ratings
-          items:
-            $ref: '#/components/schemas/GetAnalystRatingsLight_200_response_ratings_inner'
-          type: array
-          x-go-name: Ratings
-          x-order: 20
-        status:
-          description: Response status
-          examples:
-          - ok
-          type: string
-          x-go-name: Status
-          x-order: 30
-      required:
-      - meta
-      - status
-      type: object
-    GetRecommendations_200_response:
-      properties:
-        meta:
-          $ref: '#/components/schemas/GetRecommendations_200_response_meta'
-        trends:
-          $ref: '#/components/schemas/GetRecommendations_200_response_trends'
-        rating:
-          description: Rating from 0 to 10 represents overall analysts' recommendation. 0 to 2 - strong sell, 2 to 4 - sell, 4 to 6 - hold, 6 to 8 - buy, 8 to 10 - strong buy.
-          examples:
-          - 8.2
-          format: double
-          type: number
-          x-go-name: Rating
-          x-order: 30
-        status:
-          description: Response status
-          examples:
-          - ok
-          type: string
-          x-go-name: Status
-          x-order: 40
-      required:
-      - meta
-      - status
-      - trends
-      type: object
-    GetRecommendations_200_response_trends_3_months_ago:
-      description: Three months ago recommendations
-      properties:
-        strong_buy:
-          description: Number of analysts that give a strong buy recommendation
-          examples:
-          - 13
-          format: int64
-          type: integer
-          x-go-name: StrongBuy
-          x-order: 10
-        buy:
-          description: Number of analysts that give a buy recommendation
-          examples:
-          - 20
-          format: int64
-          type: integer
-          x-go-name: Buy
-          x-order: 20
-        hold:
-          description: Number of analysts that give a hold recommendation
-          examples:
-          - 8
-          format: int64
-          type: integer
-          x-go-name: Hold
-          x-order: 30
-        sell:
-          description: Number of analysts that give a sell recommendation
-          examples:
-          - 0
-          format: int64
-          type: integer
-          x-go-name: Sell
-          x-order: 40
-        strong_sell:
-          description: Number of analysts that give a strong sell recommendation
-          examples:
-          - 0
-          format: int64
-          type: integer
-          x-go-name: StrongSell
-          x-order: 50
-      type: object
-      x-go-name: ThreeMonthsAgo
-      x-order: 40
     GetRecommendations_200_response_trends:
       description: Analyst recommendations trends
       properties:
@@ -1969,397 +1408,6 @@ components:
       x-order: 20
     GetPriceTarget_200_response_meta:
       description: Meta information about the security
-      properties:
-        symbol:
-          description: Symbol ticker of the instrument
-          examples:
-          - AAPL
-          type: string
-          x-go-name: Symbol
-          x-order: 10
-        name:
-          description: Name of the instrument
-          examples:
-          - Apple Inc
-          type: string
-          x-go-name: Name
-          x-order: 20
-        currency:
-          description: Currency in which the instrument is traded
-          examples:
-          - USD
-          type: string
-          x-go-name: Currency
-          x-order: 30
-        exchange_timezone:
-          description: Timezone of the exchange
-          examples:
-          - America/New_York
-          type: string
-          x-go-name: ExchangeTimezone
-          x-order: 40
-        exchange:
-          description: Exchange where the instrument is traded
-          examples:
-          - NASDAQ
-          type: string
-          x-go-name: Exchange
-          x-order: 50
-        mic_code:
-          description: Market identifier code (MIC) under ISO 10383 standard
-          examples:
-          - XNGS
-          type: string
-          x-go-name: MicCode
-          x-order: 60
-        type:
-          description: Type of the instrument
-          examples:
-          - Common Stock
-          type: string
-          x-go-name: Type
-          x-order: 70
-      required:
-      - currency
-      - exchange
-      - exchange_timezone
-      - mic_code
-      - name
-      - symbol
-      - type
-      type: object
-      x-go-name: Meta
-      x-order: 10
-    ApiForbiddenErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 403
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - API key lacks permissions for the requested resource
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetEarningsEstimate_200_response_earnings_estimate_inner:
-      properties:
-        date:
-          description: Date of the earnings estimate
-          examples:
-          - '2022-09-30'
-          type: string
-          x-go-name: Date
-          x-order: 10
-        period:
-          description: Period of estimation, can be `current_quarter`, `next_quarter`, `current_year`, or `next_year`
-          examples:
-          - current_quarter
-          type: string
-          x-go-name: Period
-          x-order: 20
-        number_of_analysts:
-          description: Number of analysts that made the estimation
-          examples:
-          - 27
-          format: int64
-          type: integer
-          x-go-name: NumberOfAnalysts
-          x-order: 30
-        avg_estimate:
-          description: Average estimation across analysts
-          examples:
-          - 1.26
-          format: double
-          type: number
-          x-go-name: AvgEstimate
-          x-order: 40
-        low_estimate:
-          description: Lowest estimation given by an analyst
-          examples:
-          - 1.13
-          format: double
-          type: number
-          x-go-name: LowEstimate
-          x-order: 50
-        high_estimate:
-          description: Highest estimation given by an analyst
-          examples:
-          - 1.35
-          format: double
-          type: number
-          x-go-name: HighEstimate
-          x-order: 60
-        year_ago_eps:
-          description: Average estimation of this period's earnings given a year ago
-          examples:
-          - 1.24
-          format: double
-          type: number
-          x-go-name: YearAgoEPS
-          x-order: 70
-      required:
-      - date
-      - period
-      type: object
-    ApiInternalServerErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 500
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - Internal server error
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetEpsRevisions_200_response_eps_revision_inner:
-      properties:
-        date:
-          description: Date of the EPS estimate
-          examples:
-          - '2022-09-30'
-          type: string
-          x-go-name: Date
-          x-order: 10
-        period:
-          description: Period of estimation, can be `current_quarter`, `next_quarter`, `current_year`, or `next_year`
-          examples:
-          - current_quarter
-          type: string
-          x-go-name: Period
-          x-order: 20
-        up_last_week:
-          description: Number of up revisions over the last 7 days
-          examples:
-          - 1
-          format: int64
-          type: integer
-          x-go-name: UpLastWeek
-          x-order: 30
-        up_last_month:
-          description: Number of up revisions over the last 30 days
-          examples:
-          - 5
-          format: int64
-          type: integer
-          x-go-name: UpLastMonth
-          x-order: 40
-        down_last_week:
-          description: Number of down revisions over the last 7 days
-          examples:
-          - 0
-          format: int64
-          type: integer
-          x-go-name: DownLastWeek
-          x-order: 50
-        down_last_month:
-          description: Number of down revisions over the last 30 days
-          examples:
-          - 0
-          format: int64
-          type: integer
-          x-go-name: DownLastMonth
-          x-order: 60
-      required:
-      - date
-      - period
-      type: object
-    GetRecommendations_200_response_trends_current_month:
-      description: Current month recommendations
-      properties:
-        strong_buy:
-          description: Number of analysts that give a strong buy recommendation
-          examples:
-          - 13
-          format: int64
-          type: integer
-          x-go-name: StrongBuy
-          x-order: 10
-        buy:
-          description: Number of analysts that give a buy recommendation
-          examples:
-          - 20
-          format: int64
-          type: integer
-          x-go-name: Buy
-          x-order: 20
-        hold:
-          description: Number of analysts that give a hold recommendation
-          examples:
-          - 8
-          format: int64
-          type: integer
-          x-go-name: Hold
-          x-order: 30
-        sell:
-          description: Number of analysts that give a sell recommendation
-          examples:
-          - 0
-          format: int64
-          type: integer
-          x-go-name: Sell
-          x-order: 40
-        strong_sell:
-          description: Number of analysts that give a strong sell recommendation
-          examples:
-          - 0
-          format: int64
-          type: integer
-          x-go-name: StrongSell
-          x-order: 50
-      type: object
-      x-go-name: CurrentMonth
-      x-order: 10
-    GetGrowthEstimates_200_response:
-      properties:
-        meta:
-          $ref: '#/components/schemas/GetEarningsEstimate_200_response_meta'
-        growth_estimates:
-          $ref: '#/components/schemas/GetGrowthEstimates_200_response_growth_estimates'
-        status:
-          description: Status of the request
-          examples:
-          - ok
-          type: string
-          x-go-name: Status
-          x-order: 30
-      required:
-      - meta
-      - status
-      type: object
-    GetAnalystRatingsUsEquities_200_response:
-      properties:
-        meta:
-          $ref: '#/components/schemas/GetAnalystRatingsLight_200_response_meta'
-        ratings:
-          description: List of analyst ratings
-          items:
-            $ref: '#/components/schemas/GetAnalystRatingsUsEquities_200_response_ratings_inner'
-          type: array
-          x-go-name: Ratings
-          x-order: 20
-        status:
-          description: Response status
-          examples:
-          - ok
-          type: string
-          x-go-name: Status
-          x-order: 30
-      required:
-      - meta
-      - status
-      type: object
-    ApiTooManyRequestsErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 429
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - You have run out of API credits for the current minute. 1000 API credits were used, with the current limit being 987. Wait for the next minute or consider upgrading your plan at https://twelvedata.com/pricing
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetRevenueEstimate_200_response:
-      properties:
-        meta:
-          $ref: '#/components/schemas/GetEarningsEstimate_200_response_meta'
-        revenue_estimate:
-          description: Revenue estimate data
-          items:
-            $ref: '#/components/schemas/GetRevenueEstimate_200_response_revenue_estimate_inner'
-          type: array
-          x-go-name: RevenueEstimate
-          x-order: 20
-        status:
-          description: Status of the response
-          examples:
-          - ok
-          type: string
-          x-go-name: Status
-          x-order: 30
-      required:
-      - meta
-      - revenue_estimate
-      - status
-      type: object
-    ApiNotFoundErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 404
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - symbol or figi parameter is missing or invalid
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetEarningsEstimate_200_response_meta:
-      description: Meta information about the symbol
       properties:
         symbol:
           description: Symbol ticker of the instrument
@@ -2484,19 +1532,230 @@ components:
       type: object
       x-go-name: Meta
       x-order: 10
-    ApiUnauthorizedErrorResponseBody:
+    GetGrowthEstimates_200_response_growth_estimates:
+      description: Growth estimates data
+      properties:
+        current_quarter:
+          description: Projected growth of the current quarter in percentage (%)
+          examples:
+          - 0.016
+          format: double
+          type: number
+          x-go-name: CurrentQuarter
+          x-order: 10
+        next_quarter:
+          description: Projected growth of the next quarter in percentage (%)
+          examples:
+          - 0.01
+          format: double
+          type: number
+          x-go-name: NextQuarter
+          x-order: 20
+        current_year:
+          description: Projected growth of the current year in percentage (%)
+          examples:
+          - 0.087
+          format: double
+          type: number
+          x-go-name: CurrentYear
+          x-order: 30
+        next_year:
+          description: Projected growth of the next year in percentage (%)
+          examples:
+          - 0.055999998
+          format: double
+          type: number
+          x-go-name: NextYear
+          x-order: 40
+        next_5_years_pa:
+          description: Projected growth during the next 5 years in percentage (%) per annum
+          examples:
+          - 0.094799995
+          format: double
+          type: number
+          x-go-name: Next5YearsPA
+          x-order: 50
+        past_5_years_pa:
+          description: Actual growth over the last 5 years in percentage (%) per annum
+          examples:
+          - 0.23867
+          format: double
+          type: number
+          x-go-name: Past5YearsPA
+          x-order: 60
+      type: object
+      x-go-name: GrowthEstimates
+      x-order: 20
+    GetRevenueEstimate_200_response_revenue_estimate_inner:
+      properties:
+        date:
+          description: Date of the estimate
+          examples:
+          - '2022-09-30'
+          type: string
+          x-go-name: Date
+          x-order: 10
+        period:
+          description: Period of estimation, can be `current_quarter`, `next_quarter`, `current_year`, or `next_year`
+          examples:
+          - current_quarter
+          type: string
+          x-go-name: Period
+          x-order: 20
+        number_of_analysts:
+          description: Number of analysts that made the estimation
+          examples:
+          - 24
+          format: int64
+          type: integer
+          x-go-name: NumberOfAnalysts
+          x-order: 30
+        avg_estimate:
+          description: Average estimation across analysts
+          examples:
+          - 88631500000
+          format: double
+          type: number
+          x-go-name: AvgEstimate
+          x-order: 40
+        low_estimate:
+          description: Lowest estimation given by an analyst
+          examples:
+          - 85144300000
+          format: double
+          type: number
+          x-go-name: LowEstimate
+          x-order: 50
+        high_estimate:
+          description: Highest estimation given by an analyst
+          examples:
+          - 92794900000
+          format: double
+          type: number
+          x-go-name: HighEstimate
+          x-order: 60
+        year_ago_sales:
+          description: Total revenue received a year ago relative to period
+          examples:
+          - 83360000000
+          format: double
+          type: number
+          x-go-name: YearAgoSales
+          x-order: 70
+        sales_growth:
+          description: Estimated sales growth of the period in relation to year-ago sales in prc (%)
+          examples:
+          - 0.06
+          format: double
+          type: number
+          x-go-name: SalesGrowth
+          x-order: 80
+      type: object
+    GetRecommendations_200_response_trends_current_month:
+      description: Current month recommendations
+      properties:
+        strong_buy:
+          description: Number of analysts that give a strong buy recommendation
+          examples:
+          - 13
+          format: int64
+          type: integer
+          x-go-name: StrongBuy
+          x-order: 10
+        buy:
+          description: Number of analysts that give a buy recommendation
+          examples:
+          - 20
+          format: int64
+          type: integer
+          x-go-name: Buy
+          x-order: 20
+        hold:
+          description: Number of analysts that give a hold recommendation
+          examples:
+          - 8
+          format: int64
+          type: integer
+          x-go-name: Hold
+          x-order: 30
+        sell:
+          description: Number of analysts that give a sell recommendation
+          examples:
+          - 0
+          format: int64
+          type: integer
+          x-go-name: Sell
+          x-order: 40
+        strong_sell:
+          description: Number of analysts that give a strong sell recommendation
+          examples:
+          - 0
+          format: int64
+          type: integer
+          x-go-name: StrongSell
+          x-order: 50
+      type: object
+      x-go-name: CurrentMonth
+      x-order: 10
+    GetRecommendations_200_response_trends_3_months_ago:
+      description: Three months ago recommendations
+      properties:
+        strong_buy:
+          description: Number of analysts that give a strong buy recommendation
+          examples:
+          - 13
+          format: int64
+          type: integer
+          x-go-name: StrongBuy
+          x-order: 10
+        buy:
+          description: Number of analysts that give a buy recommendation
+          examples:
+          - 20
+          format: int64
+          type: integer
+          x-go-name: Buy
+          x-order: 20
+        hold:
+          description: Number of analysts that give a hold recommendation
+          examples:
+          - 8
+          format: int64
+          type: integer
+          x-go-name: Hold
+          x-order: 30
+        sell:
+          description: Number of analysts that give a sell recommendation
+          examples:
+          - 0
+          format: int64
+          type: integer
+          x-go-name: Sell
+          x-order: 40
+        strong_sell:
+          description: Number of analysts that give a strong sell recommendation
+          examples:
+          - 0
+          format: int64
+          type: integer
+          x-go-name: StrongSell
+          x-order: 50
+      type: object
+      x-go-name: ThreeMonthsAgo
+      x-order: 40
+    ApiInternalServerErrorResponseBody:
       properties:
         code:
           description: Error code
           examples:
-          - 401
+          - 500
           format: int64
           type: integer
           x-go-name: Code
         message:
           description: Error message
           examples:
-          - apikey parameter is incorrect or not specified
+          - Internal server error
           type: string
           x-go-name: Message
         status:
@@ -2511,61 +1770,83 @@ components:
       - status
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetPriceTarget_200_response_price_target:
-      description: Price target information
+    ApiTooManyRequestsErrorResponseBody:
       properties:
-        high:
-          description: Highest price target given by an analyst
+        code:
+          description: Error code
           examples:
-          - 220
-          format: double
-          type: number
-          x-go-name: High
-          x-order: 10
-        median:
-          description: Median price target given across analysts
+          - 429
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
           examples:
-          - 185
-          format: double
-          type: number
-          x-go-name: Median
-          x-order: 20
-        low:
-          description: Lowest price target given by an analyst
-          examples:
-          - 136
-          format: double
-          type: number
-          x-go-name: Low
-          x-order: 30
-        average:
-          description: Average price target given across analysts
-          examples:
-          - 184.01
-          format: double
-          type: number
-          x-go-name: Average
-          x-order: 40
-        current:
-          description: Current price from of a security
-          examples:
-          - 169.5672
-          format: double
-          type: number
-          x-go-name: Current
-          x-order: 50
-        currency:
-          description: Currency in which the price targets values are quoted
-          examples:
-          - USD
+          - You have run out of API credits for the current minute. 1000 API credits were used, with the current limit being 987. Wait for the next minute or consider upgrading your plan at https://twelvedata.com/pricing
           type: string
-          x-go-name: Currency
-          x-order: 60
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
       required:
-      - currency
+      - code
+      - message
+      - status
       type: object
-      x-go-name: PriceTarget
-      x-order: 20
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetEpsRevisions_200_response:
+      properties:
+        meta:
+          $ref: '#/components/schemas/GetEarningsEstimate_200_response_meta'
+        eps_revision:
+          description: EPS revision data
+          items:
+            $ref: '#/components/schemas/GetEpsRevisions_200_response_eps_revision_inner'
+          type: array
+          x-go-name: EpsRevision
+          x-order: 20
+        status:
+          description: Status of the response
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+          x-order: 30
+      required:
+      - eps_revision
+      - meta
+      - status
+      type: object
+    ApiParameterTooLongErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 414
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Input parameter array exceeds the allowed length
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
     GetEpsTrend_200_response_eps_trend_inner:
       properties:
         date:
@@ -2626,6 +1907,184 @@ components:
       - date
       - period
       type: object
+    ApiNotFoundErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 404
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - symbol or figi parameter is missing or invalid
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetRecommendations_200_response_trends_2_months_ago:
+      description: Two months ago recommendations
+      properties:
+        strong_buy:
+          description: Number of analysts that give a strong buy recommendation
+          examples:
+          - 13
+          format: int64
+          type: integer
+          x-go-name: StrongBuy
+          x-order: 10
+        buy:
+          description: Number of analysts that give a buy recommendation
+          examples:
+          - 20
+          format: int64
+          type: integer
+          x-go-name: Buy
+          x-order: 20
+        hold:
+          description: Number of analysts that give a hold recommendation
+          examples:
+          - 8
+          format: int64
+          type: integer
+          x-go-name: Hold
+          x-order: 30
+        sell:
+          description: Number of analysts that give a sell recommendation
+          examples:
+          - 0
+          format: int64
+          type: integer
+          x-go-name: Sell
+          x-order: 40
+        strong_sell:
+          description: Number of analysts that give a strong sell recommendation
+          examples:
+          - 0
+          format: int64
+          type: integer
+          x-go-name: StrongSell
+          x-order: 50
+      type: object
+      x-go-name: TwoMonthsAgo
+      x-order: 30
+    GetRecommendations_200_response:
+      properties:
+        meta:
+          $ref: '#/components/schemas/GetRecommendations_200_response_meta'
+        trends:
+          $ref: '#/components/schemas/GetRecommendations_200_response_trends'
+        rating:
+          description: Rating from 0 to 10 represents overall analysts' recommendation. 0 to 2 - strong sell, 2 to 4 - sell, 4 to 6 - hold, 6 to 8 - buy, 8 to 10 - strong buy.
+          examples:
+          - 8.2
+          format: double
+          type: number
+          x-go-name: Rating
+          x-order: 30
+        status:
+          description: Response status
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+          x-order: 40
+      required:
+      - meta
+      - status
+      - trends
+      type: object
+    GetEpsTrend_200_response:
+      properties:
+        meta:
+          $ref: '#/components/schemas/GetEarningsEstimate_200_response_meta'
+        eps_trend:
+          description: EPS trend data
+          items:
+            $ref: '#/components/schemas/GetEpsTrend_200_response_eps_trend_inner'
+          type: array
+          x-go-name: EpsTrend
+          x-order: 20
+        status:
+          description: Status of the response
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+          x-order: 30
+      required:
+      - eps_trend
+      - meta
+      - status
+      type: object
+    GetRecommendations_200_response_trends_previous_month:
+      description: Previous month recommendations
+      properties:
+        strong_buy:
+          description: Number of analysts that give a strong buy recommendation
+          examples:
+          - 13
+          format: int64
+          type: integer
+          x-go-name: StrongBuy
+          x-order: 10
+        buy:
+          description: Number of analysts that give a buy recommendation
+          examples:
+          - 20
+          format: int64
+          type: integer
+          x-go-name: Buy
+          x-order: 20
+        hold:
+          description: Number of analysts that give a hold recommendation
+          examples:
+          - 8
+          format: int64
+          type: integer
+          x-go-name: Hold
+          x-order: 30
+        sell:
+          description: Number of analysts that give a sell recommendation
+          examples:
+          - 0
+          format: int64
+          type: integer
+          x-go-name: Sell
+          x-order: 40
+        strong_sell:
+          description: Number of analysts that give a strong sell recommendation
+          examples:
+          - 0
+          format: int64
+          type: integer
+          x-go-name: StrongSell
+          x-order: 50
+      type: object
+      x-go-name: PreviousMonth
+      x-order: 20
+    RatingChangeEnum:
+      enum:
+      - Maintains
+      - Upgrade
+      - Downgrade
+      - Initiates
+      - Reiterates
+      type: string
+      x-go-name: RatingChange
+      x-order: '60'
     GetEarningsEstimate_200_response:
       properties:
         meta:
@@ -2649,19 +2108,429 @@ components:
       - meta
       - status
       type: object
-    ApiParameterTooLongErrorResponseBody:
+    GetEpsRevisions_200_response_eps_revision_inner:
+      properties:
+        date:
+          description: Date of the EPS estimate
+          examples:
+          - '2022-09-30'
+          type: string
+          x-go-name: Date
+          x-order: 10
+        period:
+          description: Period of estimation, can be `current_quarter`, `next_quarter`, `current_year`, or `next_year`
+          examples:
+          - current_quarter
+          type: string
+          x-go-name: Period
+          x-order: 20
+        up_last_week:
+          description: Number of up revisions over the last 7 days
+          examples:
+          - 1
+          format: int64
+          type: integer
+          x-go-name: UpLastWeek
+          x-order: 30
+        up_last_month:
+          description: Number of up revisions over the last 30 days
+          examples:
+          - 5
+          format: int64
+          type: integer
+          x-go-name: UpLastMonth
+          x-order: 40
+        down_last_week:
+          description: Number of down revisions over the last 7 days
+          examples:
+          - 0
+          format: int64
+          type: integer
+          x-go-name: DownLastWeek
+          x-order: 50
+        down_last_month:
+          description: Number of down revisions over the last 30 days
+          examples:
+          - 0
+          format: int64
+          type: integer
+          x-go-name: DownLastMonth
+          x-order: 60
+      required:
+      - date
+      - period
+      type: object
+    GetRecommendations_200_response_meta:
+      description: Metadata about the symbol
+      properties:
+        symbol:
+          description: Symbol ticker of the instrument
+          examples:
+          - AAPL
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        name:
+          description: Name of the instrument
+          examples:
+          - Apple Inc
+          type: string
+          x-go-name: Name
+          x-order: 20
+        currency:
+          description: Currency in which the instrument is traded
+          examples:
+          - USD
+          type: string
+          x-go-name: Currency
+          x-order: 30
+        exchange_timezone:
+          description: Timezone of the exchange
+          examples:
+          - America/New_York
+          type: string
+          x-go-name: ExchangeTimezone
+          x-order: 40
+        exchange:
+          description: Exchange where the instrument is traded
+          examples:
+          - NASDAQ
+          type: string
+          x-go-name: Exchange
+          x-order: 50
+        mic_code:
+          description: Market identifier code (MIC) under ISO 10383 standard
+          examples:
+          - XNGS
+          type: string
+          x-go-name: MicCode
+          x-order: 60
+        type:
+          description: Type of the instrument
+          examples:
+          - Common Stock
+          type: string
+          x-go-name: Type
+          x-order: 70
+      required:
+      - currency
+      - exchange
+      - exchange_timezone
+      - mic_code
+      - name
+      - symbol
+      - type
+      type: object
+      x-go-name: Meta
+      x-order: 10
+    GetRevenueEstimate_200_response:
+      properties:
+        meta:
+          $ref: '#/components/schemas/GetEarningsEstimate_200_response_meta'
+        revenue_estimate:
+          description: Revenue estimate data
+          items:
+            $ref: '#/components/schemas/GetRevenueEstimate_200_response_revenue_estimate_inner'
+          type: array
+          x-go-name: RevenueEstimate
+          x-order: 20
+        status:
+          description: Status of the response
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+          x-order: 30
+      required:
+      - meta
+      - revenue_estimate
+      - status
+      type: object
+    GetAnalystRatingsUsEquities_200_response:
+      properties:
+        meta:
+          $ref: '#/components/schemas/GetAnalystRatingsLight_200_response_meta'
+        ratings:
+          description: List of analyst ratings
+          items:
+            $ref: '#/components/schemas/GetAnalystRatingsUsEquities_200_response_ratings_inner'
+          type: array
+          x-go-name: Ratings
+          x-order: 20
+        status:
+          description: Response status
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+          x-order: 30
+      required:
+      - meta
+      - status
+      type: object
+    GetGrowthEstimates_200_response:
+      properties:
+        meta:
+          $ref: '#/components/schemas/GetEarningsEstimate_200_response_meta'
+        growth_estimates:
+          $ref: '#/components/schemas/GetGrowthEstimates_200_response_growth_estimates'
+        status:
+          description: Status of the request
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+          x-order: 30
+      required:
+      - meta
+      - status
+      type: object
+    GetPriceTarget_200_response_price_target:
+      description: Price target information
+      properties:
+        high:
+          description: Highest price target given by an analyst
+          examples:
+          - 220
+          format: double
+          type: number
+          x-go-name: High
+          x-order: 10
+        median:
+          description: Median price target given across analysts
+          examples:
+          - 185
+          format: double
+          type: number
+          x-go-name: Median
+          x-order: 20
+        low:
+          description: Lowest price target given by an analyst
+          examples:
+          - 136
+          format: double
+          type: number
+          x-go-name: Low
+          x-order: 30
+        average:
+          description: Average price target given across analysts
+          examples:
+          - 184.01
+          format: double
+          type: number
+          x-go-name: Average
+          x-order: 40
+        current:
+          description: Current price from of a security
+          examples:
+          - 169.5672
+          format: double
+          type: number
+          x-go-name: Current
+          x-order: 50
+        currency:
+          description: Currency in which the price targets values are quoted
+          examples:
+          - USD
+          type: string
+          x-go-name: Currency
+          x-order: 60
+      required:
+      - currency
+      type: object
+      x-go-name: PriceTarget
+      x-order: 20
+    GetAnalystRatingsLight_200_response:
+      properties:
+        meta:
+          $ref: '#/components/schemas/GetAnalystRatingsLight_200_response_meta'
+        ratings:
+          description: List of analyst ratings
+          items:
+            $ref: '#/components/schemas/GetAnalystRatingsLight_200_response_ratings_inner'
+          type: array
+          x-go-name: Ratings
+          x-order: 20
+        status:
+          description: Response status
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+          x-order: 30
+      required:
+      - meta
+      - status
+      type: object
+    GetAnalystRatingsUsEquities_200_response_ratings_inner:
+      properties:
+        date:
+          description: Date when the rating was released
+          examples:
+          - '2022-08-19'
+          type: string
+          x-go-name: Date
+          x-order: 10
+        firm:
+          description: Firm that issued the ranking
+          examples:
+          - Keybanc
+          type: string
+          x-go-name: Firm
+          x-order: 20
+        analyst_name:
+          description: Name of an analyst
+          examples:
+          - Brandon Nispel
+          type: string
+          x-go-name: AnalystName
+          x-order: 30
+        rating_change:
+          description: Defines the action of the firm to ranking, could be `Maintains`, `Upgrade`, `Downgrade`, `Initiates`, `Reiterates`, `Assumes`, or `Reinstates`
+          examples:
+          - Maintains
+          type: string
+          x-go-name: RatingChange
+          x-order: 40
+        rating_current:
+          description: Current firm's ranking of the instrument
+          examples:
+          - Overweight
+          type: string
+          x-go-name: RatingCurrent
+          x-order: 50
+        rating_prior:
+          description: Prior firm's ranking of the instrument
+          examples:
+          - Overweight
+          type: string
+          x-go-name: RatingPrior
+          x-order: 60
+        time:
+          description: Time when the rating was released or updated
+          examples:
+          - 08:29:48
+          type: string
+          x-go-name: Time
+          x-order: 70
+        action_price_target:
+          description: Action that firm took towards target price
+          examples:
+          - Raises
+          type: string
+          x-go-name: ActionPriceTarget
+          x-order: 80
+        price_target_current:
+          description: Current firm's price target for the instrument
+          examples:
+          - 185.14
+          format: double
+          type: number
+          x-go-name: PriceTargetCurrent
+          x-order: 90
+        price_target_prior:
+          description: Prior firm's price target for the instrument
+          examples:
+          - 177.01
+          format: double
+          type: number
+          x-go-name: PriceTargetPrior
+          x-order: 100
+      required:
+      - date
+      - firm
+      type: object
+    GetEarningsEstimate_200_response_earnings_estimate_inner:
+      properties:
+        date:
+          description: Date of the earnings estimate
+          examples:
+          - '2022-09-30'
+          type: string
+          x-go-name: Date
+          x-order: 10
+        period:
+          description: Period of estimation, can be `current_quarter`, `next_quarter`, `current_year`, or `next_year`
+          examples:
+          - current_quarter
+          type: string
+          x-go-name: Period
+          x-order: 20
+        number_of_analysts:
+          description: Number of analysts that made the estimation
+          examples:
+          - 27
+          format: int64
+          type: integer
+          x-go-name: NumberOfAnalysts
+          x-order: 30
+        avg_estimate:
+          description: Average estimation across analysts
+          examples:
+          - 1.26
+          format: double
+          type: number
+          x-go-name: AvgEstimate
+          x-order: 40
+        low_estimate:
+          description: Lowest estimation given by an analyst
+          examples:
+          - 1.13
+          format: double
+          type: number
+          x-go-name: LowEstimate
+          x-order: 50
+        high_estimate:
+          description: Highest estimation given by an analyst
+          examples:
+          - 1.35
+          format: double
+          type: number
+          x-go-name: HighEstimate
+          x-order: 60
+        year_ago_eps:
+          description: Average estimation of this period's earnings given a year ago
+          examples:
+          - 1.24
+          format: double
+          type: number
+          x-go-name: YearAgoEPS
+          x-order: 70
+      required:
+      - date
+      - period
+      type: object
+    GetPriceTarget_200_response:
+      properties:
+        meta:
+          $ref: '#/components/schemas/GetPriceTarget_200_response_meta'
+        price_target:
+          $ref: '#/components/schemas/GetPriceTarget_200_response_price_target'
+        status:
+          description: Response status
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+          x-order: 30
+      required:
+      - meta
+      - price_target
+      - status
+      type: object
+    ApiUnauthorizedErrorResponseBody:
       properties:
         code:
           description: Error code
           examples:
-          - 414
+          - 401
           format: int64
           type: integer
           x-go-name: Code
         message:
           description: Error message
           examples:
-          - Input parameter array exceeds the allowed length
+          - apikey parameter is incorrect or not specified
           type: string
           x-go-name: Message
         status:
@@ -2676,6 +2545,69 @@ components:
       - status
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetEarningsEstimate_200_response_meta:
+      description: Meta information about the symbol
+      properties:
+        symbol:
+          description: Symbol ticker of the instrument
+          examples:
+          - AAPL
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        name:
+          description: Name of the instrument
+          examples:
+          - Apple Inc
+          type: string
+          x-go-name: Name
+          x-order: 20
+        currency:
+          description: Currency in which the instrument is traded
+          examples:
+          - USD
+          type: string
+          x-go-name: Currency
+          x-order: 30
+        exchange_timezone:
+          description: Timezone of the exchange
+          examples:
+          - America/New_York
+          type: string
+          x-go-name: ExchangeTimezone
+          x-order: 40
+        exchange:
+          description: Exchange where the instrument is traded
+          examples:
+          - NASDAQ
+          type: string
+          x-go-name: Exchange
+          x-order: 50
+        mic_code:
+          description: Market identifier code (MIC) under ISO 10383 standard
+          examples:
+          - XNGS
+          type: string
+          x-go-name: MicCode
+          x-order: 60
+        type:
+          description: Type of the instrument
+          examples:
+          - Common Stock
+          type: string
+          x-go-name: Type
+          x-order: 70
+      required:
+      - currency
+      - exchange
+      - exchange_timezone
+      - mic_code
+      - name
+      - symbol
+      - type
+      type: object
+      x-go-name: Meta
+      x-order: 10
     ApiBadRequestErrorResponseBody:
       properties:
         code:
@@ -2703,6 +2635,74 @@ components:
       - status
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiForbiddenErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 403
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - API key lacks permissions for the requested resource
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetAnalystRatingsLight_200_response_ratings_inner:
+      properties:
+        date:
+          description: Date when the rating was released
+          examples:
+          - '2022-08-19'
+          type: string
+          x-go-name: Date
+          x-order: 10
+        firm:
+          description: Firm that issued the ranking
+          examples:
+          - Keybanc
+          type: string
+          x-go-name: Firm
+          x-order: 20
+        rating_change:
+          description: Defines the action of the firm to ranking, could be `Maintains`, `Upgrade`, `Downgrade`, `Initiates` or `Reiterates`
+          examples:
+          - Maintains
+          type: string
+          x-go-name: RatingChange
+          x-order: 30
+        rating_current:
+          description: Current firm's ranking of the instrument
+          examples:
+          - Overweight
+          type: string
+          x-go-name: RatingCurrent
+          x-order: 40
+        rating_prior:
+          description: Prior firm's ranking of the instrument
+          examples:
+          - Overweight
+          type: string
+          x-go-name: RatingPrior
+          x-order: 50
+      required:
+      - date
+      - firm
+      type: object
   securitySchemes:
     authorizationHeader:
       description: Enter the token with the `apikey ` prefix, e.g. "apikey abcde12345".

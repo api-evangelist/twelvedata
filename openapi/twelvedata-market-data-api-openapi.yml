@@ -1363,64 +1363,388 @@ paths:
       x-order: '20'
 components:
   schemas:
-    CrossMeta:
+    ApiInternalServerErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 500
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Internal server error
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiTooManyRequestsErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 429
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - You have run out of API credits for the current minute. 1000 API credits were used, with the current limit being 987. Wait for the next minute or consider upgrading your plan at https://twelvedata.com/pricing
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiParameterTooLongErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 414
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Input parameter array exceeds the allowed length
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    AdjustEnum:
+      default: splits
+      enum:
+      - all
+      - splits
+      - dividends
+      - none
+      type: string
+      x-go-name: Adjust
+      x-order: '180'
+    ApiNotFoundErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 404
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - symbol or figi parameter is missing or invalid
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetTimeSeries_200_response:
+      properties:
+        meta:
+          $ref: '#/components/schemas/GetTimeSeries_200_response_meta'
+        values:
+          description: List of time series data points
+          items:
+            $ref: '#/components/schemas/TimeSeriesItem'
+          type: array
+          x-go-name: Data
+          x-order: 20
+        status:
+          description: Response status
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+          x-order: 30
+      required:
+      - meta
+      - status
+      - values
+      type: object
+    MarketMoversResponseValue:
+      properties:
+        symbol:
+          description: The exchange symbol ticker
+          examples:
+          - BSET
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        name:
+          description: The official name of the instrument
+          examples:
+          - Bassett Furniture Industries Inc
+          type: string
+          x-go-name: Name
+          x-order: 20
+        exchange:
+          description: Exchange where instrument is traded
+          examples:
+          - NASDAQ
+          type: string
+          x-go-name: Exchange
+          x-order: 30
+        mic_code:
+          description: Market identifier code (MIC) under ISO 10383 standard
+          examples:
+          - XNAS
+          type: string
+          x-go-name: MicCode
+          x-order: 40
+        datetime:
+          description: The last updated datetime timestamp
+          examples:
+          - '2023-10-01 12:00:00Z'
+          type: string
+          x-go-name: Datetime
+          x-order: 50
+        last:
+          description: The latest available price for the symbol today
+          examples:
+          - 17.25
+          format: double
+          type: number
+          x-go-name: Last
+          x-order: 60
+        high:
+          description: The highest price for the symbol today
+          examples:
+          - 18
+          format: double
+          type: number
+          x-go-name: High
+          x-order: 70
+        low:
+          description: The lowest price for the symbol today
+          examples:
+          - 16.5
+          format: double
+          type: number
+          x-go-name: Low
+          x-order: 80
+        volume:
+          description: The trading volume of the symbol today
+          examples:
+          - 108297
+          format: int64
+          type: integer
+          x-go-name: Volume
+          x-order: 90
+        change:
+          description: The value of the change since the previous day
+          examples:
+          - 3.31
+          format: double
+          type: number
+          x-go-name: Change
+          x-order: 100
+        percent_change:
+          description: The percentage change since the previous day
+          examples:
+          - 23.74462
+          format: double
+          type: number
+          x-go-name: PercentChange
+          x-order: 110
+      required:
+      - change
+      - datetime
+      - high
+      - last
+      - low
+      - name
+      - percent_change
+      - symbol
+      - volume
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetPrice_200_response:
+      properties:
+        price:
+          description: Real-time or the latest available price
+          examples:
+          - '200.99001'
+          type: string
+          x-go-name: Price
+      required:
+      - price
+      type: object
+    TimeSeriesItem:
+      properties:
+        datetime:
+          description: Datetime at local exchange time referring to when the bar with specified interval was opened.
+          examples:
+          - '2021-09-16 15:59:00'
+          type: string
+          x-go-name: Time
+          x-order: 10
+        open:
+          description: Price at the opening of current bar
+          examples:
+          - '148.73500'
+          type: string
+          x-go-name: Open
+          x-order: 20
+        high:
+          description: Highest price which occurred during the current bar.
+          examples:
+          - '148.86000'
+          type: string
+          x-go-name: High
+          x-order: 30
+        low:
+          description: Lowest price which occurred during the current bar.
+          examples:
+          - '148.73000'
+          type: string
+          x-go-name: Low
+          x-order: 40
+        close:
+          description: Close price at the end of the bar.
+          examples:
+          - '148.85001'
+          type: string
+          x-go-name: Close
+          x-order: 50
+        volume:
+          description: Trading volume which occurred during the current bar
+          examples:
+          - '624277'
+          type: string
+          x-go-name: Volume
+          x-order: 60
+      required:
+      - close
+      - datetime
+      - high
+      - low
+      - open
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    FormatEnum:
+      default: JSON
+      enum:
+      - JSON
+      - CSV
+      type: string
+      x-go-name: Format
+      x-order: '90'
+    GetTimeSeries_200_response_meta:
       description: Json object with request general information
       properties:
-        base_instrument:
-          description: Base instrument symbol
+        symbol:
+          description: The ticker symbol of an instrument for which data was requested.
           examples:
-          - JPY/USD
+          - AAPL
           type: string
-          x-go-name: BaseInstrument
+          x-go-name: Symbol
           x-order: 10
-        base_currency:
-          description: Base currency
-          type: string
-          x-go-name: BaseCurrency
-          x-order: 20
-        base_exchange:
-          description: Base exchange
-          examples:
-          - PHYSICAL CURRENCY
-          type: string
-          x-go-name: BaseExchange
-          x-order: 30
         interval:
-          description: Interval between two consecutive points in time series
+          description: The time gap between consecutive data points.
           examples:
           - 1min
           type: string
           x-go-name: Interval
-          x-order: 40
-        quote_instrument:
-          description: Quote instrument symbol
+          x-order: 20
+        currency:
+          description: The currency of a traded instrument.
           examples:
-          - BTC/USD
+          - USD
           type: string
-          x-go-name: QuoteInstrument
-          x-order: 50
-        quote_currency:
-          description: Quote currency
+          x-go-name: Currency
+          x-order: 30
+        exchange_timezone:
+          description: The timezone of the exchange where the instrument is traded.
+          examples:
+          - America/New_York
           type: string
-          x-go-name: QuoteCurrency
+          x-go-name: ExchangeTimezone
           x-order: 60
-        quote_exchange:
-          description: Quote exchange
+        exchange:
+          description: The exchange name where the instrument is traded.
           examples:
-          - Coinbase Pro
+          - NASDAQ
           type: string
-          x-go-name: QuoteExchange
+          x-go-name: Exchange
           x-order: 70
+        mic_code:
+          description: The Market Identifier Code (MIC) of the exchange where the instrument is traded.
+          examples:
+          - XNAS
+          type: string
+          x-go-name: MicCode
+          x-order: 80
+        type:
+          description: The asset class to which the instrument belongs.
+          examples:
+          - Common Stock
+          type: string
+          x-go-name: Type
+          x-order: 90
       required:
-      - base_currency
-      - base_exchange
-      - base_instrument
       - interval
-      - quote_currency
-      - quote_exchange
-      - quote_instrument
+      - symbol
+      - type
       type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+      x-go-name: Meta
+      x-order: 10
+    GetTimeSeriesCross_200_response:
+      properties:
+        meta:
+          $ref: '#/components/schemas/CrossMeta'
+        values:
+          description: Array of time series data points
+          items:
+            $ref: '#/components/schemas/TimeSeriesCrossItem'
+          type: array
+          x-go-name: Values
+      required:
+      - meta
+      - values
+      type: object
     GetQuote_200_response:
       properties:
         symbol:
@@ -1618,228 +1942,6 @@ components:
       - symbol
       - timestamp
       type: object
-    TimeSeriesItem:
-      properties:
-        datetime:
-          description: Datetime at local exchange time referring to when the bar with specified interval was opened.
-          examples:
-          - '2021-09-16 15:59:00'
-          type: string
-          x-go-name: Time
-          x-order: 10
-        open:
-          description: Price at the opening of current bar
-          examples:
-          - '148.73500'
-          type: string
-          x-go-name: Open
-          x-order: 20
-        high:
-          description: Highest price which occurred during the current bar.
-          examples:
-          - '148.86000'
-          type: string
-          x-go-name: High
-          x-order: 30
-        low:
-          description: Lowest price which occurred during the current bar.
-          examples:
-          - '148.73000'
-          type: string
-          x-go-name: Low
-          x-order: 40
-        close:
-          description: Close price at the end of the bar.
-          examples:
-          - '148.85001'
-          type: string
-          x-go-name: Close
-          x-order: 50
-        volume:
-          description: Trading volume which occurred during the current bar
-          examples:
-          - '624277'
-          type: string
-          x-go-name: Volume
-          x-order: 60
-      required:
-      - close
-      - datetime
-      - high
-      - low
-      - open
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    MarketMoversResponseValue:
-      properties:
-        symbol:
-          description: The exchange symbol ticker
-          examples:
-          - BSET
-          type: string
-          x-go-name: Symbol
-          x-order: 10
-        name:
-          description: The official name of the instrument
-          examples:
-          - Bassett Furniture Industries Inc
-          type: string
-          x-go-name: Name
-          x-order: 20
-        exchange:
-          description: Exchange where instrument is traded
-          examples:
-          - NASDAQ
-          type: string
-          x-go-name: Exchange
-          x-order: 30
-        mic_code:
-          description: Market identifier code (MIC) under ISO 10383 standard
-          examples:
-          - XNAS
-          type: string
-          x-go-name: MicCode
-          x-order: 40
-        datetime:
-          description: The last updated datetime timestamp
-          examples:
-          - '2023-10-01 12:00:00Z'
-          type: string
-          x-go-name: Datetime
-          x-order: 50
-        last:
-          description: The latest available price for the symbol today
-          examples:
-          - 17.25
-          format: double
-          type: number
-          x-go-name: Last
-          x-order: 60
-        high:
-          description: The highest price for the symbol today
-          examples:
-          - 18
-          format: double
-          type: number
-          x-go-name: High
-          x-order: 70
-        low:
-          description: The lowest price for the symbol today
-          examples:
-          - 16.5
-          format: double
-          type: number
-          x-go-name: Low
-          x-order: 80
-        volume:
-          description: The trading volume of the symbol today
-          examples:
-          - 108297
-          format: int64
-          type: integer
-          x-go-name: Volume
-          x-order: 90
-        change:
-          description: The value of the change since the previous day
-          examples:
-          - 3.31
-          format: double
-          type: number
-          x-go-name: Change
-          x-order: 100
-        percent_change:
-          description: The percentage change since the previous day
-          examples:
-          - 23.74462
-          format: double
-          type: number
-          x-go-name: PercentChange
-          x-order: 110
-      required:
-      - change
-      - datetime
-      - high
-      - last
-      - low
-      - name
-      - percent_change
-      - symbol
-      - volume
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    TypeEnum:
-      enum:
-      - American Depositary Receipt
-      - Bond
-      - Bond Fund
-      - Closed-end Fund
-      - Common Stock
-      - Depositary Receipt
-      - Digital Currency
-      - ETF
-      - Exchange-Traded Note
-      - Global Depositary Receipt
-      - Limited Partnership
-      - Mutual Fund
-      - Physical Currency
-      - Preferred Stock
-      - REIT
-      - Right
-      - Structured Product
-      - Trust
-      - Unit
-      - Warrant
-      type: string
-      x-go-name: Type
-      x-order: '70'
-    IntervalEnum:
-      enum:
-      - 1min
-      - 5min
-      - 15min
-      - 30min
-      - 45min
-      - 1h
-      - 2h
-      - 4h
-      - 8h
-      - 1day
-      - 1week
-      - 1month
-      type: string
-      x-go-name: Interval
-      x-order: '30'
-    GetTimeSeries_200_response:
-      properties:
-        meta:
-          $ref: '#/components/schemas/GetTimeSeries_200_response_meta'
-        values:
-          description: List of time series data points
-          items:
-            $ref: '#/components/schemas/TimeSeriesItem'
-          type: array
-          x-go-name: Data
-          x-order: 20
-        status:
-          description: Response status
-          examples:
-          - ok
-          type: string
-          x-go-name: Status
-          x-order: 30
-      required:
-      - meta
-      - status
-      - values
-      type: object
-    FormatEnum:
-      default: JSON
-      enum:
-      - JSON
-      - CSV
-      type: string
-      x-go-name: Format
-      x-order: '90'
     TimeSeriesCrossItem:
       description: TimeSeriesCrossItem represents a single data point in the time series
       properties:
@@ -1886,31 +1988,6 @@ components:
       - open
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetTimeSeriesCross_200_response:
-      properties:
-        meta:
-          $ref: '#/components/schemas/CrossMeta'
-        values:
-          description: Array of time series data points
-          items:
-            $ref: '#/components/schemas/TimeSeriesCrossItem'
-          type: array
-          x-go-name: Values
-      required:
-      - meta
-      - values
-      type: object
-    GetPrice_200_response:
-      properties:
-        price:
-          description: Real-time or the latest available price
-          examples:
-          - '200.99001'
-          type: string
-          x-go-name: Price
-      required:
-      - price
-      type: object
     OrderEnum:
       default: desc
       enum:
@@ -1919,43 +1996,6 @@ components:
       type: string
       x-go-name: Order
       x-order: '130'
-    MarketEnum:
-      enum:
-      - stocks
-      - etf
-      - mutual_funds
-      - forex
-      - crypto
-      type: string
-      x-go-name: Market
-      x-order: '5'
-    ApiForbiddenErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 403
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - API key lacks permissions for the requested resource
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
     MarketMoversResponseBody:
       properties:
         values:
@@ -2032,142 +2072,29 @@ components:
       type: object
       x-go-name: FiftyTwoWeek
       x-order: 220
-    ApiInternalServerErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 500
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - Internal server error
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    ApiTooManyRequestsErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 429
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - You have run out of API credits for the current minute. 1000 API credits were used, with the current limit being 987. Wait for the next minute or consider upgrading your plan at https://twelvedata.com/pricing
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    AdjustEnum:
-      default: splits
+    MarketEnum:
       enum:
-      - all
-      - splits
-      - dividends
-      - none
+      - stocks
+      - etf
+      - mutual_funds
+      - forex
+      - crypto
       type: string
-      x-go-name: Adjust
-      x-order: '180'
-    GetTimeSeries_200_response_meta:
-      description: Json object with request general information
-      properties:
-        symbol:
-          description: The ticker symbol of an instrument for which data was requested.
-          examples:
-          - AAPL
-          type: string
-          x-go-name: Symbol
-          x-order: 10
-        interval:
-          description: The time gap between consecutive data points.
-          examples:
-          - 1min
-          type: string
-          x-go-name: Interval
-          x-order: 20
-        currency:
-          description: The currency of a traded instrument.
-          examples:
-          - USD
-          type: string
-          x-go-name: Currency
-          x-order: 30
-        exchange_timezone:
-          description: The timezone of the exchange where the instrument is traded.
-          examples:
-          - America/New_York
-          type: string
-          x-go-name: ExchangeTimezone
-          x-order: 60
-        exchange:
-          description: The exchange name where the instrument is traded.
-          examples:
-          - NASDAQ
-          type: string
-          x-go-name: Exchange
-          x-order: 70
-        mic_code:
-          description: The Market Identifier Code (MIC) of the exchange where the instrument is traded.
-          examples:
-          - XNAS
-          type: string
-          x-go-name: MicCode
-          x-order: 80
-        type:
-          description: The asset class to which the instrument belongs.
-          examples:
-          - Common Stock
-          type: string
-          x-go-name: Type
-          x-order: 90
-      required:
-      - interval
-      - symbol
-      - type
-      type: object
-      x-go-name: Meta
-      x-order: 10
-    ApiNotFoundErrorResponseBody:
+      x-go-name: Market
+      x-order: '5'
+    ApiUnauthorizedErrorResponseBody:
       properties:
         code:
           description: Error code
           examples:
-          - 404
+          - 401
           format: int64
           type: integer
           x-go-name: Code
         message:
           description: Error message
           examples:
-          - symbol or figi parameter is missing or invalid
+          - apikey parameter is incorrect or not specified
           type: string
           x-go-name: Message
         status:
@@ -2190,6 +2117,60 @@ components:
       type: string
       x-go-name: Direction
       x-order: '10'
+    ApiBadRequestErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 400
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Invalid request
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiForbiddenErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 403
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - API key lacks permissions for the requested resource
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
     GetEod_200_response:
       properties:
         symbol:
@@ -2240,87 +2221,106 @@ components:
       - exchange
       - symbol
       type: object
-    ApiUnauthorizedErrorResponseBody:
+    CrossMeta:
+      description: Json object with request general information
       properties:
-        code:
-          description: Error code
+        base_instrument:
+          description: Base instrument symbol
           examples:
-          - 401
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - apikey parameter is incorrect or not specified
+          - JPY/USD
           type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
+          x-go-name: BaseInstrument
+          x-order: 10
+        base_currency:
+          description: Base currency
           type: string
-          x-go-name: Status
+          x-go-name: BaseCurrency
+          x-order: 20
+        base_exchange:
+          description: Base exchange
+          examples:
+          - PHYSICAL CURRENCY
+          type: string
+          x-go-name: BaseExchange
+          x-order: 30
+        interval:
+          description: Interval between two consecutive points in time series
+          examples:
+          - 1min
+          type: string
+          x-go-name: Interval
+          x-order: 40
+        quote_instrument:
+          description: Quote instrument symbol
+          examples:
+          - BTC/USD
+          type: string
+          x-go-name: QuoteInstrument
+          x-order: 50
+        quote_currency:
+          description: Quote currency
+          type: string
+          x-go-name: QuoteCurrency
+          x-order: 60
+        quote_exchange:
+          description: Quote exchange
+          examples:
+          - Coinbase Pro
+          type: string
+          x-go-name: QuoteExchange
+          x-order: 70
       required:
-      - code
-      - message
-      - status
+      - base_currency
+      - base_exchange
+      - base_instrument
+      - interval
+      - quote_currency
+      - quote_exchange
+      - quote_instrument
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    ApiParameterTooLongErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 414
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - Input parameter array exceeds the allowed length
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    ApiBadRequestErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 400
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - Invalid request
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    IntervalEnum:
+      enum:
+      - 1min
+      - 5min
+      - 15min
+      - 30min
+      - 45min
+      - 1h
+      - 2h
+      - 4h
+      - 8h
+      - 1day
+      - 1week
+      - 1month
+      type: string
+      x-go-name: Interval
+      x-order: '30'
+    TypeEnum:
+      enum:
+      - American Depositary Receipt
+      - Bond
+      - Bond Fund
+      - Closed-end Fund
+      - Common Stock
+      - Depositary Receipt
+      - Digital Currency
+      - ETF
+      - Exchange-Traded Note
+      - Global Depositary Receipt
+      - Limited Partnership
+      - Mutual Fund
+      - Physical Currency
+      - Preferred Stock
+      - REIT
+      - Right
+      - Structured Product
+      - Trust
+      - Unit
+      - Warrant
+      type: string
+      x-go-name: Type
+      x-order: '70'
   securitySchemes:
     authorizationHeader:
       description: Enter the token with the `apikey ` prefix, e.g. "apikey abcde12345".

@@ -113,6 +113,62 @@ paths:
         '200':
           description: Market state payload.
 components:
+  responses:
+    RateLimited:
+      description: API credit limit for the current minute has been exceeded.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: HTTP-style status code.
+        message:
+          type: string
+          description: Human-readable error message.
+        status:
+          type: string
+          example: error
+    Price:
+      type: object
+      properties:
+        price:
+          type: string
+          example: '201.23'
+    Quote:
+      type: object
+      properties:
+        symbol:
+          type: string
+        name:
+          type: string
+        exchange:
+          type: string
+        currency:
+          type: string
+        datetime:
+          type: string
+        open:
+          type: string
+        high:
+          type: string
+        low:
+          type: string
+        close:
+          type: string
+        volume:
+          type: string
+        fifty_two_week:
+          type: object
+          properties:
+            low:
+              type: string
+            high:
+              type: string
   parameters:
     apikeyParam:
       name: apikey
@@ -147,62 +203,6 @@ components:
       schema:
         type: string
       description: Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.
-  schemas:
-    Price:
-      type: object
-      properties:
-        price:
-          type: string
-          example: '201.23'
-    Error:
-      type: object
-      properties:
-        code:
-          type: integer
-          description: HTTP-style status code.
-        message:
-          type: string
-          description: Human-readable error message.
-        status:
-          type: string
-          example: error
-    Quote:
-      type: object
-      properties:
-        symbol:
-          type: string
-        name:
-          type: string
-        exchange:
-          type: string
-        currency:
-          type: string
-        datetime:
-          type: string
-        open:
-          type: string
-        high:
-          type: string
-        low:
-          type: string
-        close:
-          type: string
-        volume:
-          type: string
-        fifty_two_week:
-          type: object
-          properties:
-            low:
-              type: string
-            high:
-              type: string
-  responses:
-    RateLimited:
-      description: API credit limit for the current minute has been exceeded.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     apikeyQuery:
       type: apiKey

@@ -2203,28 +2203,82 @@ paths:
       description: Twelve Data REST base URL
 components:
   schemas:
-    GetCrossListings_200_response:
+    MarketStateResponseItem:
       properties:
-        result:
-          $ref: '#/components/schemas/CrossListingsResult'
-      type: object
-    TechnicalIndicatorsResponseMacdOutputValues:
-      description: An array of output values
-      properties:
-        parameter_name:
-          $ref: '#/components/schemas/TechnicalIndicatorsResponseMacdOutputValue'
+        name:
+          description: The full name of exchange
+          examples:
+          - NYSE
+          type: string
+          x-go-name: Name
+          x-order: 10
+        code:
+          description: Market identifier code (MIC) under ISO 10383 standard
+          examples:
+          - XNYS
+          type: string
+          x-go-name: Code
+          x-order: 20
+        country:
+          description: Country where the exchange is located
+          examples:
+          - United States
+          type: string
+          x-go-name: Country
+          x-order: 30
+        is_market_open:
+          description: Indicates if the market is currently open
+          examples:
+          - true
+          type: boolean
+          x-go-name: IsMarketOpen
+          x-order: 40
+        time_after_open:
+          description: Time after market opening in <code>HH:MM:SS</code> format; if currently closed - returns <code>00:00:00</code>
+          examples:
+          - 02:39:03
+          type: string
+          x-go-name: TimeAfterOpen
+          x-order: 50
+        time_to_open:
+          description: Time to market opening in <code>HH:MM:SS</code> format; if currently open - returns <code>00:00:00</code>
+          examples:
+          - 00:00:00
+          type: string
+          x-go-name: TimeToOpen
+          x-order: 60
+        time_to_close:
+          description: Time to market closing in <code>HH:MM:SS</code> format; if currently closed - returns <code>00:00:00</code>
+          examples:
+          - 05:20:57
+          type: string
+          x-go-name: TimeToClose
+          x-order: 70
+      required:
+      - code
+      - country
+      - is_market_open
+      - name
+      - time_after_open
+      - time_to_close
+      - time_to_open
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetTechnicalIndicators_200_response:
+    GetEtf_200_response:
       properties:
+        count:
+          description: Count
+          examples:
+          - 100
+          format: int64
+          type: integer
+          x-go-name: Count
         data:
-          additionalProperties:
-            $ref: '#/components/schemas/GetTechnicalIndicators_200_response_data_value'
-          description: Map of technical indicators available at Twelve Data API
-          type: object
-          x-example-key: macd
+          description: List of ETFs
+          items:
+            $ref: '#/components/schemas/EtfResponseItem'
+          type: array
           x-go-name: Data
-          x-order: 10
         status:
           description: Response status
           examples:
@@ -2232,8 +2286,406 @@ components:
           type: string
           x-go-name: Status
       required:
+      - count
       - data
       - status
+      type: object
+    TechnicalIndicatorsResponseMacdOutputValue:
+      description: 'Output parameter name. Example values: <code>ad</code>, <code>add</code>, <code>adxr</code>, <code>aroonosc</code>,  <code>macd</code>, <code>macd_signal</code>, <code>macd_hist</code>, etc'
+      properties:
+        default_color:
+          description: Suggested color for displaying returns hex color code
+          examples:
+          - '#FF0000'
+          type: string
+          x-go-name: DefaultColor
+          x-order: 10
+        display:
+          description: How output value should be rendered
+          enum:
+          - line
+          - histogram
+          - candle
+          - points
+          examples:
+          - line
+          type: string
+          x-go-name: Display
+          x-order: 20
+        min_range:
+          description: If output value has minimum bound
+          examples:
+          - 0
+          format: int64
+          type: integer
+          x-go-name: MinRange
+          x-order: 30
+        max_range:
+          description: If output value has maximum bound
+          examples:
+          - 5
+          format: int64
+          type: integer
+          x-go-name: MaxRange
+          x-order: 40
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    SymbolSearchResponseItemAccess:
+      description: Info on which plan symbol is available (displayed then `show_plan` is `true`)
+      properties:
+        global:
+          description: Level of access to the symbol
+          examples:
+          - Basic
+          type: string
+          x-go-name: Global
+        plan:
+          description: The individual plan name for the symbol
+          examples:
+          - Basic
+          type: string
+          x-go-name: Plan
+        plan_business:
+          description: The business plan name for the symbol
+          examples:
+          - Basic
+          type: string
+          x-go-name: PlanBusiness
+      required:
+      - global
+      - plan
+      - plan_business
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiInternalServerErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 500
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Internal server error
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetSymbolSearch_200_response:
+      properties:
+        data:
+          description: List of symbols matching the search criteria
+          items:
+            $ref: '#/components/schemas/SymbolSearchResponseItem'
+          type: array
+          x-go-name: Data
+          x-order: 10
+        status:
+          description: Status of the response
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+          x-order: 20
+      required:
+      - data
+      - status
+      type: object
+    GetInstrumentType_200_response:
+      properties:
+        result:
+          description: List of instrument types available at Twelve Data API.
+          examples:
+          - - Agricultural Product
+            - American Depositary Receipt
+            - Bond
+            - Bond Fund
+            - Closed-end Fund
+            - Common Stock
+            - Depositary Receipt
+            - Digital Currency
+            - Energy Resource
+            - ETF
+            - Exchange-Traded Note
+            - Global Depositary Receipt
+            - Index
+            - Industrial Metal
+            - Limited Partnership
+            - Livestock
+            - Mutual Fund
+            - Physical Currency
+            - Precious Metal
+            - Preferred Stock
+            - REIT
+            - Right
+            - Structured Product
+            - Trust
+            - Unit
+            - Warrant
+          items:
+            type: string
+          type: array
+          x-go-name: Result
+        status:
+          description: Status of the response
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+      required:
+      - result
+      - status
+      type: object
+    GetCountries_200_response:
+      properties:
+        data:
+          description: List of countries with their ISO codes, names, capital, and currency
+          items:
+            $ref: '#/components/schemas/CountryResponseItem'
+          type: array
+          x-go-name: Data
+          x-order: 10
+      required:
+      - data
+      type: object
+    CryptocurrencyResponseItem:
+      description: CryptocurrencyResponseItem represents details of a cryptocurrency
+      properties:
+        symbol:
+          description: Cryptocurrency pair codes with slash(/) delimiter
+          examples:
+          - BTC/USD
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        available_exchanges:
+          description: List of exchanges where the cryptocurrency is available
+          examples:
+          - - ABCC
+            - Allcoin
+            - BTC-Alpha
+            - BTCTurk
+            - Bibox
+            - n.exchange
+            - p2pb2b
+            - xBTCe
+          items:
+            type: string
+          type: array
+          x-go-name: AvailableExchanges
+          x-order: 20
+        currency_base:
+          description: Base currency of the cryptocurrency pair
+          examples:
+          - Bitcoin
+          type: string
+          x-go-name: CurrencyBase
+          x-order: 30
+        currency_quote:
+          description: Quote currency of the cryptocurrency pair
+          examples:
+          - US Dollar
+          type: string
+          x-go-name: CurrencyQuote
+          x-order: 40
+      required:
+      - available_exchanges
+      - currency_base
+      - currency_quote
+      - symbol
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ExchangesResponseItem:
+      description: ExchangesResponseItem represents details of an exchange
+      properties:
+        title:
+          description: Title of exchange
+          examples:
+          - Argentinian Stock Exchange
+          type: string
+          x-go-name: Title
+          x-order: 5
+        name:
+          description: Name of exchange
+          examples:
+          - BCBA
+          type: string
+          x-go-name: Name
+          x-order: 10
+        code:
+          description: Market identifier code (MIC) under ISO 10383 standard
+          examples:
+          - XBUE
+          type: string
+          x-go-name: Code
+          x-order: 20
+        country:
+          description: Country to which stock exchange belongs to
+          examples:
+          - Argentina
+          type: string
+          x-go-name: Country
+          x-order: 30
+        timezone:
+          description: Time zone where exchange is located
+          examples:
+          - America/Argentina/Buenos_Aires
+          type: string
+          x-go-name: Timezone
+          x-order: 40
+        access:
+          $ref: '#/components/schemas/ExchangesResponseItemAccess'
+      required:
+      - code
+      - country
+      - name
+      - timezone
+      - title
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiForbiddenErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 403
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - API key lacks permissions for the requested resource
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ForexResponseItem:
+      description: ForexResponseItem represents details of a forex pair
+      properties:
+        symbol:
+          description: Currency pair according to ISO 4217 standard codes with slash(/) delimiter
+          examples:
+          - EUR/USD
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        currency_group:
+          description: 'Group to which currency pair belongs to, could be: Major, Minor, Exotic and Exotic-Cross'
+          examples:
+          - Major
+          type: string
+          x-go-name: CurrencyGroup
+          x-order: 20
+        currency_base:
+          description: Base currency name according to ISO 4217 standard
+          examples:
+          - EUR
+          type: string
+          x-go-name: CurrencyBase
+          x-order: 30
+        currency_quote:
+          description: Quote currency name according to ISO 4217 standard
+          examples:
+          - USD
+          type: string
+          x-go-name: CurrencyQuote
+          x-order: 40
+      required:
+      - currency_base
+      - currency_group
+      - currency_quote
+      - symbol
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiParameterTooLongErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 414
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Input parameter array exceeds the allowed length
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    TechnicalIndicatorsResponseMacdOutputValues:
+      description: An array of output values
+      properties:
+        parameter_name:
+          $ref: '#/components/schemas/TechnicalIndicatorsResponseMacdOutputValue'
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiUnauthorizedErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 401
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - apikey parameter is incorrect or not specified
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetCrossListings_200_response:
+      properties:
+        result:
+          $ref: '#/components/schemas/CrossListingsResult'
       type: object
     FundResponseItem:
       description: FundResponseItem represents details of a fund
@@ -2325,340 +2777,6 @@ components:
       - exchange
       - figi_code
       - isin
-      - mic_code
-      - name
-      - symbol
-      - type
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetFunds_200_response:
-      properties:
-        result:
-          $ref: '#/components/schemas/GetFunds_200_response_result'
-        status:
-          description: Status of the response
-          examples:
-          - ok
-          type: string
-          x-go-name: Status
-      required:
-      - result
-      - status
-      type: object
-    GetIntervals_200_response:
-      properties:
-        data:
-          description: List of available intervals
-          examples:
-          - - 1min
-            - 5min
-            - 15min
-            - 30min
-            - 45min
-            - 1h
-            - 2h
-            - 4h
-            - 8h
-            - 1day
-            - 1week
-            - 1month
-          items:
-            type: string
-          type: array
-          x-go-name: Data
-        status:
-          description: Status of the response
-          examples:
-          - ok
-          type: string
-          x-go-name: Status
-      required:
-      - data
-      - status
-      type: object
-    GetExchanges_200_response:
-      properties:
-        data:
-          description: List of exchanges
-          items:
-            $ref: '#/components/schemas/ExchangesResponseItem'
-          type: array
-          x-go-name: Data
-          x-order: 10
-        status:
-          description: Response status
-          examples:
-          - ok
-          type: string
-          x-go-name: Status
-          x-order: 20
-      required:
-      - data
-      - status
-      type: object
-    CryptocurrencyExchangesResponseItem:
-      properties:
-        name:
-          description: Name of cryptocurrency exchange
-          examples:
-          - Binance
-          type: string
-          x-go-name: Name
-          x-order: 10
-      required:
-      - name
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetBonds_200_response_result:
-      properties:
-        count:
-          description: Total number of matching instruments
-          examples:
-          - 6
-          format: int64
-          type: integer
-          x-go-name: Count
-        list:
-          description: List of bonds
-          items:
-            $ref: '#/components/schemas/BondResponseItem'
-          type: array
-          x-go-name: Data
-      required:
-      - count
-      - list
-      type: object
-      x-go-name: Result
-    ApiInternalServerErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 500
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - Internal server error
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    ApiTooManyRequestsErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 429
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - You have run out of API credits for the current minute. 1000 API credits were used, with the current limit being 987. Wait for the next minute or consider upgrading your plan at https://twelvedata.com/pricing
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    ApiParameterTooLongErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 414
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - Input parameter array exceeds the allowed length
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    CrossListingsItem:
-      description: Represents details of a cross listing
-      properties:
-        symbol:
-          description: Ticker symbol of instrument
-          examples:
-          - NVDA
-          type: string
-          x-go-name: Symbol
-          x-order: 10
-        name:
-          description: Name of symbol
-          examples:
-          - NVIDIA Corp
-          type: string
-          x-go-name: Name
-          x-order: 20
-        exchange:
-          description: Exchange where instrument is traded
-          examples:
-          - NASDAQ
-          type: string
-          x-go-name: Exchange
-          x-order: 30
-        mic_code:
-          description: Market identifier code (MIC) under ISO 10383 standard
-          examples:
-          - XNGS
-          type: string
-          x-go-name: MicCode
-          x-order: 40
-      required:
-      - exchange
-      - mic_code
-      - name
-      - symbol
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetCryptocurrencies_200_response:
-      properties:
-        count:
-          description: Count
-          examples:
-          - 100
-          format: int64
-          type: integer
-          x-go-name: Count
-        data:
-          description: List of cryptocurrencies
-          items:
-            $ref: '#/components/schemas/CryptocurrencyResponseItem'
-          type: array
-          x-go-name: Data
-        status:
-          description: Response status
-          examples:
-          - ok
-          type: string
-          x-go-name: Status
-      required:
-      - count
-      - data
-      - status
-      type: object
-    ApiNotFoundErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 404
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - symbol or figi parameter is missing or invalid
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    BondResponseItem:
-      description: BondResponseItem represents details of a bond
-      properties:
-        symbol:
-          description: Bond symbol
-          examples:
-          - US2Y
-          type: string
-          x-go-name: Symbol
-          x-order: 10
-        name:
-          description: Full name of the bond
-          examples:
-          - US Treasury Yield 2 Years
-          type: string
-          x-go-name: Name
-          x-order: 20
-        country:
-          description: Country where the bond is located
-          examples:
-          - United States
-          type: string
-          x-go-name: Country
-          x-order: 30
-        currency:
-          description: Currency of the bond according to the ISO 4217 standard
-          examples:
-          - USD
-          type: string
-          x-go-name: Currency
-          x-order: 40
-        exchange:
-          description: Exchange where the bond is traded
-          examples:
-          - NYSE
-          type: string
-          x-go-name: Exchange
-          x-order: 50
-        mic_code:
-          description: Market identifier code (MIC) under ISO 10383 standard
-          examples:
-          - XNYS
-          type: string
-          x-go-name: MicCode
-          x-order: 60
-        type:
-          description: Type of the bond
-          examples:
-          - Bond
-          type: string
-          x-go-name: Type
-          x-order: 70
-        access:
-          $ref: '#/components/schemas/BondsResponseItemAccess'
-      required:
-      - country
-      - currency
-      - exchange
       - mic_code
       - name
       - symbol
@@ -2761,6 +2879,763 @@ components:
       - type
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetExchanges_200_response:
+      properties:
+        data:
+          description: List of exchanges
+          items:
+            $ref: '#/components/schemas/ExchangesResponseItem'
+          type: array
+          x-go-name: Data
+          x-order: 10
+        status:
+          description: Response status
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+          x-order: 20
+      required:
+      - data
+      - status
+      type: object
+    GetBonds_200_response:
+      properties:
+        result:
+          $ref: '#/components/schemas/GetBonds_200_response_result'
+        status:
+          description: Response status
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+      required:
+      - result
+      - status
+      type: object
+    ApiTooManyRequestsErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 429
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - You have run out of API credits for the current minute. 1000 API credits were used, with the current limit being 987. Wait for the next minute or consider upgrading your plan at https://twelvedata.com/pricing
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ExchangeScheduleSession:
+      description: ExchangeScheduleSession represents a trading session
+      properties:
+        open_time:
+          description: Opening time of the session
+          examples:
+          - 04:00:00
+          type: string
+          x-go-name: OpenTime
+          x-order: 10
+        close_time:
+          description: Closing time of the session
+          examples:
+          - 09:30:00
+          type: string
+          x-go-name: CloseTime
+          x-order: 20
+        session_name:
+          description: Name of the session
+          examples:
+          - Pre market
+          type: string
+          x-go-name: SessionName
+          x-order: 30
+        session_type:
+          description: Type of the session
+          examples:
+          - pre
+          type: string
+          x-go-name: SessionType
+          x-order: 40
+      required:
+      - close_time
+      - open_time
+      - session_name
+      - session_type
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    TechnicalIndicatorsResponseMacdParameter:
+      description: 'Input parameter name. Example values: <code>series_type</code>, <code>fast_period</code>, <code>slow_period</code>, <code>time_period</code>, <code>signal_period</code>'
+      properties:
+        default:
+          description: Specifies parameter value set by default
+          examples:
+          - 12
+          format: int64
+          type: integer
+          x-go-name: Default
+        max_range:
+          description: If the parameter has upper bound in order to ensure correct calculation
+          examples:
+          - 1
+          format: int64
+          type: integer
+          x-go-name: MaxRange
+        min_range:
+          description: If the parameter has lower bound in order to ensure correct calculation
+          examples:
+          - 1
+          format: int64
+          type: integer
+          x-go-name: MinRange
+        range:
+          description: An array of available parameter values
+          examples:
+          - - open
+            - high
+            - low
+            - close
+          items:
+            type: string
+          type: array
+          x-go-name: Range
+        type:
+          description: Type of parameter might be <code>string</code>, <code>int</code>, <code>float</code> or <code>array</code>
+          examples:
+          - int
+          type: string
+          x-go-name: Type
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetFunds_200_response_result:
+      properties:
+        count:
+          description: Total number of matching instruments
+          examples:
+          - 84799
+          format: int64
+          type: integer
+          x-go-name: Count
+        list:
+          description: List of funds
+          items:
+            $ref: '#/components/schemas/FundResponseItem'
+          type: array
+          x-go-name: Data
+      required:
+      - count
+      - list
+      type: object
+      x-go-name: Result
+    IntervalEnum:
+      enum:
+      - 1min
+      - 5min
+      - 15min
+      - 30min
+      - 45min
+      - 1h
+      - 2h
+      - 4h
+      - 8h
+      - 1day
+      - 1week
+      - 1month
+      type: string
+      x-go-name: Interval
+      x-order: '30'
+    GetCryptocurrencies_200_response:
+      properties:
+        count:
+          description: Count
+          examples:
+          - 100
+          format: int64
+          type: integer
+          x-go-name: Count
+        data:
+          description: List of cryptocurrencies
+          items:
+            $ref: '#/components/schemas/CryptocurrencyResponseItem'
+          type: array
+          x-go-name: Data
+        status:
+          description: Response status
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+      required:
+      - count
+      - data
+      - status
+      type: object
+    ApiNotFoundErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 404
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - symbol or figi parameter is missing or invalid
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetExchangeSchedule_200_response:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/ExchangeScheduleResponseItem'
+          type: array
+          x-go-name: Data
+          x-order: 10
+      required:
+      - data
+      type: object
+    GetBonds_200_response_result:
+      properties:
+        count:
+          description: Total number of matching instruments
+          examples:
+          - 6
+          format: int64
+          type: integer
+          x-go-name: Count
+        list:
+          description: List of bonds
+          items:
+            $ref: '#/components/schemas/BondResponseItem'
+          type: array
+          x-go-name: Data
+      required:
+      - count
+      - list
+      type: object
+      x-go-name: Result
+    TechnicalIndicatorsResponseMacdParameters:
+      description: An array of input parameters for the indicator
+      properties:
+        parameter_name:
+          $ref: '#/components/schemas/TechnicalIndicatorsResponseMacdParameter'
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    SymbolSearchResponseItem:
+      description: SymbolSearchResponseItem represents details of a symbol search result
+      properties:
+        symbol:
+          description: Ticker symbol of instrument
+          examples:
+          - AA
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        instrument_name:
+          description: Name of exchange
+          examples:
+          - Alcoa Corp
+          type: string
+          x-go-name: InstrumentName
+          x-order: 20
+        exchange:
+          description: Exchange where instrument is traded
+          examples:
+          - NYSE
+          type: string
+          x-go-name: Exchange
+          x-order: 30
+        mic_code:
+          description: Market identifier code (MIC) under ISO 10383 standard
+          examples:
+          - XNYS
+          type: string
+          x-go-name: MicCode
+          x-order: 40
+        exchange_timezone:
+          description: Time zone where exchange is located
+          examples:
+          - America/New_York
+          type: string
+          x-go-name: ExchangeTimezone
+          x-order: 50
+        instrument_type:
+          description: Type of instrument
+          examples:
+          - Common Stock
+          type: string
+          x-go-name: InstrumentType
+          x-order: 60
+        country:
+          description: Country to which stock exchange belongs to
+          examples:
+          - United States
+          type: string
+          x-go-name: Country
+          x-order: 70
+        currency:
+          description: Currency in which the instrument is traded
+          examples:
+          - USD
+          type: string
+          x-go-name: Currency
+          x-order: 80
+        access:
+          $ref: '#/components/schemas/SymbolSearchResponseItemAccess'
+      required:
+      - country
+      - currency
+      - exchange
+      - exchange_timezone
+      - instrument_name
+      - instrument_type
+      - mic_code
+      - symbol
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ExchangesResponseItemAccess:
+      description: Info on which plan symbol is available (displayed then `show_plan` is `true`)
+      properties:
+        global:
+          description: Level of access to the symbol
+          examples:
+          - Pro
+          type: string
+          x-go-name: Global
+        plan:
+          description: The individual plan name for the symbol
+          examples:
+          - Pro
+          type: string
+          x-go-name: Plan
+        plan_business:
+          description: The business plan name for the symbol
+          examples:
+          - Basic
+          type: string
+          x-go-name: PlanBusiness
+      required:
+      - global
+      - plan
+      - plan_business
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    CrossListingsItem:
+      description: Represents details of a cross listing
+      properties:
+        symbol:
+          description: Ticker symbol of instrument
+          examples:
+          - NVDA
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        name:
+          description: Name of symbol
+          examples:
+          - NVIDIA Corp
+          type: string
+          x-go-name: Name
+          x-order: 20
+        exchange:
+          description: Exchange where instrument is traded
+          examples:
+          - NASDAQ
+          type: string
+          x-go-name: Exchange
+          x-order: 30
+        mic_code:
+          description: Market identifier code (MIC) under ISO 10383 standard
+          examples:
+          - XNGS
+          type: string
+          x-go-name: MicCode
+          x-order: 40
+      required:
+      - exchange
+      - mic_code
+      - name
+      - symbol
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    CommoditiesResponseItem:
+      description: CommoditiesResponseItem represents details of a commodity
+      properties:
+        symbol:
+          description: Currency pair according to ISO 4217 standard codes with slash(/) delimiter
+          examples:
+          - XAU/USD
+          type: string
+          x-go-name: Symbol
+          x-order: 10
+        name:
+          description: Full name of the instrument
+          examples:
+          - Gold Spot
+          type: string
+          x-go-name: Name
+          x-order: 20
+        category:
+          description: Category of commodity
+          examples:
+          - Precious Metal
+          type: string
+          x-go-name: Category
+          x-order: 30
+        description:
+          description: Short description of the commodity
+          type: string
+          x-go-name: Description
+          x-order: 40
+      required:
+      - category
+      - description
+      - name
+      - symbol
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetStocks_200_response:
+      properties:
+        count:
+          description: Count
+          examples:
+          - 100
+          format: int64
+          type: integer
+          x-go-name: Count
+        data:
+          description: List of stock instruments
+          items:
+            $ref: '#/components/schemas/StocksResponseItem'
+          type: array
+          x-go-name: Data
+        status:
+          description: Response status
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+      required:
+      - count
+      - data
+      - status
+      type: object
+    CrossListingsResult:
+      description: Represents the result of cross listings
+      properties:
+        count:
+          description: Number of cross listings found
+          examples:
+          - 4
+          format: int64
+          type: integer
+          x-go-name: Count
+        list:
+          description: List of cross listings
+          examples:
+          - - exchange: NASDAQ
+              mic_code: XNGS
+              name: NVIDIA Corporation
+              symbol: NVDA
+            - exchange: VSE
+              mic_code: XWBO
+              name: NVIDIA Corporation
+              symbol: NVDA
+            - exchange: BVS
+              mic_code: XSGO
+              name: NVIDIA Corporation
+              symbol: NVDACL
+            - exchange: BVS
+              mic_code: XSGO
+              name: NVIDIA Corporation
+              symbol: NVDA
+          items:
+            $ref: '#/components/schemas/CrossListingsItem'
+          type: array
+          x-go-name: List
+      required:
+      - count
+      - list
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiBadRequestErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 400
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Invalid request
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    BondsResponseItemAccess:
+      description: Info on which plan symbol is available (displayed then `show_plan` is `true`)
+      properties:
+        global:
+          description: Level of access to the symbol
+          examples:
+          - Basic
+          type: string
+          x-go-name: Global
+        plan:
+          description: The individual plan name for the symbol
+          examples:
+          - Basic
+          type: string
+          x-go-name: Plan
+        plan_business:
+          description: The business plan name for the symbol
+          examples:
+          - Basic
+          type: string
+          x-go-name: PlanBusiness
+      required:
+      - global
+      - plan
+      - plan_business
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetCommodities_200_response:
+      properties:
+        count:
+          description: Count
+          examples:
+          - 100
+          format: int64
+          type: integer
+          x-go-name: Count
+        data:
+          description: List of commodities
+          examples:
+          - - category: Agricultural Product
+              description: Standardized contract to buy or sell a set quantity of corn at a future date.
+              name: Corn Futures
+              symbol: C_1
+            - category: Agricultural Product
+              description: Agreement to transact cocoa beans at a predetermined price and date.
+              name: Cocoa Futures
+              symbol: CC1
+            - category: Precious Metal
+              description: Spot price per troy ounce of gold.
+              name: Gold Spot
+              symbol: XAU/USD
+          items:
+            $ref: '#/components/schemas/CommoditiesResponseItem'
+          type: array
+          x-go-name: Data
+        status:
+          description: Response status
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+      required:
+      - count
+      - data
+      - status
+      type: object
+    GetTechnicalIndicators_200_response_data_value:
+      properties:
+        enable:
+          description: If the indicator is tested, approved and is recommended for use returns <code>true</code>, otherwise returns <code>false</code>
+          examples:
+          - true
+          type: boolean
+          x-go-name: Enable
+          x-order: 10
+        full_name:
+          description: Full indicator name
+          examples:
+          - Moving Average Convergence Divergence
+          type: string
+          x-go-name: FullName
+          x-order: 20
+        description:
+          description: Brief description of the indicator
+          examples:
+          - Moving Average Convergence Divergence(MACD) is ...
+          type: string
+          x-go-name: Description
+          x-order: 30
+        type:
+          description: Group to which indicator belongs to
+          examples:
+          - Momentum Indicators
+          type: string
+          x-go-name: Type
+          x-order: 40
+        overlay:
+          description: If indicator should be plotted over price bars returns <code>true</code>, otherwise returns <code>false</code>
+          examples:
+          - false
+          type: boolean
+          x-go-name: Overlay
+          x-order: 50
+        output_values:
+          $ref: '#/components/schemas/TechnicalIndicatorsResponseMacdOutputValues'
+        parameters:
+          $ref: '#/components/schemas/TechnicalIndicatorsResponseMacdParameters'
+        tinting:
+          $ref: '#/components/schemas/TechnicalIndicatorsResponseMacdTinting'
+      required:
+      - description
+      - enable
+      - full_name
+      - overlay
+      - type
+      type: object
+    ExchangeScheduleResponseItem:
+      description: ExchangeScheduleResponseItem represents details of an exchange schedule
+      properties:
+        title:
+          description: Official name of exchange
+          examples:
+          - NASDAQ/NGS (Global Select Market)
+          type: string
+          x-go-name: Title
+          x-order: 10
+        name:
+          description: Name of exchange
+          examples:
+          - NASDAQ
+          type: string
+          x-go-name: Name
+          x-order: 20
+        code:
+          description: Market identifier code (MIC) under ISO 10383 standard
+          examples:
+          - XNYS
+          type: string
+          x-go-name: Code
+          x-order: 30
+        country:
+          description: Country to which stock exchange belongs to
+          examples:
+          - United States
+          type: string
+          x-go-name: Country
+          x-order: 40
+        time_zone:
+          description: Time zone where exchange is located
+          examples:
+          - America/New_York
+          type: string
+          x-go-name: TimeZone
+          x-order: 50
+        sessions:
+          description: Exchange trading hours
+          items:
+            $ref: '#/components/schemas/ExchangeScheduleSession'
+          type: array
+          x-go-name: Sessions
+          x-order: 60
+      required:
+      - code
+      - country
+      - name
+      - sessions
+      - time_zone
+      - title
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetTechnicalIndicators_200_response:
+      properties:
+        data:
+          additionalProperties:
+            $ref: '#/components/schemas/GetTechnicalIndicators_200_response_data_value'
+          description: Map of technical indicators available at Twelve Data API
+          type: object
+          x-example-key: macd
+          x-go-name: Data
+          x-order: 10
+        status:
+          description: Response status
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+      required:
+      - data
+      - status
+      type: object
+    TypeEnum:
+      enum:
+      - American Depositary Receipt
+      - Bond
+      - Bond Fund
+      - Closed-end Fund
+      - Common Stock
+      - Depositary Receipt
+      - Digital Currency
+      - ETF
+      - Exchange-Traded Note
+      - Global Depositary Receipt
+      - Limited Partnership
+      - Mutual Fund
+      - Physical Currency
+      - Preferred Stock
+      - REIT
+      - Right
+      - Structured Product
+      - Trust
+      - Unit
+      - Warrant
+      type: string
+      x-go-name: Type
+      x-order: '70'
+    FormatEnum:
+      default: JSON
+      enum:
+      - JSON
+      - CSV
+      type: string
+      x-go-name: Format
+      x-order: '90'
     CountryResponseItem:
       description: CountryResponseItem represents details of a country
       properties:
@@ -2823,6 +3698,34 @@ components:
       - official_name
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    EtfResponseItem_access:
+      description: Info on which plan symbol is available (displayed then `show_plan` is `true`)
+      properties:
+        global:
+          description: Level of access to the symbol
+          examples:
+          - Basic
+          type: string
+          x-go-name: Global
+        plan:
+          description: The individual plan name for the symbol
+          examples:
+          - Basic
+          type: string
+          x-go-name: Plan
+        plan_business:
+          description: The business plan name for the symbol
+          examples:
+          - Basic
+          type: string
+          x-go-name: PlanBusiness
+      required:
+      - global
+      - plan
+      - plan_business
+      type: object
+      x-go-name: Access
+      x-order: 120
     GetForexPairs_200_response:
       properties:
         count:
@@ -2849,76 +3752,70 @@ components:
       - data
       - status
       type: object
-    CryptocurrencyResponseItem:
-      description: CryptocurrencyResponseItem represents details of a cryptocurrency
+    BondResponseItem:
+      description: BondResponseItem represents details of a bond
       properties:
         symbol:
-          description: Cryptocurrency pair codes with slash(/) delimiter
+          description: Bond symbol
           examples:
-          - BTC/USD
+          - US2Y
           type: string
           x-go-name: Symbol
           x-order: 10
-        available_exchanges:
-          description: List of exchanges where the cryptocurrency is available
+        name:
+          description: Full name of the bond
           examples:
-          - - ABCC
-            - Allcoin
-            - BTC-Alpha
-            - BTCTurk
-            - Bibox
-            - n.exchange
-            - p2pb2b
-            - xBTCe
-          items:
-            type: string
-          type: array
-          x-go-name: AvailableExchanges
+          - US Treasury Yield 2 Years
+          type: string
+          x-go-name: Name
           x-order: 20
-        currency_base:
-          description: Base currency of the cryptocurrency pair
+        country:
+          description: Country where the bond is located
           examples:
-          - Bitcoin
+          - United States
           type: string
-          x-go-name: CurrencyBase
+          x-go-name: Country
           x-order: 30
-        currency_quote:
-          description: Quote currency of the cryptocurrency pair
+        currency:
+          description: Currency of the bond according to the ISO 4217 standard
           examples:
-          - US Dollar
+          - USD
           type: string
-          x-go-name: CurrencyQuote
+          x-go-name: Currency
           x-order: 40
+        exchange:
+          description: Exchange where the bond is traded
+          examples:
+          - NYSE
+          type: string
+          x-go-name: Exchange
+          x-order: 50
+        mic_code:
+          description: Market identifier code (MIC) under ISO 10383 standard
+          examples:
+          - XNYS
+          type: string
+          x-go-name: MicCode
+          x-order: 60
+        type:
+          description: Type of the bond
+          examples:
+          - Bond
+          type: string
+          x-go-name: Type
+          x-order: 70
+        access:
+          $ref: '#/components/schemas/BondsResponseItemAccess'
       required:
-      - available_exchanges
-      - currency_base
-      - currency_quote
+      - country
+      - currency
+      - exchange
+      - mic_code
+      - name
       - symbol
+      - type
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetCryptocurrencyExchanges_200_response:
-      properties:
-        data:
-          description: List of cryptocurrency exchanges
-          examples:
-          - - name: Binance
-            - name: Coinbase Pro
-            - name: Kraken
-            - name: OKX
-          items:
-            $ref: '#/components/schemas/CryptocurrencyExchangesResponseItem'
-          type: array
-          x-go-name: Data
-        status:
-          description: Response status
-          examples:
-          - ok
-          type: string
-          x-go-name: Status
-      required:
-      - data
-      - status
-      type: object
     EtfResponseItem:
       description: EtfResponseItem represents details of an ETF
       properties:
@@ -3007,614 +3904,27 @@ components:
       - symbol
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetTechnicalIndicators_200_response_data_value:
+    GetEarliestTimestamp_200_response:
       properties:
-        enable:
-          description: If the indicator is tested, approved and is recommended for use returns <code>true</code>, otherwise returns <code>false</code>
+        datetime:
+          description: Earliest datetime, the format depends on interval
           examples:
-          - true
-          type: boolean
-          x-go-name: Enable
-          x-order: 10
-        full_name:
-          description: Full indicator name
-          examples:
-          - Moving Average Convergence Divergence
+          - '1980-12-12'
           type: string
-          x-go-name: FullName
-          x-order: 20
-        description:
-          description: Brief description of the indicator
-          examples:
-          - Moving Average Convergence Divergence(MACD) is ...
-          type: string
-          x-go-name: Description
-          x-order: 30
-        type:
-          description: Group to which indicator belongs to
-          examples:
-          - Momentum Indicators
-          type: string
-          x-go-name: Type
-          x-order: 40
-        overlay:
-          description: If indicator should be plotted over price bars returns <code>true</code>, otherwise returns <code>false</code>
-          examples:
-          - false
-          type: boolean
-          x-go-name: Overlay
+          x-go-name: Datetime
           x-order: 50
-        output_values:
-          $ref: '#/components/schemas/TechnicalIndicatorsResponseMacdOutputValues'
-        parameters:
-          $ref: '#/components/schemas/TechnicalIndicatorsResponseMacdParameters'
-        tinting:
-          $ref: '#/components/schemas/TechnicalIndicatorsResponseMacdTinting'
-      required:
-      - description
-      - enable
-      - full_name
-      - overlay
-      - type
-      type: object
-    FormatEnum:
-      default: JSON
-      enum:
-      - JSON
-      - CSV
-      type: string
-      x-go-name: Format
-      x-order: '90'
-    TechnicalIndicatorsResponseMacdParameter:
-      description: 'Input parameter name. Example values: <code>series_type</code>, <code>fast_period</code>, <code>slow_period</code>, <code>time_period</code>, <code>signal_period</code>'
-      properties:
-        default:
-          description: Specifies parameter value set by default
+        unix_time:
+          description: Datetime converted to UNIX timestamp
           examples:
-          - 12
+          - 345479400
           format: int64
           type: integer
-          x-go-name: Default
-        max_range:
-          description: If the parameter has upper bound in order to ensure correct calculation
-          examples:
-          - 1
-          format: int64
-          type: integer
-          x-go-name: MaxRange
-        min_range:
-          description: If the parameter has lower bound in order to ensure correct calculation
-          examples:
-          - 1
-          format: int64
-          type: integer
-          x-go-name: MinRange
-        range:
-          description: An array of available parameter values
-          examples:
-          - - open
-            - high
-            - low
-            - close
-          items:
-            type: string
-          type: array
-          x-go-name: Range
-        type:
-          description: Type of parameter might be <code>string</code>, <code>int</code>, <code>float</code> or <code>array</code>
-          examples:
-          - int
-          type: string
-          x-go-name: Type
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetEtf_200_response:
-      properties:
-        count:
-          description: Count
-          examples:
-          - 100
-          format: int64
-          type: integer
-          x-go-name: Count
-        data:
-          description: List of ETFs
-          items:
-            $ref: '#/components/schemas/EtfResponseItem'
-          type: array
-          x-go-name: Data
-        status:
-          description: Response status
-          examples:
-          - ok
-          type: string
-          x-go-name: Status
-      required:
-      - count
-      - data
-      - status
-      type: object
-    ForexResponseItem:
-      description: ForexResponseItem represents details of a forex pair
-      properties:
-        symbol:
-          description: Currency pair according to ISO 4217 standard codes with slash(/) delimiter
-          examples:
-          - EUR/USD
-          type: string
-          x-go-name: Symbol
-          x-order: 10
-        currency_group:
-          description: 'Group to which currency pair belongs to, could be: Major, Minor, Exotic and Exotic-Cross'
-          examples:
-          - Major
-          type: string
-          x-go-name: CurrencyGroup
-          x-order: 20
-        currency_base:
-          description: Base currency name according to ISO 4217 standard
-          examples:
-          - EUR
-          type: string
-          x-go-name: CurrencyBase
-          x-order: 30
-        currency_quote:
-          description: Quote currency name according to ISO 4217 standard
-          examples:
-          - USD
-          type: string
-          x-go-name: CurrencyQuote
-          x-order: 40
-      required:
-      - currency_base
-      - currency_group
-      - currency_quote
-      - symbol
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    TechnicalIndicatorsResponseMacdParameters:
-      description: An array of input parameters for the indicator
-      properties:
-        parameter_name:
-          $ref: '#/components/schemas/TechnicalIndicatorsResponseMacdParameter'
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetBonds_200_response:
-      properties:
-        result:
-          $ref: '#/components/schemas/GetBonds_200_response_result'
-        status:
-          description: Response status
-          examples:
-          - ok
-          type: string
-          x-go-name: Status
-      required:
-      - result
-      - status
-      type: object
-    GetFunds_200_response_result:
-      properties:
-        count:
-          description: Total number of matching instruments
-          examples:
-          - 84799
-          format: int64
-          type: integer
-          x-go-name: Count
-        list:
-          description: List of funds
-          items:
-            $ref: '#/components/schemas/FundResponseItem'
-          type: array
-          x-go-name: Data
-      required:
-      - count
-      - list
-      type: object
-      x-go-name: Result
-    GetExchangeSchedule_200_response:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/ExchangeScheduleResponseItem'
-          type: array
-          x-go-name: Data
-          x-order: 10
-      required:
-      - data
-      type: object
-    CrossListingsResult:
-      description: Represents the result of cross listings
-      properties:
-        count:
-          description: Number of cross listings found
-          examples:
-          - 4
-          format: int64
-          type: integer
-          x-go-name: Count
-        list:
-          description: List of cross listings
-          examples:
-          - - exchange: NASDAQ
-              mic_code: XNGS
-              name: NVIDIA Corporation
-              symbol: NVDA
-            - exchange: VSE
-              mic_code: XWBO
-              name: NVIDIA Corporation
-              symbol: NVDA
-            - exchange: BVS
-              mic_code: XSGO
-              name: NVIDIA Corporation
-              symbol: NVDACL
-            - exchange: BVS
-              mic_code: XSGO
-              name: NVIDIA Corporation
-              symbol: NVDA
-          items:
-            $ref: '#/components/schemas/CrossListingsItem'
-          type: array
-          x-go-name: List
-      required:
-      - count
-      - list
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetSymbolSearch_200_response:
-      properties:
-        data:
-          description: List of symbols matching the search criteria
-          items:
-            $ref: '#/components/schemas/SymbolSearchResponseItem'
-          type: array
-          x-go-name: Data
-          x-order: 10
-        status:
-          description: Status of the response
-          examples:
-          - ok
-          type: string
-          x-go-name: Status
-          x-order: 20
-      required:
-      - data
-      - status
-      type: object
-    GetInstrumentType_200_response:
-      properties:
-        result:
-          description: List of instrument types available at Twelve Data API.
-          examples:
-          - - Agricultural Product
-            - American Depositary Receipt
-            - Bond
-            - Bond Fund
-            - Closed-end Fund
-            - Common Stock
-            - Depositary Receipt
-            - Digital Currency
-            - Energy Resource
-            - ETF
-            - Exchange-Traded Note
-            - Global Depositary Receipt
-            - Index
-            - Industrial Metal
-            - Limited Partnership
-            - Livestock
-            - Mutual Fund
-            - Physical Currency
-            - Precious Metal
-            - Preferred Stock
-            - REIT
-            - Right
-            - Structured Product
-            - Trust
-            - Unit
-            - Warrant
-          items:
-            type: string
-          type: array
-          x-go-name: Result
-        status:
-          description: Status of the response
-          examples:
-          - ok
-          type: string
-          x-go-name: Status
-      required:
-      - result
-      - status
-      type: object
-    SymbolSearchResponseItem:
-      description: SymbolSearchResponseItem represents details of a symbol search result
-      properties:
-        symbol:
-          description: Ticker symbol of instrument
-          examples:
-          - AA
-          type: string
-          x-go-name: Symbol
-          x-order: 10
-        instrument_name:
-          description: Name of exchange
-          examples:
-          - Alcoa Corp
-          type: string
-          x-go-name: InstrumentName
-          x-order: 20
-        exchange:
-          description: Exchange where instrument is traded
-          examples:
-          - NYSE
-          type: string
-          x-go-name: Exchange
-          x-order: 30
-        mic_code:
-          description: Market identifier code (MIC) under ISO 10383 standard
-          examples:
-          - XNYS
-          type: string
-          x-go-name: MicCode
-          x-order: 40
-        exchange_timezone:
-          description: Time zone where exchange is located
-          examples:
-          - America/New_York
-          type: string
-          x-go-name: ExchangeTimezone
+          x-go-name: UnixTime
           x-order: 50
-        instrument_type:
-          description: Type of instrument
-          examples:
-          - Common Stock
-          type: string
-          x-go-name: InstrumentType
-          x-order: 60
-        country:
-          description: Country to which stock exchange belongs to
-          examples:
-          - United States
-          type: string
-          x-go-name: Country
-          x-order: 70
-        currency:
-          description: Currency in which the instrument is traded
-          examples:
-          - USD
-          type: string
-          x-go-name: Currency
-          x-order: 80
-        access:
-          $ref: '#/components/schemas/SymbolSearchResponseItemAccess'
       required:
-      - country
-      - currency
-      - exchange
-      - exchange_timezone
-      - instrument_name
-      - instrument_type
-      - mic_code
-      - symbol
+      - datetime
+      - unix_time
       type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetCommodities_200_response:
-      properties:
-        count:
-          description: Count
-          examples:
-          - 100
-          format: int64
-          type: integer
-          x-go-name: Count
-        data:
-          description: List of commodities
-          examples:
-          - - category: Agricultural Product
-              description: Standardized contract to buy or sell a set quantity of corn at a future date.
-              name: Corn Futures
-              symbol: C_1
-            - category: Agricultural Product
-              description: Agreement to transact cocoa beans at a predetermined price and date.
-              name: Cocoa Futures
-              symbol: CC1
-            - category: Precious Metal
-              description: Spot price per troy ounce of gold.
-              name: Gold Spot
-              symbol: XAU/USD
-          items:
-            $ref: '#/components/schemas/CommoditiesResponseItem'
-          type: array
-          x-go-name: Data
-        status:
-          description: Response status
-          examples:
-          - ok
-          type: string
-          x-go-name: Status
-      required:
-      - count
-      - data
-      - status
-      type: object
-    GetCountries_200_response:
-      properties:
-        data:
-          description: List of countries with their ISO codes, names, capital, and currency
-          items:
-            $ref: '#/components/schemas/CountryResponseItem'
-          type: array
-          x-go-name: Data
-          x-order: 10
-      required:
-      - data
-      type: object
-    ExchangeScheduleResponseItem:
-      description: ExchangeScheduleResponseItem represents details of an exchange schedule
-      properties:
-        title:
-          description: Official name of exchange
-          examples:
-          - NASDAQ/NGS (Global Select Market)
-          type: string
-          x-go-name: Title
-          x-order: 10
-        name:
-          description: Name of exchange
-          examples:
-          - NASDAQ
-          type: string
-          x-go-name: Name
-          x-order: 20
-        code:
-          description: Market identifier code (MIC) under ISO 10383 standard
-          examples:
-          - XNYS
-          type: string
-          x-go-name: Code
-          x-order: 30
-        country:
-          description: Country to which stock exchange belongs to
-          examples:
-          - United States
-          type: string
-          x-go-name: Country
-          x-order: 40
-        time_zone:
-          description: Time zone where exchange is located
-          examples:
-          - America/New_York
-          type: string
-          x-go-name: TimeZone
-          x-order: 50
-        sessions:
-          description: Exchange trading hours
-          items:
-            $ref: '#/components/schemas/ExchangeScheduleSession'
-          type: array
-          x-go-name: Sessions
-          x-order: 60
-      required:
-      - code
-      - country
-      - name
-      - sessions
-      - time_zone
-      - title
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    ExchangesResponseItem:
-      description: ExchangesResponseItem represents details of an exchange
-      properties:
-        title:
-          description: Title of exchange
-          examples:
-          - Argentinian Stock Exchange
-          type: string
-          x-go-name: Title
-          x-order: 5
-        name:
-          description: Name of exchange
-          examples:
-          - BCBA
-          type: string
-          x-go-name: Name
-          x-order: 10
-        code:
-          description: Market identifier code (MIC) under ISO 10383 standard
-          examples:
-          - XBUE
-          type: string
-          x-go-name: Code
-          x-order: 20
-        country:
-          description: Country to which stock exchange belongs to
-          examples:
-          - Argentina
-          type: string
-          x-go-name: Country
-          x-order: 30
-        timezone:
-          description: Time zone where exchange is located
-          examples:
-          - America/Argentina/Buenos_Aires
-          type: string
-          x-go-name: Timezone
-          x-order: 40
-        access:
-          $ref: '#/components/schemas/ExchangesResponseItemAccess'
-      required:
-      - code
-      - country
-      - name
-      - timezone
-      - title
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    CommoditiesResponseItem:
-      description: CommoditiesResponseItem represents details of a commodity
-      properties:
-        symbol:
-          description: Currency pair according to ISO 4217 standard codes with slash(/) delimiter
-          examples:
-          - XAU/USD
-          type: string
-          x-go-name: Symbol
-          x-order: 10
-        name:
-          description: Full name of the instrument
-          examples:
-          - Gold Spot
-          type: string
-          x-go-name: Name
-          x-order: 20
-        category:
-          description: Category of commodity
-          examples:
-          - Precious Metal
-          type: string
-          x-go-name: Category
-          x-order: 30
-        description:
-          description: Short description of the commodity
-          type: string
-          x-go-name: Description
-          x-order: 40
-      required:
-      - category
-      - description
-      - name
-      - symbol
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    ApiUnauthorizedErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 401
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - apikey parameter is incorrect or not specified
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
     TechnicalIndicatorsResponseMacdTinting:
       description: An array of tinting values used for proper indicator coloring
       properties:
@@ -3654,139 +3964,48 @@ components:
           x-go-name: UpperBound
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    ApiBadRequestErrorResponseBody:
+    GetIntervals_200_response:
       properties:
-        code:
-          description: Error code
-          examples:
-          - 400
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - Invalid request
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetEarliestTimestamp_200_response:
-      properties:
-        datetime:
-          description: Earliest datetime, the format depends on interval
-          examples:
-          - '1980-12-12'
-          type: string
-          x-go-name: Datetime
-          x-order: 50
-        unix_time:
-          description: Datetime converted to UNIX timestamp
-          examples:
-          - 345479400
-          format: int64
-          type: integer
-          x-go-name: UnixTime
-          x-order: 50
-      required:
-      - datetime
-      - unix_time
-      type: object
-    ApiForbiddenErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 403
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - API key lacks permissions for the requested resource
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    EtfResponseItem_access:
-      description: Info on which plan symbol is available (displayed then `show_plan` is `true`)
-      properties:
-        global:
-          description: Level of access to the symbol
-          examples:
-          - Basic
-          type: string
-          x-go-name: Global
-        plan:
-          description: The individual plan name for the symbol
-          examples:
-          - Basic
-          type: string
-          x-go-name: Plan
-        plan_business:
-          description: The business plan name for the symbol
-          examples:
-          - Basic
-          type: string
-          x-go-name: PlanBusiness
-      required:
-      - global
-      - plan
-      - plan_business
-      type: object
-      x-go-name: Access
-      x-order: 120
-    IntervalEnum:
-      enum:
-      - 1min
-      - 5min
-      - 15min
-      - 30min
-      - 45min
-      - 1h
-      - 2h
-      - 4h
-      - 8h
-      - 1day
-      - 1week
-      - 1month
-      type: string
-      x-go-name: Interval
-      x-order: '30'
-    GetStocks_200_response:
-      properties:
-        count:
-          description: Count
-          examples:
-          - 100
-          format: int64
-          type: integer
-          x-go-name: Count
         data:
-          description: List of stock instruments
+          description: List of available intervals
+          examples:
+          - - 1min
+            - 5min
+            - 15min
+            - 30min
+            - 45min
+            - 1h
+            - 2h
+            - 4h
+            - 8h
+            - 1day
+            - 1week
+            - 1month
           items:
-            $ref: '#/components/schemas/StocksResponseItem'
+            type: string
+          type: array
+          x-go-name: Data
+        status:
+          description: Status of the response
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+      required:
+      - data
+      - status
+      type: object
+    GetCryptocurrencyExchanges_200_response:
+      properties:
+        data:
+          description: List of cryptocurrency exchanges
+          examples:
+          - - name: Binance
+            - name: Coinbase Pro
+            - name: Kraken
+            - name: OKX
+          items:
+            $ref: '#/components/schemas/CryptocurrencyExchangesResponseItem'
           type: array
           x-go-name: Data
         status:
@@ -3796,255 +4015,36 @@ components:
           type: string
           x-go-name: Status
       required:
-      - count
       - data
       - status
       type: object
-    SymbolSearchResponseItemAccess:
-      description: Info on which plan symbol is available (displayed then `show_plan` is `true`)
-      properties:
-        global:
-          description: Level of access to the symbol
-          examples:
-          - Basic
-          type: string
-          x-go-name: Global
-        plan:
-          description: The individual plan name for the symbol
-          examples:
-          - Basic
-          type: string
-          x-go-name: Plan
-        plan_business:
-          description: The business plan name for the symbol
-          examples:
-          - Basic
-          type: string
-          x-go-name: PlanBusiness
-      required:
-      - global
-      - plan
-      - plan_business
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    MarketStateResponseItem:
+    CryptocurrencyExchangesResponseItem:
       properties:
         name:
-          description: The full name of exchange
+          description: Name of cryptocurrency exchange
           examples:
-          - NYSE
+          - Binance
           type: string
           x-go-name: Name
           x-order: 10
-        code:
-          description: Market identifier code (MIC) under ISO 10383 standard
-          examples:
-          - XNYS
-          type: string
-          x-go-name: Code
-          x-order: 20
-        country:
-          description: Country where the exchange is located
-          examples:
-          - United States
-          type: string
-          x-go-name: Country
-          x-order: 30
-        is_market_open:
-          description: Indicates if the market is currently open
-          examples:
-          - true
-          type: boolean
-          x-go-name: IsMarketOpen
-          x-order: 40
-        time_after_open:
-          description: Time after market opening in <code>HH:MM:SS</code> format; if currently closed - returns <code>00:00:00</code>
-          examples:
-          - 02:39:03
-          type: string
-          x-go-name: TimeAfterOpen
-          x-order: 50
-        time_to_open:
-          description: Time to market opening in <code>HH:MM:SS</code> format; if currently open - returns <code>00:00:00</code>
-          examples:
-          - 00:00:00
-          type: string
-          x-go-name: TimeToOpen
-          x-order: 60
-        time_to_close:
-          description: Time to market closing in <code>HH:MM:SS</code> format; if currently closed - returns <code>00:00:00</code>
-          examples:
-          - 05:20:57
-          type: string
-          x-go-name: TimeToClose
-          x-order: 70
       required:
-      - code
-      - country
-      - is_market_open
       - name
-      - time_after_open
-      - time_to_close
-      - time_to_open
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    BondsResponseItemAccess:
-      description: Info on which plan symbol is available (displayed then `show_plan` is `true`)
+    GetFunds_200_response:
       properties:
-        global:
-          description: Level of access to the symbol
+        result:
+          $ref: '#/components/schemas/GetFunds_200_response_result'
+        status:
+          description: Status of the response
           examples:
-          - Basic
+          - ok
           type: string
-          x-go-name: Global
-        plan:
-          description: The individual plan name for the symbol
-          examples:
-          - Basic
-          type: string
-          x-go-name: Plan
-        plan_business:
-          description: The business plan name for the symbol
-          examples:
-          - Basic
-          type: string
-          x-go-name: PlanBusiness
+          x-go-name: Status
       required:
-      - global
-      - plan
-      - plan_business
+      - result
+      - status
       type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    TechnicalIndicatorsResponseMacdOutputValue:
-      description: 'Output parameter name. Example values: <code>ad</code>, <code>add</code>, <code>adxr</code>, <code>aroonosc</code>,  <code>macd</code>, <code>macd_signal</code>, <code>macd_hist</code>, etc'
-      properties:
-        default_color:
-          description: Suggested color for displaying returns hex color code
-          examples:
-          - '#FF0000'
-          type: string
-          x-go-name: DefaultColor
-          x-order: 10
-        display:
-          description: How output value should be rendered
-          enum:
-          - line
-          - histogram
-          - candle
-          - points
-          examples:
-          - line
-          type: string
-          x-go-name: Display
-          x-order: 20
-        min_range:
-          description: If output value has minimum bound
-          examples:
-          - 0
-          format: int64
-          type: integer
-          x-go-name: MinRange
-          x-order: 30
-        max_range:
-          description: If output value has maximum bound
-          examples:
-          - 5
-          format: int64
-          type: integer
-          x-go-name: MaxRange
-          x-order: 40
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    ExchangeScheduleSession:
-      description: ExchangeScheduleSession represents a trading session
-      properties:
-        open_time:
-          description: Opening time of the session
-          examples:
-          - 04:00:00
-          type: string
-          x-go-name: OpenTime
-          x-order: 10
-        close_time:
-          description: Closing time of the session
-          examples:
-          - 09:30:00
-          type: string
-          x-go-name: CloseTime
-          x-order: 20
-        session_name:
-          description: Name of the session
-          examples:
-          - Pre market
-          type: string
-          x-go-name: SessionName
-          x-order: 30
-        session_type:
-          description: Type of the session
-          examples:
-          - pre
-          type: string
-          x-go-name: SessionType
-          x-order: 40
-      required:
-      - close_time
-      - open_time
-      - session_name
-      - session_type
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    ExchangesResponseItemAccess:
-      description: Info on which plan symbol is available (displayed then `show_plan` is `true`)
-      properties:
-        global:
-          description: Level of access to the symbol
-          examples:
-          - Pro
-          type: string
-          x-go-name: Global
-        plan:
-          description: The individual plan name for the symbol
-          examples:
-          - Pro
-          type: string
-          x-go-name: Plan
-        plan_business:
-          description: The business plan name for the symbol
-          examples:
-          - Basic
-          type: string
-          x-go-name: PlanBusiness
-      required:
-      - global
-      - plan
-      - plan_business
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    TypeEnum:
-      enum:
-      - American Depositary Receipt
-      - Bond
-      - Bond Fund
-      - Closed-end Fund
-      - Common Stock
-      - Depositary Receipt
-      - Digital Currency
-      - ETF
-      - Exchange-Traded Note
-      - Global Depositary Receipt
-      - Limited Partnership
-      - Mutual Fund
-      - Physical Currency
-      - Preferred Stock
-      - REIT
-      - Right
-      - Structured Product
-      - Trust
-      - Unit
-      - Warrant
-      type: string
-      x-go-name: Type
-      x-order: '70'
   parameters:
     apikeyParam:
       name: apikey
@@ -4053,13 +4053,6 @@ components:
       schema:
         type: string
       description: Your Twelve Data API key.
-    symbol:
-      name: symbol
-      in: query
-      required: true
-      schema:
-        type: string
-      description: Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.
     interval:
       name: interval
       in: query
@@ -4079,6 +4072,13 @@ components:
         - 1week
         - 1month
       description: Time interval between two consecutive data points.
+    symbol:
+      name: symbol
+      in: query
+      required: true
+      schema:
+        type: string
+      description: Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.
   securitySchemes:
     authorizationHeader:
       description: Enter the token with the `apikey ` prefix, e.g. "apikey abcde12345".

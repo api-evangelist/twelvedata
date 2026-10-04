@@ -1050,14 +1050,44 @@ paths:
           - cusip
 components:
   schemas:
-    GetETFsWorldRisk_200_response_etf:
-      description: Etf information
+    GetETFsWorld_200_response_etf_risk_valuation_metrics:
+      description: Valuation ratios and metrics of the fund and its category
       properties:
-        risk:
-          $ref: '#/components/schemas/GetETFsWorldRisk_200_response_etf_risk'
+        price_to_earnings:
+          description: Fund price to earnings metric
+          examples:
+          - 26.46
+          format: double
+          type: number
+          x-go-name: PriceToEarnings
+          x-order: 10
+        price_to_book:
+          description: Fund price to book metric
+          examples:
+          - 4.42
+          format: double
+          type: number
+          x-go-name: PriceToBook
+          x-order: 30
+        price_to_sales:
+          description: Fund price to sales metric
+          examples:
+          - 2.96
+          format: double
+          type: number
+          x-go-name: PriceToSales
+          x-order: 50
+        price_to_cashflow:
+          description: Fund price to cashflow metric
+          examples:
+          - 17.57
+          format: double
+          type: number
+          x-go-name: PriceToCashflow
+          x-order: 70
       type: object
-      x-go-name: Etf
-      x-order: 10
+      x-go-name: ValuationMetrics
+      x-order: 20
     GetETFsWorld_200_response_etf_performance:
       description: Detailed performance of a etf
       properties:
@@ -1078,6 +1108,465 @@ components:
       type: object
       x-go-name: Performance
       x-order: 20
+    ApiInternalServerErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 500
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Internal server error
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    ApiParameterTooLongErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 414
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Input parameter array exceeds the allowed length
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetETFsWorld_200_response_etf_composition_bond_breakdown:
+      description: Breakdown of the fund’s portfolio by bond holding characteristics
+      properties:
+        average_maturity:
+          $ref: '#/components/schemas/GetETFsWorld_200_response_etf_composition_bond_breakdown_average_maturity'
+        average_duration:
+          $ref: '#/components/schemas/GetETFsWorld_200_response_etf_composition_bond_breakdown_average_duration'
+        credit_quality:
+          description: Breakdown of the fund’s bond holdings by credit rating and their respective portfolio weights
+          items:
+            $ref: '#/components/schemas/GetETFsWorld_200_response_etf_composition_bond_breakdown_credit_quality_inner'
+          type: array
+          x-go-name: CreditQuality
+          x-order: 30
+      type: object
+      x-go-name: BondBreakdown
+      x-order: 50
+    ApiForbiddenErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 403
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - API key lacks permissions for the requested resource
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetETFsWorld_200_response_etf_composition_bond_breakdown_average_duration:
+      description: Average duration of bond holding of a fund
+      properties:
+        fund:
+          description: Average duration of bond holding of a fund
+          examples:
+          - 5.72
+          format: double
+          type: number
+          x-go-name: Fund
+          x-order: 10
+        category:
+          description: Average duration of bond holding of funds in the same category
+          examples:
+          - 5.64
+          format: double
+          type: number
+          x-go-name: Category
+          x-order: 20
+      type: object
+      x-go-name: AverageDuration
+      x-order: 20
+    GetETFsWorld_200_response_etf_performance_annual_total_returns_inner:
+      properties:
+        year:
+          description: Year of total returns
+          examples:
+          - 2021
+          format: int64
+          type: integer
+          x-go-name: Year
+          x-order: 10
+        share_class_return:
+          description: Fund total returns (%) generated over a given year
+          examples:
+          - 0.2866
+          format: double
+          type: number
+          x-go-name: ShareClassReturn
+          x-order: 20
+        category_return:
+          description: Same category average total returns (%) generated over a given year
+          examples:
+          - 0
+          format: double
+          type: number
+          x-go-name: CategoryReturn
+          x-order: 30
+      type: object
+    GetETFsFamily_200_response:
+      properties:
+        result:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          description: List of fund families by country
+          examples:
+          - India:
+            - Aberdeen Standard Fund Managers Limited
+            - Aditya Birla Sun Life AMC Ltd
+            United States:
+            - Aegon Asset Management UK PLC
+            - Ampega Investment GmbH
+            - Aviva SpA
+          type: object
+          x-go-name: Result
+          x-order: 10
+        status:
+          description: Status of the response
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+          x-order: 20
+      required:
+      - result
+      - status
+      type: object
+    GetETFsWorld_200_response_etf_composition_bond_breakdown_average_maturity:
+      description: Average credit rating of bond holding of a fund
+      properties:
+        fund:
+          description: Average maturity of bond holding of a fund
+          examples:
+          - 6.65
+          format: double
+          type: number
+          x-go-name: Fund
+          x-order: 10
+        category:
+          description: Average maturity of bond holding of funds in the same category
+          examples:
+          - 7.81
+          format: double
+          type: number
+          x-go-name: Category
+          x-order: 20
+      type: object
+      x-go-name: AverageMaturity
+      x-order: 10
+    GetETFsWorldRisk_200_response_etf_risk:
+      description: Risk metrics of a etf
+      properties:
+        volatility_measures:
+          description: Risk and volatility statistics of the fund and its category over different periods
+          items:
+            $ref: '#/components/schemas/GetETFsWorld_200_response_etf_risk_volatility_measures_inner'
+          type: array
+          x-go-name: VolatilityMeasures
+          x-order: 10
+        valuation_metrics:
+          $ref: '#/components/schemas/GetETFsWorld_200_response_etf_risk_valuation_metrics'
+      type: object
+      x-go-name: Risk
+      x-order: 10
+    ApiUnauthorizedErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 401
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - apikey parameter is incorrect or not specified
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetETFsWorld_200_response_etf_composition_country_allocation_inner:
+      properties:
+        country:
+          description: Country name
+          examples:
+          - United Kingdom
+          type: string
+          x-go-name: Country
+          x-order: 10
+        allocation:
+          description: Percentages of a fund's net assets distributed to securities of the country
+          examples:
+          - 0.9855
+          format: double
+          type: number
+          x-go-name: Allocation
+          x-order: 20
+      type: object
+    GetETFsWorldSummary_200_response:
+      properties:
+        etf:
+          $ref: '#/components/schemas/GetETFsWorldSummary_200_response_etf'
+        status:
+          description: Status of the response
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+          x-order: 20
+      required:
+      - etf
+      - status
+      type: object
+    GetETFsWorld_200_response_etf_risk:
+      description: Risk metrics of a etf
+      properties:
+        volatility_measures:
+          description: Risk and volatility statistics of the fund and its category over different periods
+          items:
+            $ref: '#/components/schemas/GetETFsWorld_200_response_etf_risk_volatility_measures_inner'
+          type: array
+          x-go-name: VolatilityMeasures
+          x-order: 10
+        valuation_metrics:
+          $ref: '#/components/schemas/GetETFsWorld_200_response_etf_risk_valuation_metrics'
+      type: object
+      x-go-name: Risk
+      x-order: 30
+    GetETFsWorldComposition_200_response_etf_composition:
+      description: Composition of a etf
+      properties:
+        major_market_sectors:
+          description: Breakdown of the fund’s portfolio by major industry sectors and their respective weights
+          items:
+            $ref: '#/components/schemas/GetETFsWorld_200_response_etf_composition_major_market_sectors_inner'
+          type: array
+          x-go-name: MajorMarketSectors
+          x-order: 10
+        country_allocation:
+          description: Breakdown of the fund’s portfolio by country and their respective weights
+          items:
+            $ref: '#/components/schemas/GetETFsWorld_200_response_etf_composition_country_allocation_inner'
+          type: array
+          x-go-name: CountryAllocation
+          x-order: 20
+        asset_allocation:
+          $ref: '#/components/schemas/GetETFsWorld_200_response_etf_composition_asset_allocation'
+        top_holdings:
+          description: Top holdings of a fund with their respective weights in the overall portfolio composition
+          items:
+            $ref: '#/components/schemas/GetETFsWorld_200_response_etf_composition_top_holdings_inner'
+          type: array
+          x-go-name: TopHoldings
+          x-order: 40
+        bond_breakdown:
+          $ref: '#/components/schemas/GetETFsWorld_200_response_etf_composition_bond_breakdown'
+      type: object
+      x-go-name: Composition
+      x-order: 10
+    GetETFsWorld_200_response_etf_composition_major_market_sectors_inner:
+      properties:
+        sector:
+          description: Sector category of a fund exposure
+          examples:
+          - Technology
+          type: string
+          x-go-name: Sector
+          x-order: 10
+        weight:
+          description: Weight of a fund exposure in a sector
+          examples:
+          - 0.2424
+          format: double
+          type: number
+          x-go-name: Weight
+          x-order: 20
+      type: object
+    GetETFsWorld_200_response:
+      properties:
+        etf:
+          $ref: '#/components/schemas/GetETFsWorld_200_response_etf'
+        status:
+          description: Status of the response
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+          x-order: 20
+      required:
+      - etf
+      - status
+      type: object
+    ApiTooManyRequestsErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 429
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - You have run out of API credits for the current minute. 1000 API credits were used, with the current limit being 987. Wait for the next minute or consider upgrading your plan at https://twelvedata.com/pricing
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetETFsWorldRisk_200_response:
+      properties:
+        etf:
+          $ref: '#/components/schemas/GetETFsWorldRisk_200_response_etf'
+        status:
+          description: Status of the response
+          examples:
+          - ok
+          type: string
+          x-go-name: Status
+          x-order: 20
+      required:
+      - etf
+      - status
+      type: object
+    ApiNotFoundErrorResponseBody:
+      properties:
+        code:
+          description: Error code
+          examples:
+          - 404
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - symbol or figi parameter is missing or invalid
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
+      type: object
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetETFsList_200_response_result:
+      properties:
+        count:
+          description: Total number of matching funds
+          examples:
+          - 1000
+          format: int64
+          type: integer
+          x-go-name: Count
+          x-order: 10
+        list:
+          description: List of ETFs
+          items:
+            $ref: '#/components/schemas/ETFsListResponseItem'
+          type: array
+          x-go-name: List
+          x-order: 20
+      required:
+      - count
+      - list
+      type: object
+      x-go-name: Result
+      x-order: 10
+    GetETFsWorld_200_response_etf:
+      description: Etf information
+      properties:
+        summary:
+          $ref: '#/components/schemas/GetETFsWorld_200_response_etf_summary'
+        performance:
+          $ref: '#/components/schemas/GetETFsWorld_200_response_etf_performance'
+        risk:
+          $ref: '#/components/schemas/GetETFsWorld_200_response_etf_risk'
+        composition:
+          $ref: '#/components/schemas/GetETFsWorld_200_response_etf_composition'
+      type: object
+      x-go-name: Etf
+      x-order: 10
     GetETFsWorld_200_response_etf_composition_top_holdings_inner:
       properties:
         symbol:
@@ -1117,581 +1606,6 @@ components:
           x-go-name: Weight
           x-order: 50
       type: object
-    GetETFsWorld_200_response_etf_composition_bond_breakdown_credit_quality_inner:
-      properties:
-        grade:
-          description: Rating of bond holding of a fund from AAA to below B
-          examples:
-          - AAA
-          type: string
-          x-go-name: Grade
-          x-order: 10
-        weight:
-          description: Weight of bond holding in fund portfolio
-          examples:
-          - 0
-          format: double
-          type: number
-          x-go-name: Weight
-          x-order: 20
-      type: object
-    GetETFsWorldComposition_200_response:
-      properties:
-        etf:
-          $ref: '#/components/schemas/GetETFsWorldComposition_200_response_etf'
-        status:
-          description: Status of the response
-          examples:
-          - ok
-          type: string
-          x-go-name: Status
-          x-order: 20
-      required:
-      - etf
-      - status
-      type: object
-    GetETFsWorldSummary_200_response_etf_summary:
-      description: A brief summary of a ETF
-      properties:
-        symbol:
-          description: All available fund types segmented by country
-          examples:
-          - IVV
-          type: string
-          x-go-name: Symbol
-          x-order: 10
-        name:
-          description: Fund name
-          examples:
-          - iShares Core S&P 500 ETF
-          type: string
-          x-go-name: Name
-          x-order: 20
-        fund_family:
-          description: Investment company that manages the fund
-          examples:
-          - iShares
-          type: string
-          x-go-name: FundFamily
-          x-order: 30
-        fund_type:
-          description: Type of the fund
-          examples:
-          - Large Blend
-          type: string
-          x-go-name: FundType
-          x-order: 40
-        currency:
-          description: Currency of fund price
-          examples:
-          - USD
-          type: string
-          x-go-name: Currency
-          x-order: 50
-        share_class_inception_date:
-          description: The date from which the fund started operations and the returns are calculated
-          examples:
-          - '2000-11-13'
-          type: string
-          x-go-name: ShareClassInceptionDate
-          x-order: 60
-        ytd_return:
-          description: Percentage of profit of the fund since the first trading day of the current calendar year
-          examples:
-          - -0.0537
-          format: double
-          type: number
-          x-go-name: YtdReturn
-          x-order: 70
-        expense_ratio_net:
-          description: Percentage of ETF assets steered toward a fund's operating expenses and fund management fees
-          examples:
-          - -0.004
-          format: double
-          type: number
-          x-go-name: ExpenseRatioNet
-          x-order: 80
-        yield:
-          description: Income returned to its investors through interest and dividends generated by the fund's investments
-          examples:
-          - 0.0133
-          format: double
-          type: number
-          x-go-name: Yield
-          x-order: 90
-        nav:
-          description: 'Net Asset Value: fund value minus liabilities'
-          examples:
-          - 413.24
-          format: double
-          type: number
-          x-go-name: Nav
-          x-order: 100
-        last_price:
-          description: Last price of the fund
-          examples:
-          - 413.24
-          format: double
-          type: number
-          x-go-name: LastPrice
-          x-order: 110
-        turnover_rate:
-          description: Percentage rate at which ETF replaces its holdings on investment every year
-          examples:
-          - 0.04
-          format: double
-          type: number
-          x-go-name: TurnoverRate
-          x-order: 130
-        net_assets:
-          description: Total assets of a fund minus its total liabilities
-          examples:
-          - 753409982464
-          format: int64
-          type: integer
-          x-go-name: NetAssets
-          x-order: 140
-        overview:
-          description: Description of the fund
-          examples:
-          - The investment seeks to track the performance of the Standard & Poor's 500...
-          type: string
-          x-go-name: Overview
-          x-order: 150
-      required:
-      - name
-      - symbol
-      type: object
-      x-go-name: Summary
-      x-order: 10
-    ApiInternalServerErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 500
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - Internal server error
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetETFsList_200_response_result:
-      properties:
-        count:
-          description: Total number of matching funds
-          examples:
-          - 1000
-          format: int64
-          type: integer
-          x-go-name: Count
-          x-order: 10
-        list:
-          description: List of ETFs
-          items:
-            $ref: '#/components/schemas/ETFsListResponseItem'
-          type: array
-          x-go-name: List
-          x-order: 20
-      required:
-      - count
-      - list
-      type: object
-      x-go-name: Result
-      x-order: 10
-    ApiTooManyRequestsErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 429
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - You have run out of API credits for the current minute. 1000 API credits were used, with the current limit being 987. Wait for the next minute or consider upgrading your plan at https://twelvedata.com/pricing
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetETFsWorld_200_response:
-      properties:
-        etf:
-          $ref: '#/components/schemas/GetETFsWorld_200_response_etf'
-        status:
-          description: Status of the response
-          examples:
-          - ok
-          type: string
-          x-go-name: Status
-          x-order: 20
-      required:
-      - etf
-      - status
-      type: object
-    ApiParameterTooLongErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 414
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - Input parameter array exceeds the allowed length
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetETFsWorld_200_response_etf_performance_trailing_returns_inner:
-      properties:
-        period:
-          description: Period of trailing returns
-          examples:
-          - ytd
-          type: string
-          x-go-name: Period
-          x-order: 10
-        share_class_return:
-          description: Fund returns (%) generated over a given period
-          examples:
-          - -0.0751
-          format: double
-          type: number
-          x-go-name: ShareClassReturn
-          x-order: 20
-        category_return:
-          description: Same category average returns (%) generated over a given period
-          examples:
-          - 0.1484
-          format: double
-          type: number
-          x-go-name: CategoryReturn
-          x-order: 30
-      type: object
-    ETFsListResponseItem:
-      properties:
-        symbol:
-          description: Instrument symbol (ticker)
-          examples:
-          - IVV
-          type: string
-          x-go-name: Symbol
-          x-order: 10
-        name:
-          description: Full name of the fund
-          examples:
-          - iShares Core S&P 500 ETF
-          type: string
-          x-go-name: Name
-          x-order: 20
-        country:
-          description: Country of fund incorporation
-          examples:
-          - United States
-          type: string
-          x-go-name: Country
-          x-order: 30
-        mic_code:
-          description: Market identifier code (MIC) under ISO 10383 standard
-          examples:
-          - XNAS
-          type: string
-          x-go-name: MicCode
-          x-order: 40
-        fund_family:
-          description: Investment company that manages the fund
-          examples:
-          - iShares
-          type: string
-          x-go-name: FundFamily
-          x-order: 50
-        fund_type:
-          description: Type of fund
-          examples:
-          - Large Blend
-          type: string
-          x-go-name: FundType
-          x-order: 60
-      required:
-      - country
-      - fund_family
-      - fund_type
-      - mic_code
-      - name
-      - symbol
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetETFsWorldPerformance_200_response:
-      properties:
-        etf:
-          $ref: '#/components/schemas/GetETFsWorldPerformance_200_response_etf'
-        status:
-          description: Status of the response
-          examples:
-          - ok
-          type: string
-          x-go-name: Status
-          x-order: 20
-      required:
-      - etf
-      - status
-      type: object
-    GetETFsWorldSummary_200_response_etf:
-      description: Etf information
-      properties:
-        summary:
-          $ref: '#/components/schemas/GetETFsWorldSummary_200_response_etf_summary'
-      type: object
-      x-go-name: Etf
-      x-order: 10
-    ApiNotFoundErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 404
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - symbol or figi parameter is missing or invalid
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetETFsWorldRisk_200_response_etf_risk:
-      description: Risk metrics of a etf
-      properties:
-        volatility_measures:
-          description: Risk and volatility statistics of the fund and its category over different periods
-          items:
-            $ref: '#/components/schemas/GetETFsWorld_200_response_etf_risk_volatility_measures_inner'
-          type: array
-          x-go-name: VolatilityMeasures
-          x-order: 10
-        valuation_metrics:
-          $ref: '#/components/schemas/GetETFsWorld_200_response_etf_risk_valuation_metrics'
-      type: object
-      x-go-name: Risk
-      x-order: 10
-    GetETFsWorld_200_response_etf_composition_country_allocation_inner:
-      properties:
-        country:
-          description: Country name
-          examples:
-          - United Kingdom
-          type: string
-          x-go-name: Country
-          x-order: 10
-        allocation:
-          description: Percentages of a fund's net assets distributed to securities of the country
-          examples:
-          - 0.9855
-          format: double
-          type: number
-          x-go-name: Allocation
-          x-order: 20
-      type: object
-    GetETFsList_200_response:
-      properties:
-        result:
-          $ref: '#/components/schemas/GetETFsList_200_response_result'
-        status:
-          description: Status of the response
-          examples:
-          - ok
-          type: string
-          x-go-name: Status
-          x-order: 20
-      required:
-      - result
-      - status
-      type: object
-    GetETFsWorld_200_response_etf_risk:
-      description: Risk metrics of a etf
-      properties:
-        volatility_measures:
-          description: Risk and volatility statistics of the fund and its category over different periods
-          items:
-            $ref: '#/components/schemas/GetETFsWorld_200_response_etf_risk_volatility_measures_inner'
-          type: array
-          x-go-name: VolatilityMeasures
-          x-order: 10
-        valuation_metrics:
-          $ref: '#/components/schemas/GetETFsWorld_200_response_etf_risk_valuation_metrics'
-      type: object
-      x-go-name: Risk
-      x-order: 30
-    GetETFsWorldPerformance_200_response_etf_performance:
-      description: Detailed performance of a etf
-      properties:
-        trailing_returns:
-          description: Performance returns of the fund and its category over various trailing time periods
-          items:
-            $ref: '#/components/schemas/GetETFsWorld_200_response_etf_performance_trailing_returns_inner'
-          type: array
-          x-go-name: TrailingReturns
-          x-order: 10
-        annual_total_returns:
-          description: Fund and category total returns (%) for each calendar year
-          items:
-            $ref: '#/components/schemas/GetETFsWorld_200_response_etf_performance_annual_total_returns_inner'
-          type: array
-          x-go-name: AnnualTotalReturns
-          x-order: 20
-      type: object
-      x-go-name: Performance
-      x-order: 10
-    FormatEnum:
-      default: JSON
-      enum:
-      - JSON
-      - CSV
-      type: string
-      x-go-name: Format
-      x-order: '90'
-    GetETFsWorld_200_response_etf_performance_annual_total_returns_inner:
-      properties:
-        year:
-          description: Year of total returns
-          examples:
-          - 2021
-          format: int64
-          type: integer
-          x-go-name: Year
-          x-order: 10
-        share_class_return:
-          description: Fund total returns (%) generated over a given year
-          examples:
-          - 0.2866
-          format: double
-          type: number
-          x-go-name: ShareClassReturn
-          x-order: 20
-        category_return:
-          description: Same category average total returns (%) generated over a given year
-          examples:
-          - 0
-          format: double
-          type: number
-          x-go-name: CategoryReturn
-          x-order: 30
-      type: object
-    GetETFsWorld_200_response_etf_composition_asset_allocation:
-      description: Asset allocation of a fund by different asset classes and their respective weights
-      properties:
-        cash:
-          description: Percentage of overall portfolio composition in cash
-          examples:
-          - 0.0004
-          format: double
-          type: number
-          x-go-name: Cash
-          x-order: 10
-        stocks:
-          description: Percentage of overall portfolio composition in stocks
-          examples:
-          - 0.9996
-          format: double
-          type: number
-          x-go-name: Stocks
-          x-order: 20
-        preferred_stocks:
-          description: Percentage of overall portfolio composition in preferred stocks
-          examples:
-          - 0
-          format: double
-          type: number
-          x-go-name: PreferredStocks
-          x-order: 30
-        convertables:
-          description: Percentage of overall portfolio composition in convertable securities
-          examples:
-          - 0
-          format: double
-          type: number
-          x-go-name: Convertables
-          x-order: 40
-        bonds:
-          description: Percentage of overall portfolio composition in bond
-          examples:
-          - 0
-          format: double
-          type: number
-          x-go-name: Bonds
-          x-order: 50
-        others:
-          description: Percentage of overall portfolio composition in other forms of holding
-          examples:
-          - 0
-          format: double
-          type: number
-          x-go-name: Others
-          x-order: 60
-      type: object
-      x-go-name: AssetAllocation
-      x-order: 30
-    GetETFsWorldPerformance_200_response_etf:
-      description: Etf information
-      properties:
-        performance:
-          $ref: '#/components/schemas/GetETFsWorldPerformance_200_response_etf_performance'
-      type: object
-      x-go-name: Etf
-      x-order: 10
     GetETFsWorld_200_response_etf_summary:
       description: A brief summary of a etf
       properties:
@@ -1806,27 +1720,10 @@ components:
       type: object
       x-go-name: Summary
       x-order: 10
-    GetETFsWorld_200_response_etf_composition_bond_breakdown:
-      description: Breakdown of the fund’s portfolio by bond holding characteristics
+    GetETFsList_200_response:
       properties:
-        average_maturity:
-          $ref: '#/components/schemas/GetETFsWorld_200_response_etf_composition_bond_breakdown_average_maturity'
-        average_duration:
-          $ref: '#/components/schemas/GetETFsWorld_200_response_etf_composition_bond_breakdown_average_duration'
-        credit_quality:
-          description: Breakdown of the fund’s bond holdings by credit rating and their respective portfolio weights
-          items:
-            $ref: '#/components/schemas/GetETFsWorld_200_response_etf_composition_bond_breakdown_credit_quality_inner'
-          type: array
-          x-go-name: CreditQuality
-          x-order: 30
-      type: object
-      x-go-name: BondBreakdown
-      x-order: 50
-    GetETFsWorldSummary_200_response:
-      properties:
-        etf:
-          $ref: '#/components/schemas/GetETFsWorldSummary_200_response_etf'
+        result:
+          $ref: '#/components/schemas/GetETFsList_200_response_result'
         status:
           description: Status of the response
           examples:
@@ -1835,40 +1732,116 @@ components:
           x-go-name: Status
           x-order: 20
       required:
-      - etf
+      - result
       - status
       type: object
-    GetETFsWorldComposition_200_response_etf_composition:
-      description: Composition of a etf
+    ApiBadRequestErrorResponseBody:
       properties:
-        major_market_sectors:
-          description: Breakdown of the fund’s portfolio by major industry sectors and their respective weights
-          items:
-            $ref: '#/components/schemas/GetETFsWorld_200_response_etf_composition_major_market_sectors_inner'
-          type: array
-          x-go-name: MajorMarketSectors
-          x-order: 10
-        country_allocation:
-          description: Breakdown of the fund’s portfolio by country and their respective weights
-          items:
-            $ref: '#/components/schemas/GetETFsWorld_200_response_etf_composition_country_allocation_inner'
-          type: array
-          x-go-name: CountryAllocation
-          x-order: 20
-        asset_allocation:
-          $ref: '#/components/schemas/GetETFsWorld_200_response_etf_composition_asset_allocation'
-        top_holdings:
-          description: Top holdings of a fund with their respective weights in the overall portfolio composition
-          items:
-            $ref: '#/components/schemas/GetETFsWorld_200_response_etf_composition_top_holdings_inner'
-          type: array
-          x-go-name: TopHoldings
-          x-order: 40
-        bond_breakdown:
-          $ref: '#/components/schemas/GetETFsWorld_200_response_etf_composition_bond_breakdown'
+        code:
+          description: Error code
+          examples:
+          - 400
+          format: int64
+          type: integer
+          x-go-name: Code
+        message:
+          description: Error message
+          examples:
+          - Invalid request
+          type: string
+          x-go-name: Message
+        status:
+          description: Error status
+          examples:
+          - error
+          type: string
+          x-go-name: Status
+      required:
+      - code
+      - message
+      - status
       type: object
-      x-go-name: Composition
-      x-order: 10
+      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
+    GetETFsWorld_200_response_etf_composition_asset_allocation:
+      description: Asset allocation of a fund by different asset classes and their respective weights
+      properties:
+        cash:
+          description: Percentage of overall portfolio composition in cash
+          examples:
+          - 0.0004
+          format: double
+          type: number
+          x-go-name: Cash
+          x-order: 10
+        stocks:
+          description: Percentage of overall portfolio composition in stocks
+          examples:
+          - 0.9996
+          format: double
+          type: number
+          x-go-name: Stocks
+          x-order: 20
+        preferred_stocks:
+          description: Percentage of overall portfolio composition in preferred stocks
+          examples:
+          - 0
+          format: double
+          type: number
+          x-go-name: PreferredStocks
+          x-order: 30
+        convertables:
+          description: Percentage of overall portfolio composition in convertable securities
+          examples:
+          - 0
+          format: double
+          type: number
+          x-go-name: Convertables
+          x-order: 40
+        bonds:
+          description: Percentage of overall portfolio composition in bond
+          examples:
+          - 0
+          format: double
+          type: number
+          x-go-name: Bonds
+          x-order: 50
+        others:
+          description: Percentage of overall portfolio composition in other forms of holding
+          examples:
+          - 0
+          format: double
+          type: number
+          x-go-name: Others
+          x-order: 60
+      type: object
+      x-go-name: AssetAllocation
+      x-order: 30
+    GetETFsWorld_200_response_etf_performance_trailing_returns_inner:
+      properties:
+        period:
+          description: Period of trailing returns
+          examples:
+          - ytd
+          type: string
+          x-go-name: Period
+          x-order: 10
+        share_class_return:
+          description: Fund returns (%) generated over a given period
+          examples:
+          - -0.0751
+          format: double
+          type: number
+          x-go-name: ShareClassReturn
+          x-order: 20
+        category_return:
+          description: Same category average returns (%) generated over a given period
+          examples:
+          - 0.1484
+          format: double
+          type: number
+          x-go-name: CategoryReturn
+          x-order: 30
+      type: object
     GetETFsType_200_response:
       properties:
         result:
@@ -1898,46 +1871,148 @@ components:
       - result
       - status
       type: object
-    GetETFsWorld_200_response_etf_composition_bond_breakdown_average_maturity:
-      description: Average credit rating of bond holding of a fund
+    GetETFsWorldPerformance_200_response_etf_performance:
+      description: Detailed performance of a etf
       properties:
-        fund:
-          description: Average maturity of bond holding of a fund
-          examples:
-          - 6.65
-          format: double
-          type: number
-          x-go-name: Fund
+        trailing_returns:
+          description: Performance returns of the fund and its category over various trailing time periods
+          items:
+            $ref: '#/components/schemas/GetETFsWorld_200_response_etf_performance_trailing_returns_inner'
+          type: array
+          x-go-name: TrailingReturns
           x-order: 10
-        category:
-          description: Average maturity of bond holding of funds in the same category
-          examples:
-          - 7.81
-          format: double
-          type: number
-          x-go-name: Category
+        annual_total_returns:
+          description: Fund and category total returns (%) for each calendar year
+          items:
+            $ref: '#/components/schemas/GetETFsWorld_200_response_etf_performance_annual_total_returns_inner'
+          type: array
+          x-go-name: AnnualTotalReturns
           x-order: 20
       type: object
-      x-go-name: AverageMaturity
+      x-go-name: Performance
       x-order: 10
-    GetETFsWorld_200_response_etf_composition_major_market_sectors_inner:
+    GetETFsWorldSummary_200_response_etf_summary:
+      description: A brief summary of a ETF
       properties:
-        sector:
-          description: Sector category of a fund exposure
+        symbol:
+          description: All available fund types segmented by country
           examples:
-          - Technology
+          - IVV
           type: string
-          x-go-name: Sector
+          x-go-name: Symbol
           x-order: 10
-        weight:
-          description: Weight of a fund exposure in a sector
+        name:
+          description: Fund name
           examples:
-          - 0.2424
+          - iShares Core S&P 500 ETF
+          type: string
+          x-go-name: Name
+          x-order: 20
+        fund_family:
+          description: Investment company that manages the fund
+          examples:
+          - iShares
+          type: string
+          x-go-name: FundFamily
+          x-order: 30
+        fund_type:
+          description: Type of the fund
+          examples:
+          - Large Blend
+          type: string
+          x-go-name: FundType
+          x-order: 40
+        currency:
+          description: Currency of fund price
+          examples:
+          - USD
+          type: string
+          x-go-name: Currency
+          x-order: 50
+        share_class_inception_date:
+          description: The date from which the fund started operations and the returns are calculated
+          examples:
+          - '2000-11-13'
+          type: string
+          x-go-name: ShareClassInceptionDate
+          x-order: 60
+        ytd_return:
+          description: Percentage of profit of the fund since the first trading day of the current calendar year
+          examples:
+          - -0.0537
           format: double
           type: number
-          x-go-name: Weight
-          x-order: 20
+          x-go-name: YtdReturn
+          x-order: 70
+        expense_ratio_net:
+          description: Percentage of ETF assets steered toward a fund's operating expenses and fund management fees
+          examples:
+          - -0.004
+          format: double
+          type: number
+          x-go-name: ExpenseRatioNet
+          x-order: 80
+        yield:
+          description: Income returned to its investors through interest and dividends generated by the fund's investments
+          examples:
+          - 0.0133
+          format: double
+          type: number
+          x-go-name: Yield
+          x-order: 90
+        nav:
+          description: 'Net Asset Value: fund value minus liabilities'
+          examples:
+          - 413.24
+          format: double
+          type: number
+          x-go-name: Nav
+          x-order: 100
+        last_price:
+          description: Last price of the fund
+          examples:
+          - 413.24
+          format: double
+          type: number
+          x-go-name: LastPrice
+          x-order: 110
+        turnover_rate:
+          description: Percentage rate at which ETF replaces its holdings on investment every year
+          examples:
+          - 0.04
+          format: double
+          type: number
+          x-go-name: TurnoverRate
+          x-order: 130
+        net_assets:
+          description: Total assets of a fund minus its total liabilities
+          examples:
+          - 753409982464
+          format: int64
+          type: integer
+          x-go-name: NetAssets
+          x-order: 140
+        overview:
+          description: Description of the fund
+          examples:
+          - The investment seeks to track the performance of the Standard & Poor's 500...
+          type: string
+          x-go-name: Overview
+          x-order: 150
+      required:
+      - name
+      - symbol
       type: object
+      x-go-name: Summary
+      x-order: 10
+    GetETFsWorldSummary_200_response_etf:
+      description: Etf information
+      properties:
+        summary:
+          $ref: '#/components/schemas/GetETFsWorldSummary_200_response_etf_summary'
+      type: object
+      x-go-name: Etf
+      x-order: 10
     GetETFsWorld_200_response_etf_composition:
       description: Composition of a etf
       properties:
@@ -2091,67 +2166,71 @@ components:
           x-go-name: TreynorRatioCategory
           x-order: 150
       type: object
-    GetETFsFamily_200_response:
+    FormatEnum:
+      default: JSON
+      enum:
+      - JSON
+      - CSV
+      type: string
+      x-go-name: Format
+      x-order: '90'
+    ETFsListResponseItem:
       properties:
-        result:
-          additionalProperties:
-            items:
-              type: string
-            type: array
-          description: List of fund families by country
+        symbol:
+          description: Instrument symbol (ticker)
           examples:
-          - India:
-            - Aberdeen Standard Fund Managers Limited
-            - Aditya Birla Sun Life AMC Ltd
-            United States:
-            - Aegon Asset Management UK PLC
-            - Ampega Investment GmbH
-            - Aviva SpA
-          type: object
-          x-go-name: Result
+          - IVV
+          type: string
+          x-go-name: Symbol
           x-order: 10
-        status:
-          description: Status of the response
+        name:
+          description: Full name of the fund
           examples:
-          - ok
+          - iShares Core S&P 500 ETF
           type: string
-          x-go-name: Status
+          x-go-name: Name
           x-order: 20
-      required:
-      - result
-      - status
-      type: object
-    ApiUnauthorizedErrorResponseBody:
-      properties:
-        code:
-          description: Error code
+        country:
+          description: Country of fund incorporation
           examples:
-          - 401
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - apikey parameter is incorrect or not specified
+          - United States
           type: string
-          x-go-name: Message
-        status:
-          description: Error status
+          x-go-name: Country
+          x-order: 30
+        mic_code:
+          description: Market identifier code (MIC) under ISO 10383 standard
           examples:
-          - error
+          - XNAS
           type: string
-          x-go-name: Status
+          x-go-name: MicCode
+          x-order: 40
+        fund_family:
+          description: Investment company that manages the fund
+          examples:
+          - iShares
+          type: string
+          x-go-name: FundFamily
+          x-order: 50
+        fund_type:
+          description: Type of fund
+          examples:
+          - Large Blend
+          type: string
+          x-go-name: FundType
+          x-order: 60
       required:
-      - code
-      - message
-      - status
+      - country
+      - fund_family
+      - fund_type
+      - mic_code
+      - name
+      - symbol
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetETFsWorldRisk_200_response:
+    GetETFsWorldPerformance_200_response:
       properties:
         etf:
-          $ref: '#/components/schemas/GetETFsWorldRisk_200_response_etf'
+          $ref: '#/components/schemas/GetETFsWorldPerformance_200_response_etf'
         status:
           description: Status of the response
           examples:
@@ -2163,96 +2242,29 @@ components:
       - etf
       - status
       type: object
-    ApiBadRequestErrorResponseBody:
+    GetETFsWorldComposition_200_response:
       properties:
-        code:
-          description: Error code
-          examples:
-          - 400
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - Invalid request
-          type: string
-          x-go-name: Message
+        etf:
+          $ref: '#/components/schemas/GetETFsWorldComposition_200_response_etf'
         status:
-          description: Error status
+          description: Status of the response
           examples:
-          - error
+          - ok
           type: string
           x-go-name: Status
+          x-order: 20
       required:
-      - code
-      - message
+      - etf
       - status
       type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetETFsWorld_200_response_etf:
+    GetETFsWorldRisk_200_response_etf:
       description: Etf information
       properties:
-        summary:
-          $ref: '#/components/schemas/GetETFsWorld_200_response_etf_summary'
-        performance:
-          $ref: '#/components/schemas/GetETFsWorld_200_response_etf_performance'
         risk:
-          $ref: '#/components/schemas/GetETFsWorld_200_response_etf_risk'
-        composition:
-          $ref: '#/components/schemas/GetETFsWorld_200_response_etf_composition'
+          $ref: '#/components/schemas/GetETFsWorldRisk_200_response_etf_risk'
       type: object
       x-go-name: Etf
       x-order: 10
-    ApiForbiddenErrorResponseBody:
-      properties:
-        code:
-          description: Error code
-          examples:
-          - 403
-          format: int64
-          type: integer
-          x-go-name: Code
-        message:
-          description: Error message
-          examples:
-          - API key lacks permissions for the requested resource
-          type: string
-          x-go-name: Message
-        status:
-          description: Error status
-          examples:
-          - error
-          type: string
-          x-go-name: Status
-      required:
-      - code
-      - message
-      - status
-      type: object
-      x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    GetETFsWorld_200_response_etf_composition_bond_breakdown_average_duration:
-      description: Average duration of bond holding of a fund
-      properties:
-        fund:
-          description: Average duration of bond holding of a fund
-          examples:
-          - 5.72
-          format: double
-          type: number
-          x-go-name: Fund
-          x-order: 10
-        category:
-          description: Average duration of bond holding of funds in the same category
-          examples:
-          - 5.64
-          format: double
-          type: number
-          x-go-name: Category
-          x-order: 20
-      type: object
-      x-go-name: AverageDuration
-      x-order: 20
     GetETFsWorldComposition_200_response_etf:
       description: Etf information
       properties:
@@ -2261,44 +2273,32 @@ components:
       type: object
       x-go-name: Etf
       x-order: 10
-    GetETFsWorld_200_response_etf_risk_valuation_metrics:
-      description: Valuation ratios and metrics of the fund and its category
+    GetETFsWorldPerformance_200_response_etf:
+      description: Etf information
       properties:
-        price_to_earnings:
-          description: Fund price to earnings metric
-          examples:
-          - 26.46
-          format: double
-          type: number
-          x-go-name: PriceToEarnings
-          x-order: 10
-        price_to_book:
-          description: Fund price to book metric
-          examples:
-          - 4.42
-          format: double
-          type: number
-          x-go-name: PriceToBook
-          x-order: 30
-        price_to_sales:
-          description: Fund price to sales metric
-          examples:
-          - 2.96
-          format: double
-          type: number
-          x-go-name: PriceToSales
-          x-order: 50
-        price_to_cashflow:
-          description: Fund price to cashflow metric
-          examples:
-          - 17.57
-          format: double
-          type: number
-          x-go-name: PriceToCashflow
-          x-order: 70
+        performance:
+          $ref: '#/components/schemas/GetETFsWorldPerformance_200_response_etf_performance'
       type: object
-      x-go-name: ValuationMetrics
-      x-order: 20
+      x-go-name: Etf
+      x-order: 10
+    GetETFsWorld_200_response_etf_composition_bond_breakdown_credit_quality_inner:
+      properties:
+        grade:
+          description: Rating of bond holding of a fund from AAA to below B
+          examples:
+          - AAA
+          type: string
+          x-go-name: Grade
+          x-order: 10
+        weight:
+          description: Weight of bond holding in fund portfolio
+          examples:
+          - 0
+          format: double
+          type: number
+          x-go-name: Weight
+          x-order: 20
+      type: object
   securitySchemes:
     authorizationHeader:
       description: Enter the token with the `apikey ` prefix, e.g. "apikey abcde12345".

@@ -130,3 +130,18 @@ deployment:
   probe: gated
   checked: '2026-08-12'
   source: catalog MCP census
+rfc9728:
+  endpoint: https://mcp.twelvedata.com/mcp
+  metadata_url: https://mcp.twelvedata.com/.well-known/oauth-protected-resource/mcp
+  discovered_via: WWW-Authenticate resource_metadata on an anonymous POST initialize
+  fetched: '2026-09-25'
+  http_status: 200
+  content_type: application/json
+  document:
+    resource: https://mcp.twelvedata.com/mcp
+    authorization_servers:
+    - https://mcp.twelvedata.com/
+    scopes_supported:
+    - twelvedata
+    bearer_methods_supported:
+    - header

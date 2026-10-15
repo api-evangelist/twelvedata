@@ -22,3 +22,113 @@
     detected: '2026-10-14'
   status: not-a-workflow
   arazzo: null
+- slug: twelvedata-euronext-brussels
+  label: Euronext Brussels
+  partner: euronext
+  partner_name: Euronext Brussels
+  type: coverage
+  channel: provider-built
+  evidence: https://api.twelvedata.com/exchanges
+  source: edge
+  relationship: connector-coverage
+  status: not-a-workflow
+  arazzo: null
+- slug: twelvedata-b3-bovespa
+  label: B3 Bovespa
+  partner: b3-exchange
+  partner_name: B3 Bovespa
+  type: coverage
+  channel: provider-built
+  evidence: https://api.twelvedata.com/exchanges
+  source: edge
+  relationship: connector-coverage
+  status: not-a-workflow
+  arazzo: null
+- slug: twelvedata-frankfurt-stock-exchange
+  label: Frankfurt Stock Exchange
+  partner: deutsche-boerse
+  partner_name: Frankfurt Stock Exchange
+  type: coverage
+  channel: provider-built
+  evidence: https://api.twelvedata.com/exchanges
+  source: edge
+  relationship: connector-coverage
+  status: not-a-workflow
+  arazzo: null
+- slug: twelvedata-hong-kong-stock-exchange
+  label: Hong Kong Stock Exchange
+  partner: hkex
+  partner_name: Hong Kong Stock Exchange
+  type: coverage
+  channel: provider-built
+  evidence: https://api.twelvedata.com/exchanges
+  source: edge
+  relationship: connector-coverage
+  status: not-a-workflow
+  arazzo: null
+- slug: twelvedata-national-stock-exchange-of-india
+  label: National Stock Exchange of India
+  partner: national-stock-exchange-of-india
+  partner_name: National Stock Exchange of India
+  type: coverage
+  channel: provider-built
+  evidence: https://api.twelvedata.com/exchanges
+  source: edge
+  relationship: connector-coverage
+  status: not-a-workflow
+  arazzo: null
+- slug: twelvedata-tokyo-stock-exchange
+  label: Tokyo Stock Exchange
+  partner: jpx
+  partner_name: Tokyo Stock Exchange
+  type: coverage
+  channel: provider-built
+  evidence: https://api.twelvedata.com/exchanges
+  source: edge
+  relationship: connector-coverage
+  status: not-a-workflow
+  arazzo: null
+- slug: twelvedata-six-swiss-exchange
+  label: SIX Swiss Exchange
+  partner: six-group
+  partner_name: SIX Swiss Exchange
+  type: coverage
+  channel: provider-built
+  evidence: https://api.twelvedata.com/exchanges
+  source: edge
+  relationship: connector-coverage
+  status: not-a-workflow
+  arazzo: null
+- slug: twelvedata-cboe-europe-equities
+  label: Cboe Europe Equities
+  partner: cboe
+  partner_name: Cboe Europe Equities
+  type: coverage
+  channel: provider-built
+  evidence: https://api.twelvedata.com/exchanges
+  source: edge
+  relationship: connector-coverage
+  status: not-a-workflow
+  arazzo: null
+- slug: twelvedata-nasdaq
+  label: Nasdaq
+  partner: nasdaq
+  partner_name: Nasdaq
+  type: coverage
+  channel: provider-built
+  evidence: https://api.twelvedata.com/exchanges
+  source: edge
+  relationship: connector-coverage
+  status: not-a-workflow
+  arazzo: null
+- slug: twelvedata-investors-exchange
+  label: Investors Exchange
+  partner: iex
+  partner_name: Investors Exchange
+  type: coverage
+  channel: provider-built
+  evidence: https://api.twelvedata.com/exchanges
+  source: edge
+  relationship: connector-coverage
+  status: not-a-workflow
+  arazzo: null

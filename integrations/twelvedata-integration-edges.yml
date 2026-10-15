@@ -30,7 +30,138 @@ edges:
   - namespace-domain
   detected_by: sweep-agent-tools.py
   first_seen: '2026-10-14'
+- partner_name: Euronext Brussels
+  partner: euronext
+  partner_match: domain
+  channel: provider-built
+  direction: provider-built
+  type: coverage
+  relationship: connector-coverage
+  evidence: https://api.twelvedata.com/exchanges
+  source: twelvedata
+  matched_by: mic:XBRU->domain+verified:euronext.com
+  mic: XBRU
+  detected_by: sweep-capital-markets.py
+  first_seen: '2026-10-15'
+- partner_name: B3 Bovespa
+  partner: b3-exchange
+  partner_match: domain
+  channel: provider-built
+  direction: provider-built
+  type: coverage
+  relationship: connector-coverage
+  evidence: https://api.twelvedata.com/exchanges
+  source: twelvedata
+  matched_by: mic:BVMF->domain+verified:b3.com.br
+  mic: BVMF
+  detected_by: sweep-capital-markets.py
+  first_seen: '2026-10-15'
+- partner_name: Frankfurt Stock Exchange
+  partner: deutsche-boerse
+  partner_match: domain
+  channel: provider-built
+  direction: provider-built
+  type: coverage
+  relationship: connector-coverage
+  evidence: https://api.twelvedata.com/exchanges
+  source: twelvedata
+  matched_by: mic:XFRA->domain+verified:deutsche-boerse.com
+  mic: XFRA
+  detected_by: sweep-capital-markets.py
+  first_seen: '2026-10-15'
+- partner_name: Hong Kong Stock Exchange
+  partner: hkex
+  partner_match: domain
+  channel: provider-built
+  direction: provider-built
+  type: coverage
+  relationship: connector-coverage
+  evidence: https://api.twelvedata.com/exchanges
+  source: twelvedata
+  matched_by: mic:XHKG->domain+verified:hkex.com.hk
+  mic: XHKG
+  detected_by: sweep-capital-markets.py
+  first_seen: '2026-10-15'
+- partner_name: National Stock Exchange of India
+  partner: national-stock-exchange-of-india
+  partner_match: domain
+  channel: provider-built
+  direction: provider-built
+  type: coverage
+  relationship: connector-coverage
+  evidence: https://api.twelvedata.com/exchanges
+  source: twelvedata
+  matched_by: mic:XNSE->domain+verified:nseindia.com
+  mic: XNSE
+  detected_by: sweep-capital-markets.py
+  first_seen: '2026-10-15'
+- partner_name: Tokyo Stock Exchange
+  partner: jpx
+  partner_match: domain
+  channel: provider-built
+  direction: provider-built
+  type: coverage
+  relationship: connector-coverage
+  evidence: https://api.twelvedata.com/exchanges
+  source: twelvedata
+  matched_by: mic:XJPX->domain+verified:jpx.co.jp
+  mic: XJPX
+  detected_by: sweep-capital-markets.py
+  first_seen: '2026-10-15'
+- partner_name: SIX Swiss Exchange
+  partner: six-group
+  partner_match: domain
+  channel: provider-built
+  direction: provider-built
+  type: coverage
+  relationship: connector-coverage
+  evidence: https://api.twelvedata.com/exchanges
+  source: twelvedata
+  matched_by: mic:XSWX->domain+verified:six-group.com
+  mic: XSWX
+  detected_by: sweep-capital-markets.py
+  first_seen: '2026-10-15'
+- partner_name: Cboe Europe Equities
+  partner: cboe
+  partner_match: domain
+  channel: provider-built
+  direction: provider-built
+  type: coverage
+  relationship: connector-coverage
+  evidence: https://api.twelvedata.com/exchanges
+  source: twelvedata
+  matched_by: mic:BCXE->domain:cboe.com
+  mic: BCXE
+  detected_by: sweep-capital-markets.py
+  first_seen: '2026-10-15'
+- partner_name: Nasdaq
+  partner: nasdaq
+  partner_match: domain
+  channel: provider-built
+  direction: provider-built
+  type: coverage
+  relationship: connector-coverage
+  evidence: https://api.twelvedata.com/exchanges
+  source: twelvedata
+  matched_by: mic:XNAS->domain+verified:nasdaq.com
+  mic: XNAS
+  detected_by: sweep-capital-markets.py
+  first_seen: '2026-10-15'
+- partner_name: Investors Exchange
+  partner: iex
+  partner_match: domain
+  channel: provider-built
+  direction: provider-built
+  type: coverage
+  relationship: connector-coverage
+  evidence: https://api.twelvedata.com/exchanges
+  source: twelvedata
+  matched_by: mic:IEXG->domain+verified:iex.io
+  mic: IEXG
+  detected_by: sweep-capital-markets.py
+  first_seen: '2026-10-15'
 generated: '2026-10-14'
 method: searched
 checked:
+- https://api.twelvedata.com/exchanges
 - https://registry.modelcontextprotocol.io/v0/servers

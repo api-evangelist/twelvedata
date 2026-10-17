@@ -221,27 +221,19 @@ paths:
       x-codegen-request-body-name: key
 components:
   schemas:
-    FormatEnum:
-      default: JSON
-      enum:
-      - JSON
-      - CSV
-      type: string
-      x-go-name: Format
-      x-order: '90'
-    ApiBadRequestErrorResponseBody:
+    ApiParameterTooLongErrorResponseBody:
       properties:
         code:
           description: Error code
           examples:
-          - 400
+          - 414
           format: int64
           type: integer
           x-go-name: Code
         message:
           description: Error message
           examples:
-          - Invalid request
+          - Input parameter array exceeds the allowed length
           type: string
           x-go-name: Message
         status:
@@ -256,19 +248,19 @@ components:
       - status
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    ApiTooManyRequestsErrorResponseBody:
+    ApiNotFoundErrorResponseBody:
       properties:
         code:
           description: Error code
           examples:
-          - 429
+          - 404
           format: int64
           type: integer
           x-go-name: Code
         message:
           description: Error message
           examples:
-          - You have run out of API credits for the current minute. 1000 API credits were used, with the current limit being 987. Wait for the next minute or consider upgrading your plan at https://twelvedata.com/pricing
+          - symbol or figi parameter is missing or invalid
           type: string
           x-go-name: Message
         status:
@@ -336,19 +328,19 @@ components:
       - plan_limit
       - timestamp
       type: object
-    ApiInternalServerErrorResponseBody:
+    ApiTooManyRequestsErrorResponseBody:
       properties:
         code:
           description: Error code
           examples:
-          - 500
+          - 429
           format: int64
           type: integer
           x-go-name: Code
         message:
           description: Error message
           examples:
-          - Internal server error
+          - You have run out of API credits for the current minute. 1000 API credits were used, with the current limit being 987. Wait for the next minute or consider upgrading your plan at https://twelvedata.com/pricing
           type: string
           x-go-name: Message
         status:
@@ -363,19 +355,19 @@ components:
       - status
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    ApiParameterTooLongErrorResponseBody:
+    ApiInternalServerErrorResponseBody:
       properties:
         code:
           description: Error code
           examples:
-          - 414
+          - 500
           format: int64
           type: integer
           x-go-name: Code
         message:
           description: Error message
           examples:
-          - Input parameter array exceeds the allowed length
+          - Internal server error
           type: string
           x-go-name: Message
         status:
@@ -417,19 +409,19 @@ components:
       - status
       type: object
       x-go-package: gitlab.atlasgroup.ai/twelvedata/api/route/description
-    ApiNotFoundErrorResponseBody:
+    ApiBadRequestErrorResponseBody:
       properties:
         code:
           description: Error code
           examples:
-          - 404
+          - 400
           format: int64
           type: integer
           x-go-name: Code
         message:
           description: Error message
           examples:
-          - symbol or figi parameter is missing or invalid
+          - Invalid request
           type: string
           x-go-name: Message
         status:
@@ -518,6 +510,14 @@ components:
           type: string
           x-go-name: Url
       type: object
+    FormatEnum:
+      default: JSON
+      enum:
+      - JSON
+      - CSV
+      type: string
+      x-go-name: Format
+      x-order: '90'
     ApiUnauthorizedErrorResponseBody:
       properties:
         code:

@@ -80,19 +80,6 @@ paths:
         '429':
           $ref: '#/components/responses/RateLimited'
 components:
-  responses:
-    RateLimited:
-      description: API credit limit for the current minute has been exceeded.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
     Error:
       type: object
@@ -143,6 +130,13 @@ components:
           type: string
           example: ok
   parameters:
+    symbol:
+      name: symbol
+      in: query
+      required: true
+      schema:
+        type: string
+      description: Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.
     apikeyParam:
       name: apikey
       in: query
@@ -169,13 +163,19 @@ components:
         - 1week
         - 1month
       description: Time interval between two consecutive data points.
-    symbol:
-      name: symbol
-      in: query
-      required: true
-      schema:
-        type: string
-      description: Instrument symbol, e.g. AAPL, EUR/USD, or BTC/USD.
+  responses:
+    RateLimited:
+      description: API credit limit for the current minute has been exceeded.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     apikeyQuery:
       type: apiKey

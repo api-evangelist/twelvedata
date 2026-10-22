@@ -1,195 +1,4 @@
 edges:
-- partner_name: Euronext Brussels
-  partner: euronext
-  partner_match: domain
-  channel: provider-built
-  direction: provider-built
-  type: coverage
-  relationship: connector-coverage
-  evidence: https://api.twelvedata.com/exchanges
-  source: twelvedata
-  matched_by: mic:XBRU->domain+verified:euronext.com
-  mic: XBRU
-  detected_by: sweep-capital-markets.py
-  first_seen: '2026-10-15'
-- partner_name: B3 Bovespa
-  partner: b3-exchange
-  partner_match: domain
-  channel: provider-built
-  direction: provider-built
-  type: coverage
-  relationship: connector-coverage
-  evidence: https://api.twelvedata.com/exchanges
-  source: twelvedata
-  matched_by: mic:BVMF->domain+verified:b3.com.br
-  mic: BVMF
-  detected_by: sweep-capital-markets.py
-  first_seen: '2026-10-15'
-- partner_name: Frankfurt Stock Exchange
-  partner: deutsche-boerse
-  partner_match: domain
-  channel: provider-built
-  direction: provider-built
-  type: coverage
-  relationship: connector-coverage
-  evidence: https://api.twelvedata.com/exchanges
-  source: twelvedata
-  matched_by: mic:XFRA->domain+verified:deutsche-boerse.com
-  mic: XFRA
-  detected_by: sweep-capital-markets.py
-  first_seen: '2026-10-15'
-- partner_name: Hong Kong Stock Exchange
-  partner: hkex
-  partner_match: domain
-  channel: provider-built
-  direction: provider-built
-  type: coverage
-  relationship: connector-coverage
-  evidence: https://api.twelvedata.com/exchanges
-  source: twelvedata
-  matched_by: mic:XHKG->domain+verified:hkex.com.hk
-  mic: XHKG
-  detected_by: sweep-capital-markets.py
-  first_seen: '2026-10-15'
-- partner_name: National Stock Exchange of India
-  partner: national-stock-exchange-of-india
-  partner_match: domain
-  channel: provider-built
-  direction: provider-built
-  type: coverage
-  relationship: connector-coverage
-  evidence: https://api.twelvedata.com/exchanges
-  source: twelvedata
-  matched_by: mic:XNSE->domain+verified:nseindia.com
-  mic: XNSE
-  detected_by: sweep-capital-markets.py
-  first_seen: '2026-10-15'
-- partner_name: Tokyo Stock Exchange
-  partner: jpx
-  partner_match: domain
-  channel: provider-built
-  direction: provider-built
-  type: coverage
-  relationship: connector-coverage
-  evidence: https://api.twelvedata.com/exchanges
-  source: twelvedata
-  matched_by: mic:XJPX->domain+verified:jpx.co.jp
-  mic: XJPX
-  detected_by: sweep-capital-markets.py
-  first_seen: '2026-10-15'
-- partner_name: SIX Swiss Exchange
-  partner: six-group
-  partner_match: domain
-  channel: provider-built
-  direction: provider-built
-  type: coverage
-  relationship: connector-coverage
-  evidence: https://api.twelvedata.com/exchanges
-  source: twelvedata
-  matched_by: mic:XSWX->domain+verified:six-group.com
-  mic: XSWX
-  detected_by: sweep-capital-markets.py
-  first_seen: '2026-10-15'
-- partner_name: Cboe Europe Equities
-  partner: cboe
-  partner_match: domain
-  channel: provider-built
-  direction: provider-built
-  type: coverage
-  relationship: connector-coverage
-  evidence: https://api.twelvedata.com/exchanges
-  source: twelvedata
-  matched_by: mic:BCXE->domain:cboe.com
-  mic: BCXE
-  detected_by: sweep-capital-markets.py
-  first_seen: '2026-10-15'
-- partner_name: Nasdaq
-  partner: nasdaq
-  partner_match: domain
-  channel: provider-built
-  direction: provider-built
-  type: coverage
-  relationship: connector-coverage
-  evidence: https://api.twelvedata.com/exchanges
-  source: twelvedata
-  matched_by: mic:XNAS->domain+verified:nasdaq.com
-  mic: XNAS
-  detected_by: sweep-capital-markets.py
-  first_seen: '2026-10-15'
-- partner_name: Investors Exchange
-  partner: iex
-  partner_match: domain
-  channel: provider-built
-  direction: provider-built
-  type: coverage
-  relationship: connector-coverage
-  evidence: https://api.twelvedata.com/exchanges
-  source: twelvedata
-  matched_by: mic:IEXG->domain+verified:iex.io
-  mic: IEXG
-  detected_by: sweep-capital-markets.py
-  first_seen: '2026-10-15'
-- partner_name: MCP Registry
-  partner: mcp
-  partner_match: register
-  type: register
-  channel: standard-directory
-  relationship: standard-participant
-  direction: partner-built
-  evidence: https://registry.modelcontextprotocol.io/v0/servers?search=com.twelvedata
-  contract_reference:
-    register: registry.modelcontextprotocol.io
-    spec_file: null
-    role: mcp-server-listing
-    registered_name: com.twelvedata/mcp
-    register_id: com.twelvedata/mcp
-    detected_by: sweep-agent-tools.py
-    detected: '2026-10-15'
-  mcp_registry:
-    servers:
-    - com.twelvedata/mcp
-    hosted_remote: 1
-    local_package: 0
-    transports:
-      streamable-http: 1
-    auth_declared: 0
-    catalog_declared: true
-    namespace_domains:
-    - twelvedata.com
-  matched_by:
-  - namespace-domain
-  detected_by: sweep-agent-tools.py
-  first_seen: '2026-10-14'
-- partner_name: Airbyte
-  partner: airbyte
-  partner_match: aggregator
-  type: marketplace
-  marketplace: airbyte-registry
-  channel: elt-connector
-  relationship: ipaas-bridge
-  direction: third-party
-  evidence: https://docs.airbyte.com/integrations/sources/twelve-data
-  category: null
-  contract_reference:
-    register: Airbyte connector registry (connectors.airbyte.com cloud_registry.json + oss_registry.json)
-    spec_file: null
-    role: elt-connector:airbyte-community
-    registered_name: Twelve Data
-    matched_domain: twelvedata.com
-    matched_by: domain
-    detected_by: sweep-data-integration.py
-    detected: '2026-10-18'
-    signal_note: one edge per (provider, platform); connectors, streams, packages and usage are context, never read
-    connectors:
-    - airbyte/source-twelve-data
-    support_level:
-    - community
-    release_stage:
-    - alpha
-    in_cloud: true
-    builder: unknown (community connector; contributor not in the record)
-  detected_by: sweep-data-integration.py
-  first_seen: '2026-10-18'
 - partner_name: Go module proxy
   partner: null
   partner_match: null
@@ -279,6 +88,197 @@ edges:
     detected_by: sweep-official-sdks.py
     detected: '2026-10-18'
   detected_by: sweep-official-sdks.py
+  first_seen: '2026-10-18'
+- partner_name: MCP Registry
+  partner: mcp
+  partner_match: register
+  type: register
+  channel: standard-directory
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://registry.modelcontextprotocol.io/v0/servers?search=com.twelvedata
+  contract_reference:
+    register: registry.modelcontextprotocol.io
+    spec_file: null
+    role: mcp-server-listing
+    registered_name: com.twelvedata/mcp
+    register_id: com.twelvedata/mcp
+    detected_by: sweep-agent-tools.py
+    detected: '2026-10-19'
+  mcp_registry:
+    servers:
+    - com.twelvedata/mcp
+    hosted_remote: 1
+    local_package: 0
+    transports:
+      streamable-http: 1
+    auth_declared: 0
+    catalog_declared: true
+    namespace_domains:
+    - twelvedata.com
+  matched_by:
+  - namespace-domain
+  detected_by: sweep-agent-tools.py
+  first_seen: '2026-10-14'
+- partner_name: Euronext Brussels
+  partner: euronext
+  partner_match: domain
+  channel: provider-built
+  direction: provider-built
+  type: coverage
+  relationship: connector-coverage
+  evidence: https://api.twelvedata.com/exchanges
+  source: twelvedata
+  matched_by: mic:XBRU->domain+verified:euronext.com
+  mic: XBRU
+  detected_by: sweep-capital-markets.py
+  first_seen: '2026-10-19'
+- partner_name: B3 Bovespa
+  partner: b3-exchange
+  partner_match: domain
+  channel: provider-built
+  direction: provider-built
+  type: coverage
+  relationship: connector-coverage
+  evidence: https://api.twelvedata.com/exchanges
+  source: twelvedata
+  matched_by: mic:BVMF->domain+verified:b3.com.br
+  mic: BVMF
+  detected_by: sweep-capital-markets.py
+  first_seen: '2026-10-19'
+- partner_name: Frankfurt Stock Exchange
+  partner: deutsche-boerse
+  partner_match: domain
+  channel: provider-built
+  direction: provider-built
+  type: coverage
+  relationship: connector-coverage
+  evidence: https://api.twelvedata.com/exchanges
+  source: twelvedata
+  matched_by: mic:XFRA->domain+verified:deutsche-boerse.com
+  mic: XFRA
+  detected_by: sweep-capital-markets.py
+  first_seen: '2026-10-19'
+- partner_name: Hong Kong Stock Exchange
+  partner: hkex
+  partner_match: domain
+  channel: provider-built
+  direction: provider-built
+  type: coverage
+  relationship: connector-coverage
+  evidence: https://api.twelvedata.com/exchanges
+  source: twelvedata
+  matched_by: mic:XHKG->domain+verified:hkex.com.hk
+  mic: XHKG
+  detected_by: sweep-capital-markets.py
+  first_seen: '2026-10-19'
+- partner_name: National Stock Exchange of India
+  partner: national-stock-exchange-of-india
+  partner_match: domain
+  channel: provider-built
+  direction: provider-built
+  type: coverage
+  relationship: connector-coverage
+  evidence: https://api.twelvedata.com/exchanges
+  source: twelvedata
+  matched_by: mic:XNSE->domain+verified:nseindia.com
+  mic: XNSE
+  detected_by: sweep-capital-markets.py
+  first_seen: '2026-10-19'
+- partner_name: Tokyo Stock Exchange
+  partner: jpx
+  partner_match: domain
+  channel: provider-built
+  direction: provider-built
+  type: coverage
+  relationship: connector-coverage
+  evidence: https://api.twelvedata.com/exchanges
+  source: twelvedata
+  matched_by: mic:XJPX->domain+verified:jpx.co.jp
+  mic: XJPX
+  detected_by: sweep-capital-markets.py
+  first_seen: '2026-10-19'
+- partner_name: SIX Swiss Exchange
+  partner: six-group
+  partner_match: domain
+  channel: provider-built
+  direction: provider-built
+  type: coverage
+  relationship: connector-coverage
+  evidence: https://api.twelvedata.com/exchanges
+  source: twelvedata
+  matched_by: mic:XSWX->domain+verified:six-group.com
+  mic: XSWX
+  detected_by: sweep-capital-markets.py
+  first_seen: '2026-10-19'
+- partner_name: Cboe Europe Equities
+  partner: cboe
+  partner_match: domain
+  channel: provider-built
+  direction: provider-built
+  type: coverage
+  relationship: connector-coverage
+  evidence: https://api.twelvedata.com/exchanges
+  source: twelvedata
+  matched_by: mic:BCXE->domain:cboe.com
+  mic: BCXE
+  detected_by: sweep-capital-markets.py
+  first_seen: '2026-10-19'
+- partner_name: Nasdaq
+  partner: nasdaq
+  partner_match: domain
+  channel: provider-built
+  direction: provider-built
+  type: coverage
+  relationship: connector-coverage
+  evidence: https://api.twelvedata.com/exchanges
+  source: twelvedata
+  matched_by: mic:XNAS->domain+verified:nasdaq.com
+  mic: XNAS
+  detected_by: sweep-capital-markets.py
+  first_seen: '2026-10-19'
+- partner_name: Investors Exchange
+  partner: iex
+  partner_match: domain
+  channel: provider-built
+  direction: provider-built
+  type: coverage
+  relationship: connector-coverage
+  evidence: https://api.twelvedata.com/exchanges
+  source: twelvedata
+  matched_by: mic:IEXG->domain+verified:iex.io
+  mic: IEXG
+  detected_by: sweep-capital-markets.py
+  first_seen: '2026-10-19'
+- partner_name: Airbyte
+  partner: airbyte
+  partner_match: aggregator
+  type: marketplace
+  marketplace: airbyte-registry
+  channel: elt-connector
+  relationship: ipaas-bridge
+  direction: third-party
+  evidence: https://docs.airbyte.com/integrations/sources/twelve-data
+  category: null
+  contract_reference:
+    register: Airbyte connector registry (connectors.airbyte.com cloud_registry.json + oss_registry.json)
+    spec_file: null
+    role: elt-connector:airbyte-community
+    registered_name: Twelve Data
+    matched_domain: twelvedata.com
+    matched_by: domain
+    detected_by: sweep-data-integration.py
+    detected: '2026-10-18'
+    signal_note: one edge per (provider, platform); connectors, streams, packages and usage are context, never read
+    connectors:
+    - airbyte/source-twelve-data
+    support_level:
+    - community
+    release_stage:
+    - alpha
+    in_cloud: true
+    builder: unknown (community connector; contributor not in the record)
+  detected_by: sweep-data-integration.py
   first_seen: '2026-10-18'
 generated: '2026-10-14'
 method: searched
